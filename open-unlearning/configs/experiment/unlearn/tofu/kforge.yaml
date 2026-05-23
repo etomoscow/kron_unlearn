@@ -1,0 +1,15 @@
+# @package _global_
+
+defaults:
+  - /experiment/unlearn/tofu/default
+  - override /trainer: KFORGE
+
+trainer:
+  method_args:
+    target_modules_regex: .*mlp\.down_proj$
+    rank: 8
+    strength: 0.25
+    damping: 1e-3
+    max_calibration_batches: 8
+
+task_name: tofu_kforge

@@ -1,0 +1,79 @@
+# Local/editor state
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+settings.json
+.open-unlearning.git.backup/
+
+# Python caches and environments
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+ENV/
+
+# Build/package artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Runtime caches
+.cache/
+cache*/
+hf_cache/
+ms_cache/
+wandb/
+
+# OpenUnlearning heavy artifacts
+open-unlearning/.cache/
+open-unlearning/logs/
+open-unlearning/outputs/
+open-unlearning/data/
+open-unlearning/evals/
+open-unlearning/eval_logs/
+open-unlearning/eval_dumps/
+open-unlearning/saves/
+
+# Keep curated paper figures and their plotted CSVs.
+!open-unlearning/saves/
+open-unlearning/saves/*
+!open-unlearning/saves/figures/
+open-unlearning/saves/figures/*
+!open-unlearning/saves/figures/kforge_corrected/
+!open-unlearning/saves/figures/kforge_corrected/*
+
+# Model/checkpoint files anywhere else
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+
+# LaTeX build products
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv

@@ -1,0 +1,679 @@
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[review]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multirow}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{graphicx}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{K-FORGE: Kronecker-Fisher Wiener Initialization for Preference-Based LLM Unlearning}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a separate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+\author{First Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+  \texttt{email@domain} \\\And
+  Second Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+  \texttt{email@domain} \\}
+
+%\author{
+%  \textbf{First Author\textsuperscript{1}},
+%  \textbf{Second Author\textsuperscript{1,2}},
+%  \textbf{Third T. Author\textsuperscript{1}},
+%  \textbf{Fourth Author\textsuperscript{1}},
+%\\
+%  \textbf{Fifth Author\textsuperscript{1,2}},
+%  \textbf{Sixth Author\textsuperscript{1}},
+%  \textbf{Seventh Author\textsuperscript{1}},
+%  \textbf{Eighth Author \textsuperscript{1,2,3,4}},
+%\\
+%  \textbf{Ninth Author\textsuperscript{1}},
+%  \textbf{Tenth Author\textsuperscript{1}},
+%  \textbf{Eleventh E. Author\textsuperscript{1,2,3,4,5}},
+%  \textbf{Twelfth Author\textsuperscript{1}},
+%\\
+%  \textbf{Thirteenth Author\textsuperscript{3}},
+%  \textbf{Fourteenth F. Author\textsuperscript{2,4}},
+%  \textbf{Fifteenth Author\textsuperscript{1}},
+%  \textbf{Sixteenth Author\textsuperscript{1}},
+%\\
+%  \textbf{Seventeenth S. Author\textsuperscript{4,5}},
+%  \textbf{Eighteenth Author\textsuperscript{3,4}},
+%  \textbf{Nineteenth N. Author\textsuperscript{2,5}},
+%  \textbf{Twentieth Author\textsuperscript{1}}
+%\\
+%\\
+%  \textsuperscript{1}Affiliation 1,
+%  \textsuperscript{2}Affiliation 2,
+%  \textsuperscript{3}Affiliation 3,
+%  \textsuperscript{4}Affiliation 4,
+%  \textsuperscript{5}Affiliation 5
+%\\
+%  \small{
+%    \textbf{Correspondence:} \href{mailto:email@domain}{email@domain}
+%  }
+%}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Preference-based LLM unlearning methods such as NPO and SimNPO can reach useful forget--retain trade-offs, but they often spend their early optimization budget discovering a direction that separates forget-specific behavior from retained capability. We study whether a second-order initializer can supply that direction before iterative unlearning begins. K-FORGE estimates Kronecker-factored empirical Fishers on forget and retain data, simultaneously diagonalizes the two Fisher pairs, and applies a retain-aware Wiener edit in the resulting generalized-eigenvector basis. The unconstrained edit has an exact closed form; for low-rank edits with positive retain penalty, the exact weighted low-rank problem is not closed form, so we use a separable relaxation that is exact in the full-rank limit and at zero retain penalty. On TOFU \texttt{forget10} with Llama 3.2 1B, corrected one-shot K-FORGE traces a controllable Pareto frontier but does not dominate iterative baselines. Its main value is as initialization: at matched budgets of 50, 100, and 250 steps, K-FORGE-initialized NPO and SimNPO consistently lower forget probability relative to scratch training while preserving or improving utility. Corrected ablations show that retain awareness is necessary, while a diagonal control recovers part, but not all, of the effect. These results support K-FORGE as a curvature-aware initializer for preference-based unlearning rather than as a one-shot replacement for iterative methods.
+\end{abstract}
+
+\section{Introduction}
+
+The growing deployment of large language models has made machine unlearning — selectively removing the influence of specific training data without retraining from scratch — a central problem for privacy, copyright, and safety~\citep{tofu,rmu,muse}. Current LLM unlearning methods cluster into two regimes. Iterative preference-based methods such as Negative Preference Optimization~\citep{npo} and its simplified variant SimNPO~\citep{simnpo} frame unlearning as a one-sided preference-optimization problem and require hundreds to thousands of fine-tuning steps to reach a reasonable forget–retain trade-off. Representation-misdirection methods such as RMU~\citep{rmu} perturb intermediate activations and are highly effective but task-specific. In contrast, one-shot or closed-form methods — including selective synaptic dampening~\citep{foster24}, FILA~\citep{fila}, and Gauss–Newton style edits~\citep{kfade} — are cheap but tend to either under-forget or sharply damage retained capabilities.
+This bimodality is not incidental. Iterative methods can course-correct: every gradient step re-linearizes the loss landscape around the current weights, so destructive directions can be discovered and avoided. One-shot methods solve a single quadratic surrogate and must commit to a magnitude before observing its consequences. As a result, scaling a one-shot edit usually produces a strength cliff: forget metrics improve monotonically with edit magnitude until utility collapses abruptly. We try to make one-shot methods useful without sacrificing their controllability.
+
+We address this gap by treating Kronecker-Fisher edits as initializers rather than finished unlearning procedures. Our starting point is matrix-free Fisher factorization (MFF)~\cite{chekalina_2026_gfwsvd}, which provides GPU-tractable Kronecker factors for layerwise empirical Fishers. We estimate one Fisher on forget data and one on retain data, simultaneously diagonalize the two Fisher pairs, and derive a retain-aware Wiener edit in that basis. We call the resulting construction \textbf{K-FORGE} (\textbf{K}ronecker-\textbf{F}isher \textbf{O}ne-shot \textbf{R}ank-r \textbf{G}eneralized \textbf{E}rasure).
+
+The corrected one-shot picture is more modest than the original heuristic suggested. On TOFU \texttt{forget10} with Llama-3.2-1B-Instruct, K-FORGE reduces forget probability from 0.881 to 0.774 at utility 0.582 with a conservative edit, and can drive forget probability lower only by spending more utility. This is a useful frontier, not a state-of-the-art one-shot method. The practical question is whether the edit puts iterative unlearning in a better basin. On \texttt{forget10}, K-FORGE-initialized NPO improves matched-budget forget probability from 0.093 to 0.047 at 50 steps and from 0.043 to 0.029 at 100 steps, while improving utility at both budgets. SimNPO shows the same matched-budget trend. Corrected transfer rows on \texttt{forget05} and \texttt{forget01} show the same direction most clearly for SimNPO, while NPO on \texttt{forget01} is already near its scratch floor.
+Our contributions are the following:
+
+
+\begin{enumerate}
+    \item A two-Fisher Wiener formulation for unlearning (Section 3). The unconstrained/full-rank solution is exact; the low-rank positive-penalty case is stated as the weighted low-rank problem it is, with an explicit relaxation rather than an overstated theorem.
+    \item A corrected one-shot analysis (Section 4). K-FORGE yields a usable retain-aware frontier, while forget-only editing is effectively inactive and a diagonal control captures only part of the behavior.
+    \item Evidence that K-FORGE is useful as initialization (Section 4). On corrected \texttt{forget10} runs, NPO and SimNPO improve at the same optimization budgets when seeded from the Wiener edit.
+\end{enumerate}
+
+K-FORGE is complementary to existing methods rather than a replacement. Its role is to provide a curvature-aware starting point for iterative unlearning, not to claim one-shot dominance. Code and configurations will be released at [TODO: anonymous URL].
+
+\section{Related Work}
+
+LLM unlearning. Modern LLM unlearning splits into preference-based, representation-based, and Fisher-based methods. Preference-based methods adapt DPO-style losses to "negative-only" data: NPO~\cite{npo} regularizes the gradient ascent objective via a reference-model preference term, and SimNPO~\cite{simnpo} removes the reference model entirely. RMU~\cite{rmu} is a representation-misdirection method that perturbs intermediate-layer activations toward random target vectors and is the current de facto standard on WMDP. Gradient-difference methods [Yao et al. 2024], task-vector subtraction~\cite{task_arithmetic}, and inverse-DPO variants form additional families. The TOFU~\cite{tofu}, MUSE~\cite{muse}, and WMDP~\cite{rmu} benchmarks now define the empirical landscape, and OpenUnlearning~\cite{openunlearning} provides a unified evaluation harness that we adopt.
+
+Fisher-based unlearning. Diagonal-Fisher methods, most notably Selective Synaptic Dampening~\cite{foster24}, scale parameters by per-element forget-vs-retain Fisher importance. FILA~\cite{fila} and VILA~\cite{vila} extend this to LoRA~\cite{lora}. Second-order LLM unlearning methods have begun to incorporate richer curvature: SOUL~\cite{soul} uses Sophia-style second-order optimizers; K-FADE~\cite{kfade} takes Kronecker-factored Gauss–Newton steps on the forget loss; WIN-U~\cite{winu} uses Woodbury-scaled Newton updates without retain-set access. None of these methods uses a closed-form two-Fisher generalized SVD, and none has been proposed as an initialization for preference-based methods.
+Kronecker-factored Fisher approximations. K-FAC~\cite{martens2015optimizing} and its eigenvalue-corrected variant EK-FAC~\cite{exfac} approximate per-layer Fisher Information as a Kronecker product of input and output covariances and have driven scalable natural-gradient optimization. Recent applications include influence functions at 50B scale~\cite{DBLP:journals/corr/abs-2308-03296} and LLM compression~\cite{chekalina_2026_gfwsvd}, the matrix-free factorization on which we build directly. \citet{chekalina_2026_gfwsvd} show that under matrix-variate-normal weights, the optimal Fisher-weighted low-rank approximation has a closed form via SVD of a singly-whitened weight matrix. Our method \textbf{K-FORGE} extends this construction to two Fishers and the unlearning regime.
+
+Closed-form model editing. ROME~\cite{rome} and MEMIT~\cite{memit} perform closed-form rank-one edits of MLP modules for fact editing. CrispEdit~\cite{crispedit} uses K-FAC-derived low-curvature projections for non-destructive edits. These methods target single-fact insertion or modification rather than distribution-level forgetting. The most closely related closed-form unlearning work is Selective Synaptic Dampening~\cite{foster24}, a diagonal-Fisher method; we compare against a diagonal Fisher control in Section~4.
+
+
+Initialization for fine-tuning. Closed-form initializations are well-studied for low-rank adaptation: PiSSA~\cite{pissa}, LoRA-GA~\cite{loraga}, CorDA~\cite{corda}, and LoRA-DA~\cite{lorada} each use SVD of weights, gradients, activations, or Fisher anisotropies to initialize LoRA modules. In compression, GFWSVD has been shown to accelerate the convergence of Dobi-SVD fine-tuning at high compression ratios~\cite{chekalina_2026_gfwsvd}. To our knowledge, the use of a closed-form Fisher-derived edit as an initialization for iterative unlearning is novel.
+
+\section{Method}
+\label{sec:method}
+
+\subsection{Preliminaries}
+\label{sec:preliminaries}
+
+Let $\mathbf{W} \in \mathbb{R}^{n \times m}$ denote the weight matrix of a single linear layer in a pretrained model with parameters $\theta^\star$. We denote by $\mathcal{L}_f(\theta)$ and $\mathcal{L}_r(\theta)$ the expected losses on a forget set $\mathcal{D}_f$ and a retain set $\mathcal{D}_r$, respectively. Following~\citet{chekalina_2026_gfwsvd}, the empirical Fisher information at $\theta^\star$, restricted to $\mathbf{W}$, admits the Kronecker factorization
+\begin{equation}
+    \mathcal{I}_F(\mathbf{W}) \approx \mathbf{A} \otimes \mathbf{B},
+\end{equation}
+where $\mathbf{A} \in \mathbb{R}^{m \times m}$ and $\mathbf{B} \in \mathbb{R}^{n \times n}$ are recovered from gradients $\{\mathbf{G}_i\}_{i=1}^{|\mathcal{D}|}$ via a truncated SVD of the rearranged Fisher. This is computed in a matrix-free manner using Lanczos iteration with matrix--vector products of the form
+\begin{equation}
+    \sum_i \mathbf{G}_i^\top \mathbf{Z} \mathbf{G}_i.
+\end{equation}
+The matrix-free Fisher factorization (MFF) algorithm reduces the construction cost from $\mathcal{O}(m^2 n^2)$ to $\mathcal{O}(mn^2 + m^2n)$, making the procedure tractable for 7B-scale models.
+
+In this work, we run MFF twice per layer: once on $\mathcal{D}_f$ to obtain $\mathbf{A}_f, \mathbf{B}_f$, and once on $\mathcal{D}_r$ to obtain $\mathbf{A}_r, \mathbf{B}_r$. Each factor is regularized using Tikhonov damping, $\mathbf{A} \leftarrow \mathbf{A} + \varepsilon \mathbf{I}$ with $\varepsilon>0$, before Cholesky factorization:
+\begin{equation}
+    \mathbf{A} = \mathbf{L}_A \mathbf{L}_A^\top, \qquad \mathbf{B} = \mathbf{L}_B \mathbf{L}_B^\top.
+\end{equation}
+
+That ensures all four factors are SPD, that the Cholesky factors $\mathbf{L}_{A_\bullet},\mathbf{L}_{B_\bullet}$ are invertible, and that $\mathbf{K}_A=\mathbf{L}_{A_r}^{-1}\mathbf{L}_{A_f}$ and $\mathbf{K}_B=\mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f}$ are non-singular. In particular $\sigma_{A,i},\sigma_{B,j}>0$ for all $(i,j)$, which we use freely in Section~\ref{sec:two_fisher_gsvd} and Appendix~\ref{sec:proofs}.
+
+\subsection{Two-Fisher Wiener Edit}
+\label{sec:two_fisher_gsvd}
+
+We seek a perturbation that removes forget-Fisher mass from the post-edit weight while paying for the edit in the retain metric:
+\begin{equation}
+    J(\mathbf{\Delta})
+    =
+    \lVert \mathbf{W}+\mathbf{\Delta} \rVert^2_{F_f}
+    +
+    \lambda_{\mathrm{ret}}
+    \lVert \mathbf{\Delta} \rVert^2_{F_r},
+\label{eq:kforge_objective}
+\end{equation}
+where $\lVert \mathbf{X} \rVert^2_{F_\bullet}
+= \operatorname{vec}(\mathbf{X})^\top
+(\mathbf{A}_\bullet \otimes \mathbf{B}_\bullet)
+\operatorname{vec}(\mathbf{X})$. We define cross-Cholesky maps
+\begin{equation}
+    \mathbf{K}_A = \mathbf{L}_{A_r}^{-1}\mathbf{L}_{A_f},
+    \qquad
+    \mathbf{K}_B = \mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f},
+\end{equation}
+with SVDs $\mathbf{K}_A = \mathbf{U}_A \mathbf{\Sigma}_A \mathbf{V}_A^\top$ and
+$\mathbf{K}_B = \mathbf{U}_B \mathbf{\Sigma}_B \mathbf{V}_B^\top$. The rotated forget-whitened weight is
+\begin{equation}
+    \mathbf{R}
+    =
+    \mathbf{V}_B^\top
+    \mathbf{L}_{B_f}^\top
+    \mathbf{W}
+    \mathbf{L}_{A_f}
+    \mathbf{V}_A.
+\end{equation}
+
+Define the simultaneous diagonalizers $\mathbf{Q}_A = \mathbf{L}_{A_r}^{-\top}\mathbf{U}_A$ and $\mathbf{Q}_B = \mathbf{L}_{B_r}^{-\top}\mathbf{U}_B$, which jointly diagonalize $(\mathbf{A}_f,\mathbf{A}_r)$ and $(\mathbf{B}_f,\mathbf{B}_r)$, and let $\mathbf{H} = \mathbf{Q}_B^{-1}\mathbf{\Delta}\,\mathbf{Q}_A^{-\top}$ denote the perturbation in this basis.
+
+\begin{theorem}[Unconstrained K-FORGE Wiener edit]
+\label{thm:two_fisher_gsvd}
+The unique minimizer of Eq.~\ref{eq:kforge_objective} over $\mathbf{\Delta}\in\mathbb{R}^{n\times m}$ is
+\begin{equation}
+    \mathbf{\Delta}^\star
+    =
+    -\mathbf{L}_{B_r}^{-\top}
+    \mathbf{U}_B
+    (\mathbf{G} \odot \mathbf{R})
+    \mathbf{U}_A^\top
+    \mathbf{L}_{A_r}^{-1},
+\label{eq:kforge_delta}
+\end{equation}
+where
+\begin{equation}
+    G_{ji}
+    =
+    \frac{\sigma_{A,i}\sigma_{B,j}}
+    {\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}}}.
+\end{equation}
+For $r=\min(m,n)$ the rank constraint is inactive, so $\mathbf{\Delta}^\star$ is also the rank-$r$ minimizer.
+\end{theorem}
+
+\begin{proposition}[Exact rank-$r$ solution at zero retain penalty]
+\label{prop:rankr_lam0}
+At $\lambda_{\mathrm{ret}}=0$, the rank-$r$ minimizer of Eq.~\ref{eq:kforge_objective} is obtained by the rescaling $\mathbf{Y}=\mathbf{\Sigma}_B\mathbf{H}\mathbf{\Sigma}_A$, which converts the objective into the unweighted Frobenius problem $\lVert\mathbf{Y}+\mathbf{R}\rVert_F^2$. Solving via Eckart--Young, $\mathbf{Y}_r=\operatorname{SVD}_r(-\mathbf{R})$, unscaling $\mathbf{H}_r=\mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$, and mapping back yields
+\begin{equation}
+    \mathbf{\Delta}^{(r)}_{\lambda_{\mathrm{ret}}=0}
+    =
+    -\mathbf{L}_{B_r}^{-\top}\mathbf{U}_B\,
+    \mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}\,
+    \mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}.
+\end{equation}
+\end{proposition}
+
+\paragraph{General case: separable relaxation.}
+For $\lambda_{\mathrm{ret}}>0$ and $r<\min(m,n)$, the rank-$r$ problem becomes a weighted-Frobenius low-rank approximation with non-separable weights $\alpha_{ji}=\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}}$, which is NP-hard in general~\citep{DBLP:conf/icml/SrebroJ03}. We adopt the separable relaxation that keeps the Wiener-filtered target but replaces the weights with their separable surrogate $\sigma_{A,i}^2\sigma_{B,j}^2$. Concretely,
+\begin{equation}
+    \widetilde{G}_{ji}
+    \!=\!
+    \frac{\sigma_{A,i}^2\sigma_{B,j}^2}
+    {\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}}},\!
+    \quad
+    \mathbf{Y}^\star
+    \!=\!
+    -(\!\widetilde{\mathbf{G}}\!\odot\!\mathbf{R}),
+\label{eq:relaxation_target}
+\end{equation}
+followed by $\mathbf{Y}_r\!=\!\operatorname{SVD}_r(\mathbf{Y}^\star),\mathbf{H}_r\!=\!\mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$, and
+\begin{equation}
+    \mathbf{\Delta}^{(r)}
+    \!=\!\mathbf{L}_{B_r}^{-\top}\mathbf{U}_B\,\!
+    \mathbf{H}_r\,
+    \mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}.
+\label{eq:kforge_relaxed_delta}
+\end{equation}
+(The sign is absorbed into $\mathbf{Y}^\star$.)
+
+Moreover, the relaxation is exact for $r = \min (m,n)$ and $\lambda_{\text{ret}}=0$. See Proposition~\ref{prop:limit_consistency}.
+
+\paragraph{Interpretation.}
+The products $\sigma_{A,i}\sigma_{B,j}$ measure how strongly forget curvature dominates retain curvature along the $(j,i)$ axis of the diagonalized basis. The Wiener gain $G_{ji}=\sigma_{A,i}\sigma_{B,j}/(\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}})$ is bell-shaped in this product, peaking near $\sqrt{\lambda_{\mathrm{ret}}}$ and decaying at both spectral extremes: directions where retain dominates ($\sigma_{A,i}\sigma_{B,j}\to 0$) receive vanishing edit energy because the forget signal is weak, while directions where forget dominates by a large margin ($\sigma_{A,i}\sigma_{B,j}\to\infty$) are also damped because the underlying target $M_{ji}=R_{ji}/(\sigma_{A,i}\sigma_{B,j})$ shrinks as $1/(\sigma_{A,i}\sigma_{B,j})$. The relaxation keeps the dominant filtered structure in the retain-whitened basis without overstating a closed-form optimum for the general weighted-rank-$r$ problem.
+
+
+\paragraph{Recovering prior work.}
+When all four Fisher factors are restricted to be diagonal, $\mathbf{U}_A$ and $\mathbf{U}_B$ collapse to identity and Eq.~\ref{eq:kforge_delta} reduces to per-weight Wiener filtering of the singly-whitened weight matrix. The structure becomes close to Selective Synaptic Dampening~\citep{foster24}, but with a Wiener denominator $\sigma_{A,i}^2\sigma_{B,j}^2\!+\!\lambda_{\mathrm{ret}}$ rather than SSD's hard-clipped ratio $\min(\alpha F_f/F_r, 1)$; we use this diagonal limit as a control in Section~\ref{sec:experiments}. Setting $\mathbf{A}_r\!=\!\mathbf{I}$ and $\mathbf{B}_r\!=\!\mathbf{I}$ removes retain awareness entirely and yields our forget-only ablation.
+
+\subsection{The K-FORGE Algorithm}
+\label{sec:kforge_algorithm}
+\begin{algorithm}[t]
+\caption{K-FORGE}
+\label{alg:kforge}
+\begin{algorithmic}[1]
+\Require Pretrained weight $\mathbf{W}$, forget set $\mathcal{D}_f$, retain set $\mathcal{D}_r$, rank $r$, factor damping $\varepsilon$, retain penalty $\lambda_{\mathrm{ret}}$, strength $\alpha$
+\State $(\mathbf{A}_f,\mathbf{B}_f)\leftarrow \operatorname{MFF}(\mathbf{W},\mathcal{D}_f)$;\quad $(\mathbf{A}_r,\mathbf{B}_r)\leftarrow \operatorname{MFF}(\mathbf{W},\mathcal{D}_r)$
+\State Damp each factor by $\varepsilon\mathbf{I}$ and compute Choleskys $\mathbf{L}_{A_\bullet},\mathbf{L}_{B_\bullet}$
+\State $\mathbf{K}_A\leftarrow\mathbf{L}_{A_r}^{-1}\mathbf{L}_{A_f}$;\quad $\mathbf{K}_B\leftarrow\mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f}$
+\State $\mathbf{U}_A\mathbf{\Sigma}_A\mathbf{V}_A^\top \leftarrow \operatorname{SVD}(\mathbf{K}_A)$;\quad $\mathbf{U}_B\mathbf{\Sigma}_B\mathbf{V}_B^\top \leftarrow \operatorname{SVD}(\mathbf{K}_B)$
+\State $\mathbf{R}\leftarrow \mathbf{V}_B^\top\mathbf{L}_{B_f}^\top\mathbf{W}\mathbf{L}_{A_f}\mathbf{V}_A$
+\State $\widetilde{G}_{ji}\leftarrow \sigma_{A,i}^2\sigma_{B,j}^2/(\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}})$
+\State $\mathbf{Y}^\star\leftarrow -(\widetilde{\mathbf{G}}\odot \mathbf{R})$;\quad $\mathbf{Y}_r\leftarrow \operatorname{SVD}_r(\mathbf{Y}^\star)$
+\State $\mathbf{H}_r\leftarrow \mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$
+\State $\mathbf{\Delta}^{(r)}\leftarrow \mathbf{L}_{B_r}^{-\top}\mathbf{U}_B\mathbf{H}_r\mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}$
+\State \Return $\mathbf{W} + \alpha\,\mathbf{\Delta}^{(r)}$
+\end{algorithmic}
+\end{algorithm}
+
+Factor damping and retain penalty play distinct roles. The factor damping $\varepsilon$ only makes the empirical Fisher factors numerically symmetric positive definite~(SPD) before Cholesky factorization; $\lambda_{\mathrm{ret}}$ controls the retain budget in Eq.~\ref{eq:kforge_objective}, entering only through the Wiener gain $\widetilde{\mathbf{G}}$. The post-hoc strength $\alpha$ remains a safety scalar for the downstream initializer. When $r=\min(m,n)$ or $\lambda_{\mathrm{ret}}=0$, Algorithm~\ref{alg:kforge} returns the exact minimizer of Eq.~\ref{eq:kforge_objective} by Theorem~\ref{thm:two_fisher_gsvd} and Proposition~\ref{prop:rankr_lam0}; otherwise it returns the separable relaxation $\mathbf{\Delta}^{(r)}$. The procedure is training-free: it requires only calibration forward/backward passes to estimate Fisher factors.
+
+\subsection{K-FORGE as Initialization}
+\label{sec:kforge_initialization}
+
+The one-shot edit $\widehat{\mathbf{W}} = \mathbf{W} + \alpha\,\mathbf{\Delta}^{(r)}$ identifies a forget-specific direction in the retain-whitened generalized-eigenvector basis. We use $\widehat{\mathbf{W}}$ as initialization for an iterative unlearning method:
+\begin{equation}
+\begin{cases}
+    \theta_{t+1}
+    =
+    \theta_t - \eta_t \nabla_\theta \mathcal{L}_{\mathrm{unlearn}}(\theta_t), \\
+    \qquad
+    \theta_0 \text{ seeded from K-FORGE}.
+\end{cases}
+\end{equation}
+We instantiate $\mathcal{L}_{\mathrm{unlearn}}$ as NPO~\citep{npo}, SimNPO~\cite{simnpo}, or RMU~\cite{rmu}. We do not modify the iterative method; the only intervention is the choice of $\theta_0$. The Fisher factors computed during K-FORGE could in principle be reused for second-order optimization, but in this work we keep the downstream optimizer unchanged to isolate the effect of initialization.
+\section{Experimental Setup}
+\label{sec:experiments}
+
+\subsection{Models}
+\label{sec:models}
+
+We use Llama-3.2-1B-Instruct in all experiments. All checkpoints are obtained from the OpenUnlearning reference releases~\citep{dorna2025}. We leave experiments with larger models, including Llama-3.2-3B and Llama-2-7B, to future revisions.
+
+\subsection{Benchmarks.}
+
+We evaluate on TOFU~\cite{tofu}, using the \texttt{forget10}, \texttt{forget05}, and \texttt{forget01} splits. We report Model Utility, Forget Q/A Probability, Forget Q/A ROUGE, and Extraction Strength, following the OpenUnlearning evaluation protocol. Lower forget metrics and higher utility indicate stronger unlearning. Unless otherwise noted, initialization experiments report the mean over three random seeds.
+
+\subsection{Baselines.}
+
+Since we propose a better initialization method, we compare \textbf{K-FORGE} not only against other unlearning algorithms but against alternative ways of initializing the same downstream optimizer. We therefore use the following baselines.
+
+\paragraph{Scratch NPO and SimNPO.} The primary baselines are NPO~\citep{npo} and SimNPO~\citep{simnpo} initialized from the same pretrained checkpoint and trained for the same step budgets as K-FORGE-initialized runs. These rows answer the main question: whether K-FORGE changes the early optimization trajectory of an otherwise unchanged preference-based unlearning method.
+
+\paragraph{Matched-norm low-rank controls.} To test whether the effect is merely due to injecting any rank-$r$ perturbation before fine-tuning, we construct two controls with the same edited modules, rank, and Frobenius norm as the K-FORGE edit. The first is a random rank-$2$ perturbation sampled independently for each seed and rescaled to the K-FORGE edit norm. The second is a rank-$2$ weight-SVD perturbation, obtained from the leading singular directions of the pretrained weight and rescaled to the same norm. Both are then used as initial checkpoints for the same NPO or SimNPO training scripts.
+
+\paragraph{Initialization-method competitors.} Several recent methods initialize low-rank adaptation from information already present in the pretrained model or in a calibration set. PiSSA~\citep{pissa} initializes LoRA adapters from the principal singular directions of pretrained weights; LoRA-GA~\citep{loraga} uses gradient information; CorDA~\citep{corda} uses covariance structure; and LoRA-DA~\citep{lorada} uses data-aware initialization. These methods are not unlearning algorithms and are usually formulated as adapter initializations rather than direct full-weight edits, so a literal head-to-head would require changing the downstream parameterization from full fine-tuning to LoRA. Instead, our matched weight-SVD control is the closest direct-edit analogue of PiSSA-style spectral initialization, and the random matched-norm control checks whether any low-rank displacement of the same size is sufficient. K-FORGE differs from these initializers by using two Fisher metrics with different roles: forget curvature selects the erased directions, while retain curvature defines the cost of moving in those directions. This is the distinction tested by the diagonal and forget-only ablations.
+
+\paragraph{Structural ablations.} To isolate the role of the Fisher geometry, we include a diagonal Fisher limit and a forget-only variant. The diagonal baseline keeps the two-Fisher Wiener form but restricts all Kronecker factors to their diagonals, making it close in spirit to diagonal-Fisher methods such as Selective Synaptic Dampening~\citep{foster24}. The forget-only baseline removes retain-Fisher whitening and therefore tests whether forget curvature alone is sufficient. These controls are evaluated both as one-shot edits and, where stated, as downstream initializers.
+
+
+Concretely, our initializer competitors answer four separate failure modes. \textbf{Random matched} asks whether the downstream optimizer simply benefits from being displaced away from the pretrained point. \textbf{Weight-SVD matched} asks whether a generic spectral low-rank direction, independent of the forget/retain split, is enough. \textbf{Diagonal Fisher} asks whether per-parameter Fisher ratios already contain the useful signal, as in SSD-style methods. \textbf{Forget-only Fisher} asks whether the retain Fisher is unnecessary and forget curvature alone can define a good erasure direction. The empirical answer is different for each: random and weight-SVD are generally weaker; diagonal and forget-only recover part of the gain; the full Kronecker two-Fisher initializer is the most reliable early-step Pareto improvement, especially on \texttt{forget10} and SimNPO.
+
+We focus on NPO and SimNPO because they are preference-based methods whose behavior is plausibly sensitive to initialization. RMU~\citep{rmu}, GradDiff~\citep{tofu}, and other full unlearning methods are important reference points for the broader benchmark landscape, but they answer a different question: method-level dominance rather than whether a closed-form curvature edit improves a fixed downstream optimizer. We therefore leave full RMU/GradDiff retuning and robustness comparisons to future work rather than mixing them into the initializer ablation.
+
+\paragraph{K-FORGE configuration.}
+Unless stated otherwise, we use rank $r=2$, factor damping $10^{-4}$, retain penalty $\lambda_{\mathrm{ret}}=10^{-2}$, and target the \texttt{mlp.down\_proj} module of the selected layer. We use $B_{\mathrm{cal}}=32$ calibration batches for both forget and retain Fishers. The corrected initializer is the Wiener variant from Section~\ref{sec:method}; the main initialization experiments use strengths $\alpha \in \{0.45, 0.60\}$ and step budgets $N \in \{50,100,250\}$.
+
+\subsection{One-Shot K-FORGE: A Meaningful but Insufficient Forget Direction}
+\label{sec:oneshot_kforge}
+
+Table~\ref{tab:oneshot_forget10} shows the corrected one-shot frontier on TOFU \texttt{forget10}. We include a diagonal control and a forget-only control to separate Kronecker structure from retain awareness.
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method} & \textbf{Utility} $\uparrow$ & \textbf{Forget Prob.} $\downarrow$ & \textbf{Forget ROUGE} $\downarrow$ & \textbf{Extraction} $\downarrow$ \\
+\midrule
+Base model & 0.599 & 0.881 & 0.820 & 0.706 \\
+Forget-only & 0.598 & 0.881 & 0.820 & 0.711 \\
+Diagonal control & 0.578 & 0.794 & 0.646 & 0.462 \\
+K-FORGE $\alpha=.10$ & 0.599 & 0.878 & 0.814 & 0.698 \\
+K-FORGE $\alpha=.30$ & 0.595 & 0.837 & 0.721 & 0.592 \\
+K-FORGE $\alpha=.35$ & 0.594 & 0.821 & 0.692 & 0.542 \\
+K-FORGE $\alpha=.45$ & 0.582 & 0.774 & 0.613 & 0.390 \\
+K-FORGE $\alpha=.60$ & 0.556 & 0.657 & 0.539 & 0.262 \\
+K-FORGE $\alpha=.80$ & 0.513 & 0.411 & 0.427 & 0.130 \\
+\bottomrule
+\end{tabular}
+\caption{One-shot results on TOFU \texttt{forget10} using Llama-3.2-1B-Instruct. We show the meaningful operating region; stronger over-edits at $\alpha\in\{1,3,10\}$ collapse utility and are reported in the released figure data rather than used as paper operating points.}
+\label{tab:oneshot_forget10}
+\end{table}
+
+The corrected frontier is smooth and interpretable: stronger edits monotonically reduce forget probability while progressively spending utility. Retain awareness is necessary, since the forget-only control is effectively unchanged from the base model. The diagonal control is not a no-op, but the Kronecker Wiener edit reaches lower forget probability at comparable utility. These results support using the edit as a structured initializer rather than claiming one-shot dominance.
+
+\subsection{K-FORGE as Initialization Accelerates NPO and SimNPO}
+\label{sec:kforge_npo_simnpo}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l l ccc}
+\toprule
+\textbf{Steps} & \textbf{Init} & \textbf{Utility} $\uparrow$ & \textbf{Forget Prob.} $\downarrow$ & \textbf{Extraction} $\downarrow$ \\
+\midrule
+50 & scratch & 0.509$\pm$0.004 & 0.093$\pm$0.001 & 0.068 \\
+50 & K-FORGE $(.45)$ & 0.565$\pm$0.003 & 0.047$\pm$0.003 & 0.072 \\
+50 & K-FORGE $(.60)$ & \textbf{0.574$\pm$0.004} & \textbf{0.045$\pm$0.003} & 0.071 \\
+100 & scratch & 0.569$\pm$0.009 & 0.043$\pm$0.002 & 0.065 \\
+100 & K-FORGE $(.45)$ & 0.587$\pm$0.002 & \textbf{0.029$\pm$0.002} & 0.073 \\
+100 & K-FORGE $(.60)$ & \textbf{0.593$\pm$0.005} & 0.031$\pm$0.002 & 0.073 \\
+250 & scratch & 0.595$\pm$0.009 & 0.029$\pm$0.002 & 0.064 \\
+250 & K-FORGE $(.45)$ & 0.601$\pm$0.003 & \textbf{0.021$\pm$0.001} & 0.072 \\
+250 & K-FORGE $(.60)$ & \textbf{0.603$\pm$0.004} & 0.022$\pm$0.001 & 0.074 \\
+\bottomrule
+\end{tabular}
+\caption{K-FORGE initialization versus from-scratch training on TOFU \texttt{forget10} with NPO. Utility and Forget Probability report mean$\pm$std over three seeds; Extraction reports the seed mean.}
+\label{tab:npo_init_forget10}
+\end{table}
+
+K-FORGE improves every matched NPO budget in the corrected run. The strongest effect is early: at 50 steps, the $\alpha=.60$ initializer halves forget probability relative to scratch while improving utility by more than six points. At 250 steps, the gap narrows but remains favorable.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l l ccc}
+\toprule
+\textbf{Steps} & \textbf{Init} & \textbf{Utility} $\uparrow$ & \textbf{Forget Prob.} $\downarrow$ & \textbf{Extraction} $\downarrow$ \\
+\midrule
+50 & scratch & \textbf{0.577$\pm$0.006} & 0.662$\pm$0.003 & 0.270 \\
+50 & K-FORGE $(.45)$ & 0.572$\pm$0.007 & 0.542$\pm$0.002 & 0.192 \\
+50 & K-FORGE $(.60)$ & 0.571$\pm$0.005 & \textbf{0.534$\pm$0.002} & \textbf{0.188} \\
+100 & scratch & \textbf{0.582$\pm$0.002} & 0.518$\pm$0.010 & 0.172 \\
+100 & K-FORGE $(.45)$ & 0.579$\pm$0.003 & 0.413$\pm$0.008 & \textbf{0.143} \\
+100 & K-FORGE $(.60)$ & 0.582$\pm$0.002 & \textbf{0.407$\pm$0.011} & 0.144 \\
+250 & scratch & \textbf{0.596$\pm$0.003} & 0.337$\pm$0.005 & 0.116 \\
+250 & K-FORGE $(.45)$ & 0.595$\pm$0.001 & 0.276$\pm$0.012 & 0.111 \\
+250 & K-FORGE $(.60)$ & 0.592$\pm$0.004 & \textbf{0.272$\pm$0.008} & \textbf{0.110} \\
+\bottomrule
+\end{tabular}
+\caption{K-FORGE initialization versus from-scratch training on TOFU \texttt{forget10} with SimNPO. Utility and Forget Probability report mean$\pm$std over three seeds; Extraction reports the seed mean.}
+\label{tab:simnpo_init_forget10}
+\end{table}
+
+SimNPO shows a similar matched-budget pattern: the initializer consistently lowers forget probability at 50, 100, and 250 steps while leaving utility nearly unchanged. The effect is smaller than for NPO but more uniform across the tested budgets.
+
+\paragraph{Additional TOFU splits.}
+Corrected one-shot transfer sweeps are already complete. On \texttt{forget05}, K-FORGE moves from $(0.589,0.801)$ at $\alpha=.35$ to $(0.483,0.400)$ at $\alpha=.80$ in utility--forget-probability space. On \texttt{forget01}, the corresponding endpoints are $(0.586,0.829)$ and $(0.498,0.496)$. Table~\ref{tab:transfer_init} reports the completed three-seed scratch-versus-K-FORGE initialization rows on these splits. The transfer result is strongest for SimNPO and for \texttt{forget05}; NPO on \texttt{forget01} is already near the forget-probability floor from scratch.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllcc}
+\toprule
+\textbf{Split} & \textbf{Method} & \textbf{Steps} & \textbf{Scratch} & \textbf{K-FORGE $(.45)$} \\
+\midrule
+\texttt{forget05} & NPO & 50 & 0.542$\pm$0.007 / 0.050$\pm$0.005 & 0.575$\pm$0.003 / 0.032$\pm$0.002 \\
+\texttt{forget05} & NPO & 100 & 0.578$\pm$0.009 / 0.028$\pm$0.001 & 0.586$\pm$0.005 / 0.025$\pm$0.001 \\
+\texttt{forget05} & NPO & 250 & 0.590$\pm$0.006 / 0.022$\pm$0.002 & 0.599$\pm$0.003 / 0.018$\pm$0.001 \\
+\texttt{forget05} & SimNPO & 50 & 0.573$\pm$0.010 / 0.549$\pm$0.029 & 0.571$\pm$0.004 / 0.425$\pm$0.012 \\
+\texttt{forget05} & SimNPO & 100 & 0.586$\pm$0.001 / 0.417$\pm$0.016 & 0.586$\pm$0.005 / 0.331$\pm$0.010 \\
+\texttt{forget05} & SimNPO & 250 & 0.595$\pm$0.007 / 0.280$\pm$0.010 & 0.594$\pm$0.005 / 0.230$\pm$0.004 \\
+\midrule
+\texttt{forget01} & NPO & 50 & 0.578$\pm$0.003 / 0.014$\pm$0.001 & 0.573$\pm$0.001 / 0.010$\pm$0.001 \\
+\texttt{forget01} & NPO & 100 & 0.580$\pm$0.000 / 0.012$\pm$0.001 & 0.579$\pm$0.004 / 0.011$\pm$0.001 \\
+\texttt{forget01} & NPO & 250 & 0.594$\pm$0.001 / 0.010$\pm$0.001 & 0.593$\pm$0.001 / 0.011$\pm$0.002 \\
+\texttt{forget01} & SimNPO & 50 & 0.573$\pm$0.008 / 0.288$\pm$0.005 & 0.570$\pm$0.008 / 0.238$\pm$0.008 \\
+\texttt{forget01} & SimNPO & 100 & 0.580$\pm$0.008 / 0.242$\pm$0.008 & 0.577$\pm$0.007 / 0.209$\pm$0.005 \\
+\texttt{forget01} & SimNPO & 250 & 0.592$\pm$0.003 / 0.188$\pm$0.003 & 0.591$\pm$0.004 / 0.168$\pm$0.006 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Transfer initialization results on TOFU \texttt{forget05} and \texttt{forget01}. Each cell reports Model Utility / Forget Probability as mean$\pm$std over three seeds.}
+\label{tab:transfer_init}
+\end{table}
+
+\subsection{Ablations}
+\label{sec:ablations}
+
+The corrected ablations establish two points. First, retain awareness is load-bearing: the forget-only edit remains at essentially the base-model operating point, with utility 0.598 and forget probability 0.881. Second, diagonalization is not catastrophic but is weaker than the Kronecker Wiener frontier: the diagonal control reaches utility 0.578 and forget probability 0.794, whereas the Kronecker edit reaches utility 0.582 and forget probability 0.774 at a nearby operating point. Table~\ref{tab:init_controls_forget10} gives the downstream initialization controls on \texttt{forget10}; Table~\ref{tab:transfer_controls} gives the corresponding transfer controls where completed.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcc}
+\toprule
+\textbf{Method} & \textbf{Init} & \textbf{S50} & \textbf{S100} \\
+\midrule
+NPO & scratch & 0.509$\pm$0.004 / 0.093$\pm$0.001 & 0.569$\pm$0.009 / 0.043$\pm$0.002 \\
+NPO & random matched & 0.516$\pm$0.004 / 0.082$\pm$0.005 & 0.579$\pm$0.008 / 0.038$\pm$0.005 \\
+NPO & weight-SVD matched & 0.538$\pm$0.012 / 0.084$\pm$0.006 & 0.587$\pm$0.003 / 0.043$\pm$0.001 \\
+NPO & diagonal & 0.561$\pm$0.007 / 0.058$\pm$0.007 & 0.584$\pm$0.011 / 0.033$\pm$0.001 \\
+NPO & forget-only & 0.543$\pm$0.004 / 0.062$\pm$0.004 & 0.582$\pm$0.003 / 0.032$\pm$0.001 \\
+NPO & K-FORGE & \textbf{0.565$\pm$0.003 / 0.047$\pm$0.003} & \textbf{0.587$\pm$0.002 / 0.029$\pm$0.002} \\
+\midrule
+SimNPO & scratch & 0.577$\pm$0.006 / 0.662$\pm$0.003 & 0.582$\pm$0.002 / 0.518$\pm$0.010 \\
+SimNPO & random matched & 0.578$\pm$0.011 / 0.650$\pm$0.004 & 0.584$\pm$0.001 / 0.515$\pm$0.002 \\
+SimNPO & weight-SVD matched & 0.574$\pm$0.005 / 0.619$\pm$0.006 & 0.585$\pm$0.003 / 0.488$\pm$0.005 \\
+SimNPO & diagonal & 0.570$\pm$0.003 / 0.607$\pm$0.002 & 0.583$\pm$0.003 / 0.500$\pm$0.007 \\
+SimNPO & forget-only & 0.572$\pm$0.005 / 0.619$\pm$0.006 & 0.583$\pm$0.001 / 0.491$\pm$0.004 \\
+SimNPO & K-FORGE & \textbf{0.572$\pm$0.007 / 0.542$\pm$0.002} & \textbf{0.579$\pm$0.003 / 0.413$\pm$0.008} \\
+\bottomrule
+\end{tabular}
+}
+\caption{Matched initialization controls on TOFU \texttt{forget10}. Each cell reports Model Utility / Forget Probability as mean$\pm$std over three seeds. K-FORGE uses $\alpha=.45$; random and weight-SVD controls are matched to the K-FORGE edit norm.}
+\label{tab:init_controls_forget10}
+\end{table}
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllcc}
+\toprule
+\textbf{Split} & \textbf{Method} & \textbf{Init} & \textbf{S50} & \textbf{S100} \\
+\midrule
+\texttt{forget05} & NPO & scratch & 0.542$\pm$0.007 / 0.050$\pm$0.005 & 0.578$\pm$0.009 / 0.028$\pm$0.001 \\
+\texttt{forget05} & NPO & random & 0.557$\pm$0.005 / 0.043$\pm$0.006 & 0.580$\pm$0.002 / 0.025$\pm$0.002 \\
+\texttt{forget05} & NPO & weight-SVD & 0.573$\pm$0.007 / 0.043$\pm$0.003 & 0.592$\pm$0.002 / 0.034$\pm$0.002 \\
+\texttt{forget05} & NPO & K-FORGE & \textbf{0.575$\pm$0.003 / 0.032$\pm$0.002} & \textbf{0.586$\pm$0.005 / 0.025$\pm$0.001} \\
+\midrule
+\texttt{forget05} & SimNPO & scratch & 0.573$\pm$0.010 / 0.549$\pm$0.029 & 0.586$\pm$0.001 / 0.417$\pm$0.016 \\
+\texttt{forget05} & SimNPO & weight-SVD & 0.575$\pm$0.007 / 0.476$\pm$0.010 & 0.588$\pm$0.003 / 0.375$\pm$0.005 \\
+\texttt{forget05} & SimNPO & K-FORGE & \textbf{0.571$\pm$0.004 / 0.425$\pm$0.012} & \textbf{0.586$\pm$0.005 / 0.331$\pm$0.010} \\
+\midrule
+\texttt{forget01} & NPO & scratch & 0.578$\pm$0.003 / 0.014$\pm$0.001 & 0.580$\pm$0.000 / 0.012$\pm$0.001 \\
+\texttt{forget01} & NPO & random & 0.574$\pm$0.003 / 0.013$\pm$0.002 & 0.579$\pm$0.001 / 0.012$\pm$0.002 \\
+\texttt{forget01} & NPO & weight-SVD & 0.577$\pm$0.002 / 0.013$\pm$0.002 & 0.582$\pm$0.001 / 0.012$\pm$0.001 \\
+\texttt{forget01} & NPO & K-FORGE & \textbf{0.573$\pm$0.001 / 0.010$\pm$0.001} & \textbf{0.579$\pm$0.004 / 0.011$\pm$0.001} \\
+\midrule
+\texttt{forget01} & SimNPO & scratch & 0.573$\pm$0.008 / 0.288$\pm$0.005 & 0.580$\pm$0.008 / 0.242$\pm$0.008 \\
+\texttt{forget01} & SimNPO & random & 0.573$\pm$0.007 / 0.286$\pm$0.006 & 0.580$\pm$0.006 / 0.241$\pm$0.010 \\
+\texttt{forget01} & SimNPO & weight-SVD & 0.575$\pm$0.006 / 0.304$\pm$0.007 & 0.578$\pm$0.007 / 0.256$\pm$0.014 \\
+\texttt{forget01} & SimNPO & K-FORGE & \textbf{0.570$\pm$0.008 / 0.238$\pm$0.008} & \textbf{0.577$\pm$0.007 / 0.209$\pm$0.005} \\
+\bottomrule
+\end{tabular}
+}
+\caption{Transfer initialization controls on TOFU \texttt{forget05} and \texttt{forget01}. Each cell reports Model Utility / Forget Probability as mean$\pm$std over three seeds.}
+\label{tab:transfer_controls}
+\end{table}
+
+\subsection{MUSE Generalization}
+\label{sec:muse_generalization}
+
+We will evaluate whether the acceleration effect transfers beyond TOFU by running the same scratch-versus-K-FORGE initialization grid on MUSE News. We will focus on NPO and SimNPO, where K-FORGE provides the clearest gains on TOFU.
+
+\subsection{Robustness Audits}
+\label{sec:robustness_audits}
+
+We will evaluate robustness using relearning and quantization-revert audits. For relearning, we will compare the strongest K-FORGE-initialized NPO setting on forget01 against a scratch NPO baseline with an equivalent utility--forget trade-off, followed by one epoch of supervised fine-tuning on a held-out forget subset. For quantization-revert, we will test whether 4-bit and 8-bit GPTQ quantization weakens or reverses the unlearning effect.
+
+\section{Why K-FORGE Initialization Helps}
+\label{sec:analysis}
+
+The corrected results support a narrower diagnosis than the earlier heuristic story. The Wiener edit provides a smooth retain-aware frontier, so the central phenomenon is not a pathological one-shot cliff but the separation between direction selection and subsequent iterative refinement. The matched-initializer controls strengthen this interpretation: random and weight-SVD perturbations matched to the same norm do not reproduce the full K-FORGE gain, while diagonal and forget-only variants recover part, but not all, of the improvement. This pattern suggests that both low-rank direction selection and retain-aware Kronecker geometry contribute to the useful initializer.
+
+\section{Discussion and Limitations}
+\label{sec:discussion_limitations}
+
+K-FORGE is complementary to iterative unlearning methods rather than a replacement for them. Its current evidence is strongest as an initializer for preference-based methods on TOFU \texttt{forget10}; the completed \texttt{forget05}/\texttt{forget01} rows support transfer, especially for SimNPO, but also show saturation when scratch NPO already reaches very low forget probability. The present draft does not yet establish transfer to MUSE or robust scaling beyond 1B, and it does not yet contain robustness audits against relearning or quantization revert. The method also requires calibration gradients and several dense factorizations, which are affordable at 1B scale but still need explicit scaling evidence beyond the current experiments.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We introduced K-FORGE, a retain-aware Kronecker-Fisher Wiener initializer for low-rank unlearning edits. The corrected theory yields an exact full-rank solution and an honest low-rank relaxation; the corrected experiments show a usable one-shot frontier, consistent matched-budget gains for NPO and SimNPO on TOFU \texttt{forget10}, and positive transfer evidence on \texttt{forget05}/\texttt{forget01}, especially for SimNPO. The remaining paper question is empirical rather than conceptual: whether those initialization gains transfer across benchmarks and model scales strongly enough to justify the broader claim.
+
+% Bibliography entries for the entire Anthology, followed by custom entries
+%\bibliography{anthology,custom}
+% Custom bibliography entries only
+\bibliography{custom}
+\onecolumn
+\appendix
+
+\section{Proofs}
+\label{sec:proofs}
+
+Throughout this appendix we use the notation of Section~\ref{sec:method}. Let $\mathbf{W}\in\mathbb{R}^{n\times m}$, $\mathbf{A}_\bullet\in\mathbb{R}^{m\times m}$, $\mathbf{B}_\bullet\in\mathbb{R}^{n\times n}$, with Cholesky factors $\mathbf{L}_{A_\bullet}$, $\mathbf{L}_{B_\bullet}$ and cross-Cholesky SVDs
+\begin{align*}
+\mathbf{K}_A &= \mathbf{L}_{A_r}^{-1}\mathbf{L}_{A_f} = \mathbf{U}_A\mathbf{\Sigma}_A\mathbf{V}_A^\top, \\
+\mathbf{K}_B &= \mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f} = \mathbf{U}_B\mathbf{\Sigma}_B\mathbf{V}_B^\top.
+\end{align*}
+The simultaneous diagonalizers are $\mathbf{Q}_A = \mathbf{L}_{A_r}^{-\top}\mathbf{U}_A$ and $\mathbf{Q}_B = \mathbf{L}_{B_r}^{-\top}\mathbf{U}_B$. Standard algebra gives $\mathbf{Q}_A^\top\mathbf{A}_f\mathbf{Q}_A = \mathbf{\Sigma}_A^2$, $\mathbf{Q}_A^\top\mathbf{A}_r\mathbf{Q}_A = \mathbf{I}$, and analogously for $\mathbf{Q}_B$. We parametrize the perturbation as $\mathbf{\Delta} = \mathbf{Q}_B\mathbf{H}\mathbf{Q}_A^\top$ with $\mathbf{H}\in\mathbb{R}^{n\times m}$.
+
+\subsection{Lemma: change of coordinates}
+\label{app:coordlemma}
+
+\begin{lemma}
+\label{lem:coords}
+Let $\mathbf{M} := \mathbf{Q}_B^{-1}\mathbf{W}\mathbf{Q}_A^{-\top}$. Then
+\[
+J(\mathbf{\Delta}) = \sum_{j,i}\Big[\sigma_{A,i}^2\sigma_{B,j}^2(M_{ji}+H_{ji})^2 + \lambda_{\mathrm{ret}} H_{ji}^2\Big],
+\]
+and $\mathbf{M} = \mathbf{\Sigma}_B^{-1}\mathbf{R}\mathbf{\Sigma}_A^{-1}$, where $\mathbf{R} = \mathbf{V}_B^\top\mathbf{L}_{B_f}^\top\mathbf{W}\mathbf{L}_{A_f}\mathbf{V}_A$.
+\end{lemma}
+
+\begin{proof}
+By definition of $\mathbf{M}$, $\mathbf{W} = \mathbf{Q}_B\mathbf{M}\mathbf{Q}_A^\top$, so $\mathbf{W}+\mathbf{\Delta} = \mathbf{Q}_B(\mathbf{M}+\mathbf{H})\mathbf{Q}_A^\top$. Using $\operatorname{vec}(\mathbf{Q}_B\mathbf{X}\mathbf{Q}_A^\top) = (\mathbf{Q}_A\otimes\mathbf{Q}_B)\operatorname{vec}(\mathbf{X})$ and the diagonalizing identities,
+\begin{equation}
+\lVert\mathbf{W}+\mathbf{\Delta}\rVert^2_{F_f}=
+\operatorname{vec}(\mathbf{M}+\mathbf{H})^\top
+\bigl(\mathbf{\Sigma}_A^2\otimes\mathbf{\Sigma}_B^2\bigr)\operatorname{vec}(\mathbf{M}+\mathbf{H}) =\sum_{j,i}
+\sigma_{A,i}^2\sigma_{B,j}^2
+(M_{ji}+H_{ji})^2 .
+\end{equation}
+and analogously $\lVert\mathbf{\Delta}\rVert^2_{F_r} = \lVert\mathbf{H}\rVert_F^2$.
+
+For the second claim, $\mathbf{K}_B = \mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f}$ gives $\mathbf{L}_{B_r}\mathbf{U}_B = \mathbf{L}_{B_f}\mathbf{V}_B\mathbf{\Sigma}_B^{-1}$, hence $\mathbf{L}_{B_r} = \mathbf{L}_{B_f}\mathbf{V}_B\mathbf{\Sigma}_B^{-1}\mathbf{U}_B^\top$ and $\mathbf{U}_B^\top\mathbf{L}_{B_r}^\top = \mathbf{\Sigma}_B^{-1}\mathbf{V}_B^\top\mathbf{L}_{B_f}^\top$. By analogous algebra, $\mathbf{L}_{A_r}\mathbf{U}_A = \mathbf{L}_{A_f}\mathbf{V}_A\mathbf{\Sigma}_A^{-1}$. Therefore
+\begin{align*}
+\mathbf{M} &= \mathbf{Q}_B^{-1}\mathbf{W}\mathbf{Q}_A^{-\top} = \mathbf{U}_B^\top\mathbf{L}_{B_r}^\top\mathbf{W}\mathbf{L}_{A_r}\mathbf{U}_A \\
+&= \mathbf{\Sigma}_B^{-1}\mathbf{V}_B^\top\mathbf{L}_{B_f}^\top\mathbf{W}\mathbf{L}_{A_f}\mathbf{V}_A\mathbf{\Sigma}_A^{-1} \\
+&= \mathbf{\Sigma}_B^{-1}\mathbf{R}\mathbf{\Sigma}_A^{-1}. \qedhere
+\end{align*}
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:two_fisher_gsvd}}
+\label{app:thm_proof}
+
+\begin{proof}
+By Lemma~\ref{lem:coords}, $J$ is separable across entries $(j,i)$, so its Hessian in $\mathbf{H}$ is diagonal with entries $2(\sigma_{A,i}^2\sigma_{B,j}^2 + \lambda_{\mathrm{ret}})$. Under the assumption $\sigma_{A,i},\sigma_{B,j}>0$ (Section~\ref{sec:preliminaries}), each entry is strictly positive, so $J$ is strictly convex and admits a unique minimizer. Setting the partial derivative to zero,
+\[
+2\sigma_{A,i}^2\sigma_{B,j}^2(M_{ji}+H_{ji}) + 2\lambda_{\mathrm{ret}}H_{ji} = 0,
+\]
+yields
+\[
+H_{ji}^\star = -\frac{\sigma_{A,i}^2\sigma_{B,j}^2}{\sigma_{A,i}^2\sigma_{B,j}^2 + \lambda_{\mathrm{ret}}}\,M_{ji}.
+\]
+Substituting $M_{ji} = R_{ji}/(\sigma_{A,i}\sigma_{B,j})$ from Lemma~\ref{lem:coords},
+\[
+H_{ji}^\star = -\frac{\sigma_{A,i}\sigma_{B,j}}{\sigma_{A,i}^2\sigma_{B,j}^2 + \lambda_{\mathrm{ret}}}\,R_{ji} = -G_{ji}R_{ji},
+\]
+so $\mathbf{H}^\star = -(\mathbf{G}\odot\mathbf{R})$. Mapping back,
+\[
+\mathbf{\Delta}^\star = \mathbf{Q}_B\mathbf{H}^\star\mathbf{Q}_A^\top = -\mathbf{L}_{B_r}^{-\top}\mathbf{U}_B(\mathbf{G}\odot\mathbf{R})\mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}.
+\]
+For $r=\min(m,n)$ the rank constraint is inactive, so $\mathbf{\Delta}^\star$ is also the rank-$r$ minimizer.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:rankr_lam0}}
+\label{app:prop1_proof}
+
+\begin{proof}
+Set $\lambda_{\mathrm{ret}}=0$. By Lemma~\ref{lem:coords},
+\[
+J(\mathbf{\Delta})\big|_{\lambda=0}
+= \sum_{j,i}\sigma_{A,i}^2\sigma_{B,j}^2(M_{ji}+H_{ji})^2
+= \lVert\mathbf{\Sigma}_B(\mathbf{M}+\mathbf{H})\mathbf{\Sigma}_A\rVert_F^2.
+\]
+
+
+Using $\mathbf{\Sigma}_B\mathbf{M}\mathbf{\Sigma}_A = \mathbf{R}$ and defining $\mathbf{Y} := \mathbf{\Sigma}_B\mathbf{H}\mathbf{\Sigma}_A$,
+\[
+J|_{\lambda=0}(\mathbf{H}) = \lVert\mathbf{Y}+\mathbf{R}\rVert_F^2.
+\]
+Since $\mathbf{\Sigma}_A,\mathbf{\Sigma}_B$ are invertible diagonal and $\mathbf{Q}_A,\mathbf{Q}_B$ are invertible, $\operatorname{rank}(\mathbf{\Delta})\le r \Leftrightarrow \operatorname{rank}(\mathbf{H})\le r \Leftrightarrow \operatorname{rank}(\mathbf{Y})\le r$. The constrained problem becomes
+\[
+\min_{\operatorname{rank}(\mathbf{Y})\le r}\lVert\mathbf{Y} - (-\mathbf{R})\rVert_F^2,
+\]
+whose Eckart--Young (Frobenius) minimizer is $\mathbf{Y}_r = \operatorname{SVD}_r(-\mathbf{R}) = -\operatorname{SVD}_r(\mathbf{R})$ (unique when $\sigma_r(\mathbf{R}) > \sigma_{r+1}(\mathbf{R})$; otherwise any rank-$r$ truncation attains the optimum). Unscaling, $\mathbf{H}_r = \mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1} = -\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}$, and
+\[
+\mathbf{\Delta}^{(r)}_{\lambda=0} = \mathbf{Q}_B\mathbf{H}_r\mathbf{Q}_A^\top = -\mathbf{L}_{B_r}^{-\top}\mathbf{U}_B\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}\mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}. \qedhere
+\]
+\end{proof}
+
+\subsection{Proposition~\ref{prop:limit_consistency}: Limit consistency of the relaxation.}
+
+\begin{proposition}
+\label{prop:limit_consistency}
+The relaxed edit $\mathbf{\Delta}^{(r)}$ in Eq.~\ref{eq:kforge_relaxed_delta} coincides with the exact minimizer of Eq.~\ref{eq:kforge_objective} in two limits: (i) at $r=\min(m,n)$ it equals $\mathbf{\Delta}^\star$ from Theorem~\ref{thm:two_fisher_gsvd} for any $\lambda_{\mathrm{ret}}\ge 0$; (ii) at $\lambda_{\mathrm{ret}}=0$ it equals the rank-$r$ minimizer from Proposition~\ref{prop:rankr_lam0} for any $r$.
+\end{proposition}
+
+\begin{proof}
+\emph{Case (i): $r = \min(m,n)$.} The truncation $\operatorname{SVD}_r(\mathbf{Y}^\star) = \mathbf{Y}^\star$ is vacuous, so $\mathbf{H}_r = \mathbf{\Sigma}_B^{-1}\mathbf{Y}^\star\mathbf{\Sigma}_A^{-1} = -\mathbf{\Sigma}_B^{-1}(\widetilde{\mathbf{G}}\odot\mathbf{R})\mathbf{\Sigma}_A^{-1}$. Entrywise,
+\[
+(H_r)_{ji} = -\frac{\widetilde{G}_{ji}}{\sigma_{A,i}\sigma_{B,j}}R_{ji}
+= -\frac{\sigma_{A,i}\sigma_{B,j}}{\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}}}R_{ji}
+= -G_{ji}R_{ji},
+\]
+which is $\mathbf{H}^\star$ from the proof of Theorem~\ref{thm:two_fisher_gsvd}. Hence $\mathbf{\Delta}^{(r)} = \mathbf{Q}_B\mathbf{H}^\star\mathbf{Q}_A^\top = \mathbf{\Delta}^\star$.
+
+\emph{Case (ii): $\lambda_{\mathrm{ret}} = 0$.} Then 
+
+
+$$  
+\widetilde{G}_{ji} = \frac{\sigma_{A,i}^2\sigma_{B,j}^2}{ \sigma_{A,i}^2\sigma_{B,j}^2} = 1.
+$$ 
+
+So $\mathbf{Y}^\star = -\mathbf{R}$ and $\mathbf{Y}_r = \operatorname{SVD}_r(-\mathbf{R})$. 
+
+Then $$\mathbf{H}_r = -\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}$$ and $$\mathbf{\Delta}^{(r)} = \mathbf{Q}_B\mathbf{H}_r\mathbf{Q}_A^\top$$ matches $\mathbf{\Delta}^{(r)}_{\lambda=0}$ from Proposition~\ref{prop:rankr_lam0} exactly.
+\end{proof}
+
+\end{document}

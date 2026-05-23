@@ -1,0 +1,3 @@
+method,source,model_utility,forget_Q_A_Prob,forget_Q_A_ROUGE,extraction_strength
+Base model,tofu_Llama-3.2-1B-Instruct_full/evals_forget10,0.5991534707368931,0.8804820564389229,0.8201171050577979,0.706268493976531
+Gold retrain,tofu_Llama-3.2-1B-Instruct_retain90,0.5911246639353407,0.1161314930615481,0.37907355526383685,0.05895894128954535

@@ -2,8 +2,8 @@
 
 Generated from corrected `wiener_v2` one-shot runs, `v2lam0p01_corr` downstream runs, and `initctrl` initializer controls.
 
-- Corrected downstream seed runs parsed: 150
-- Init-control seed runs parsed: 96
+- Corrected downstream seed runs parsed: 153
+- Init-control seed runs parsed: 102
 - Corrected one-shot strength points parsed: 9
 
 Figures:

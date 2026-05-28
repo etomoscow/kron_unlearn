@@ -1,0 +1,3 @@
+model,edited_matrix,calibration_examples,calibration_valid_tokens,calibration_time_s,kforge_total_time_s,estimated_flops,model_pass_flops,covariance_flops,dense_factorization_flops,s50_npo_runtime_s,s50_simnpo_runtime_s,overhead_vs_s50_npo_pct,overhead_vs_s50_simnpo_pct
+Llama-3.2-1B,2048x8192,512,18614,17.742,61.239,1.435e14,1.380e14,2.654e12,2.812e12,691.516,629.062,8.856,9.735
+Llama-3.2-3B,3072x8192,512,18614,51.304,104.435,3.649e14,3.588e14,2.850e12,3.242e12,1040.764,957.755,10.034,10.904

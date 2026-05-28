@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 """Regenerate K-FORGE figures from corrected Wiener-v2 experiment outputs."""
 
@@ -16,6 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.patches import Rectangle
+from matplotlib.colors import LinearSegmentedColormap
 
 
 SUMMARY = "TOFU_SUMMARY.json"
@@ -39,6 +41,10 @@ ONESHOT_RE = re.compile(
     r"S(?P<tag>[0-9]+p[0-9]+)_kron_retain_cfix_retune_v2_lam0p01_EVAL_FP32"
 )
 
+PREFERENCE_CMAP = LinearSegmentedColormap.from_list(
+    "forget_utility_preference",
+    ["#BBD7EC", "#F6EAD2", "#E98632"],
+)
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -190,55 +196,144 @@ def interp_reach_step(curve: pd.DataFrame, target: float) -> float | None:
     return None
 
 
+
+
 def plot_figure2(agg: pd.DataFrame, out_dir: Path) -> None:
     data = agg[agg["init"].isin(["scratch", "kforge_s045"])].copy()
-    data.to_csv(out_dir / "fig2_corrected_steps_data.csv", index=False)
-    forgets = ["forget10", "forget05", "forget01"]
-    algos = ["NPO", "SimNPO"]
-    labels = {"scratch": "Scratch", "kforge_s045": "K-FORGE init"}
-    colors = {"scratch": "#4d4d4d", "kforge_s045": "#0072b2"}
 
-    fig, axes = plt.subplots(2, 3, figsize=(7.1, 4.1), sharex=True)
-    for r, algo in enumerate(algos):
-        for c, forget in enumerate(forgets):
+    COLORS   = {"scratch": "#666666", "kforge_s045": "#CC79A7"}
+    FORGETS  = ["forget10", "forget05", "forget01"]
+    # Two-line title: dataset name (top, farther) then readable label (bottom, closer to axes)
+    COL_TITLES = {
+        "forget10": r"$\mathtt{forget10}$",
+        "forget05": r"$\mathtt{forget05}$",
+        "forget01": r"$\mathtt{forget01}$",
+    }
+    ALGOS    = ["NPO", "SimNPO"]
+
+    fig, axes = plt.subplots(2, 3, figsize=(7.0, 3.5), sharex=True)
+
+    legend_ax = None   # will place legend in panel with most vertical room
+
+    for r, algo in enumerate(ALGOS):
+        for c, forget in enumerate(FORGETS):
             ax = axes[r, c]
             panel = data[(data["algo"] == algo) & (data["forget"] == forget)]
-            for init in ["scratch", "kforge_s045"]:
-                cur = panel[panel["init"] == init].sort_values("steps")
-                if cur.empty:
-                    continue
-                ax.errorbar(
-                    cur["steps"],
-                    cur["forget_Q_A_Prob_mean"],
-                    yerr=cur["forget_Q_A_Prob_std"],
-                    marker="o",
-                    linewidth=1.5,
-                    capsize=2.0,
-                    color=colors[init],
-                    label=labels[init],
-                )
-            scratch = panel[panel["init"] == "scratch"]
-            kforge = panel[panel["init"] == "kforge_s045"]
-            if not scratch.empty and not kforge.empty:
-                target_row = kforge.sort_values("steps").iloc[0]
-                target = float(target_row["forget_Q_A_Prob_mean"])
-                k_step = float(target_row["steps"])
-                s_step = interp_reach_step(scratch, target)
-                if s_step:
-                    text = f"k={s_step / k_step:.1f}x"
-                else:
-                    text = f"k>{scratch['steps'].max() / k_step:.1f}x"
-                ax.annotate(text, xy=(0.05, 0.08), xycoords="axes fraction", fontsize=7)
-            ax.set_yscale("log")
-            ax.set_title(f"{algo} / {forget}")
-            ax.grid(True, alpha=0.22, linewidth=0.6)
-            if c == 0:
-                ax.set_ylabel("Forget Probability")
-            if r == 1:
-                ax.set_xlabel("Training steps")
-    axes[0, 0].legend(frameon=False, loc="upper right")
-    save_figure(fig, out_dir, "fig2_corrected_steps_to_target")
+            kf = panel[panel["init"] == "kforge_s045"].sort_values("steps")
+            sc = panel[panel["init"] == "scratch"].sort_values("steps")
 
+            # ── shaded advantage region ───────────────────────────────────
+            if len(kf) and len(sc):
+                common = np.intersect1d(kf["steps"].values, sc["steps"].values)
+                y_kf = kf.set_index("steps").loc[common]["forget_Q_A_Prob_mean"].values
+                y_sc = sc.set_index("steps").loc[common]["forget_Q_A_Prob_mean"].values
+                ax.fill_between(
+                    common, y_kf, y_sc,
+                    where=(y_kf <= y_sc),
+                    color=COLORS["kforge_s045"], alpha=0.13, zorder=1,
+                )
+
+            # ── scratch: dashed, open markers ────────────────────────────
+            if len(sc):
+                ax.errorbar(
+                    sc["steps"], sc["forget_Q_A_Prob_mean"],
+                    yerr=sc["forget_Q_A_Prob_std"],
+                    marker="o", ms=3.8, lw=1.2, ls="--",
+                    capsize=2.0, elinewidth=0.8,
+                    color=COLORS["scratch"],
+                    mfc="none", mew=1.2,
+                    label="Scratch", zorder=3,
+                )
+
+            # ── K-FORGE: solid, filled markers ───────────────────────────
+            if len(kf):
+                ax.errorbar(
+                    kf["steps"], kf["forget_Q_A_Prob_mean"],
+                    yerr=kf["forget_Q_A_Prob_std"],
+                    marker="o", ms=3.8, lw=1.5, ls="-",
+                    capsize=2.0, elinewidth=0.8,
+                    color=COLORS["kforge_s045"],
+                    label="K-FORGE init", zorder=4,
+                )
+
+            # ── y limits ─────────────────────────────────────────────────
+            y_lo = (panel["forget_Q_A_Prob_mean"] - panel["forget_Q_A_Prob_std"]).min()
+            y_hi = (panel["forget_Q_A_Prob_mean"] + panel["forget_Q_A_Prob_std"]).max()
+            if np.isfinite(y_lo) and np.isfinite(y_hi):
+                pad = max((y_hi - y_lo) * 0.18, y_hi * 0.05)
+                ax.set_ylim(max(0.0, y_lo - pad), y_hi + pad)
+
+            # ── 1-D vertical gradient (y-axis only: cool=high forget, warm=low) ──
+            # x-axis is just a parameter (steps), not an objective, so no x-gradient.
+            xlim, ylim = ax.get_xlim(), ax.get_ylim()
+            grad = np.linspace(1, 0, 256).reshape(-1, 1)   # top→bottom: bad→good
+            ax.imshow(
+                grad,
+                extent=[xlim[0], xlim[1], ylim[0], ylim[1]],
+                aspect="auto", origin="lower",
+                cmap=PREFERENCE_CMAP,
+                alpha=0.20,          # subtle: fill_between carries the main story
+                zorder=-10,
+            )
+
+            # ── column title: dataset name farther, readable label closer ──
+            if r == 0:
+                ax.set_title(COL_TITLES[forget], pad=2, fontsize=8.0,
+                             linespacing=1.)
+
+            # ── gradient description (leftmost column only) ───────────────
+            if c == 0:
+                ax.text(0.03, 0.98, "less desired", transform=ax.transAxes,
+                        ha="left", va="top", fontsize=6, color="#456C87",
+                        alpha=0.82, style="normal", zorder=5)
+                ax.text(0.03, 0.03, "more desired", transform=ax.transAxes,
+                        ha="left", va="bottom", fontsize=6, color="#9A4E17",
+                        alpha=0.88, style="normal", zorder=5)
+                ax.text(
+                    -0.22, 0.5, algo,
+                    transform=ax.transAxes,
+                    rotation=90, ha="center", va="center",
+                    fontsize=8.5, fontweight="semibold",
+                )
+
+            ax.set_xticks([50, 100, 250])
+            ax.grid(True, axis="y", color="#D0D0D0", linewidth=0.5, alpha=0.8)
+            ax.set_axisbelow(True)
+            for spine in ["top", "right"]:
+                ax.spines[spine].set_visible(False)
+            for spine in ["left", "bottom"]:
+                ax.spines[spine].set_linewidth(0.75)
+                ax.spines[spine].set_color("#333333")
+
+            if r == 1:
+                ax.set_xlabel("Training steps", fontsize=7.5)
+
+            # pick legend panel: NPO × forget10 has most vertical space
+            if r == 0 and c == 0:
+                legend_ax = ax
+
+    # ── shared y-axis label ───────────────────────────────────────────────
+    fig.text(
+        0.042, 0.5, "Forget Q/A Probability ↓",
+        rotation=90, va="center", fontsize=8,
+    )
+
+    # ── legend inside upper-right of NPO/forget10 panel ──────────────────
+    if legend_ax is not None:
+        handles, labels = legend_ax.get_legend_handles_labels()
+        legend_ax.legend(
+            handles, labels,
+            frameon=True, framealpha=0.88, edgecolor="#cccccc",
+            fontsize=7.0, loc="upper right",
+            handlelength=1.6, borderpad=0.5,
+        )
+
+    fig.tight_layout(rect=(0.055, 0.0, 1.0, 1.0), w_pad=0.4, h_pad=0.4)
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_dir / "fig2_improved.pdf")
+    fig.savefig(out_dir / "fig2_improved.png", dpi=300)
+    plt.close(fig)
 
 def pareto_frontier(points: pd.DataFrame) -> pd.DataFrame:
     cur = points.sort_values(["model_utility", "forget_Q_A_Prob"], ascending=[False, True])

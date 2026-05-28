@@ -1,5 +1,20 @@
 # K-FORGE Implementation Changelog
 
+## 2026-05-24
+
+### Manuscript Updated With Latest 3B Results
+
+- Updated `main.tex` to incorporate the completed Llama-3.2-3B-Instruct
+  minimal-v2 sanity check on TOFU `forget10`.
+- Added a paired 3B table for NPO and SimNPO scratch vs. K-FORGE
+  initialization over completed seeds `1` and `2`.
+- Revised the abstract, introduction, setup, limitations, and conclusion so
+  the manuscript no longer describes all 3B experiments as future work.
+- Explicitly scoped the 3B result as a scale sanity check rather than a full
+  scaling study: SimNPO preserves the matched-budget K-FORGE improvement,
+  while NPO shows a strong 50-step gain but mixed longer-budget behavior.
+- Clarified that MUSE and robustness audits remain incomplete.
+
 ## 2026-05-15
 
 ### Numerical And Theory Correction Pass

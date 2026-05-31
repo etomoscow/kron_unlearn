@@ -1,38 +1,26 @@
 # K-FORGE
 
-K-FORGE is a Kronecker-Fisher Wiener initialization method for LLM unlearning.
-This repository contains the paper draft, experiment notes, and the modified
-OpenUnlearning code used for the TOFU experiments.
+K-FORGE is a Kronecker-Fisher Wiener initialization method for preference-based LLM unlearning. This anonymous release contains the modified OpenUnlearning code, K-FORGE configs, experiment scripts, and curated plotting data needed to reproduce the figures used for the submitted paper.
 
-The current paper story is:
-
-- one-shot K-FORGE gives a controllable retain-forget frontier, but is not the
-  final unlearning method;
-- K-FORGE is used as an initializer for NPO and SimNPO;
-- matched controls test whether the gain is explained by a generic low-rank
-  perturbation, a weight-SVD direction, diagonal Fisher, or forget-only Fisher.
+The paper source and internal development notes are intentionally kept off `main`; they are preserved on the `dev` branch.
 
 ## Repository Layout
 
 ```text
 .
-├── main.tex                         # current manuscript draft
-├── CHANGELOG.md                     # implementation and experiment log
-├── PLAN.md                          # working experiment plan
-├── RESEARCH.md                      # research notes
+├── README.md
 └── open-unlearning/
-    ├── src/trainer/unlearn/kforge.py
-    ├── configs/trainer/KFORGE.yaml
+    ├── src/trainer/unlearn/kforge.py          # K-FORGE trainer implementation
+    ├── configs/trainer/KFORGE.yaml            # K-FORGE trainer config
     ├── configs/experiment/unlearn/tofu/kforge.yaml
+    ├── docs/kforge.md                         # method/config documentation
     ├── scripts/kforge_make_corrected_figures.py
     ├── scripts/kforge_week2_init_experiment.sh
     ├── scripts/make_matched_init_checkpoint.py
-    └── saves/figures/kforge_corrected/
+    └── saves/figures/kforge_corrected/        # curated figures and plotted CSVs
 ```
 
-Most generated checkpoints, raw evals, logs, and caches are intentionally
-ignored. The curated corrected figures and the CSVs used to draw them are kept
-under `open-unlearning/saves/figures/kforge_corrected/`.
+Generated checkpoints, raw evals, logs, and local caches are ignored by git. The only files retained under `open-unlearning/saves/` are curated paper figures and the CSVs used to draw them.
 
 ## Environment
 
@@ -46,8 +34,7 @@ pip install --no-build-isolation flash-attn==2.6.3
 python setup_data.py --eval
 ```
 
-Local experiments used the OpenUnlearning TOFU model releases, including
-Llama-3.2-1B-Instruct and Llama-3.2-3B-Instruct checkpoints.
+Experiments use the OpenUnlearning TOFU model releases, including Llama-3.2-1B-Instruct and Llama-3.2-3B-Instruct checkpoints.
 
 ## K-FORGE Entry Points
 
@@ -57,21 +44,50 @@ Core implementation:
 open-unlearning/src/trainer/unlearn/kforge.py
 ```
 
-Main config:
+Main configs:
 
 ```text
 open-unlearning/configs/trainer/KFORGE.yaml
 open-unlearning/configs/experiment/unlearn/tofu/kforge.yaml
 ```
 
-Corrected figure generation:
+Method documentation:
+
+```text
+open-unlearning/docs/kforge.md
+```
+
+## Reproducing Curated Figures
+
+From `open-unlearning/`:
 
 ```bash
-cd open-unlearning
 python scripts/kforge_make_corrected_figures.py
 ```
 
-Initialization experiment harness:
+Curated outputs are written to:
+
+```text
+open-unlearning/saves/figures/kforge_corrected/
+```
+
+Key retained artifacts include:
+
+```text
+fig2_improved.{png,pdf}
+fig_matched_init_arrows.{png,pdf}
+fig_one_shot_frontier.{png,pdf}
+fig_pareto_frontier.{png,pdf}
+corrected_aggregate_used.csv
+corrected_runs_used.csv
+init_controls_aggregate_used.csv
+init_controls_runs_used.csv
+kforge_compute_overhead_data.csv
+```
+
+## Running Initialization Experiments
+
+The main initialization harness is:
 
 ```bash
 cd open-unlearning
@@ -87,7 +103,7 @@ RUN_TAG=v2lam0p01_corr \
 bash scripts/kforge_week2_init_experiment.sh
 ```
 
-Matched-norm initialization controls are generated through:
+Matched-norm initialization controls are generated with:
 
 ```text
 open-unlearning/scripts/make_matched_init_checkpoint.py
@@ -97,44 +113,17 @@ open-unlearning/scripts/run_init_control_weight_svd_npo.sh
 open-unlearning/scripts/run_init_control_weight_svd_simnpo.sh
 ```
 
-## Current Figures
+## Git Hygiene
 
-Regenerate the current paper figures with:
-
-```bash
-cd open-unlearning
-python scripts/kforge_make_corrected_figures.py
-```
-
-Outputs:
-
-```text
-open-unlearning/saves/figures/kforge_corrected/
-├── fig1_wiener_v2_strength_sweep.{png,pdf}
-├── fig2_corrected_steps_to_target.{png,pdf}
-├── fig3_corrected_pareto_forget10.{png,pdf}
-├── figA1_spectrum_heatmap.{png,pdf}
-└── figA2_init_controls_forget10.{png,pdf}
-```
-
-## Commit Hygiene
-
-The root `.gitignore` excludes large generated artifacts:
-
-- `open-unlearning/saves/` except curated corrected figures,
-- `open-unlearning/logs/`,
-- `open-unlearning/outputs/`,
-- `open-unlearning/.cache/`,
-- model checkpoint formats such as `.safetensors`, `.bin`, `.pt`, and `.ckpt`.
-
-Before committing, check:
+Before committing or publishing, check:
 
 ```bash
 git status --short
 git status --ignored --short
 ```
 
+The root `.gitignore` excludes local/editor state, Python caches, build products, OpenUnlearning raw outputs, model checkpoints, logs, and LaTeX build products.
+
 ## License
 
-The OpenUnlearning code under `open-unlearning/` retains its upstream MIT
-license. See `open-unlearning/LICENSE`.
+The OpenUnlearning code under `open-unlearning/` retains its upstream MIT license. See `open-unlearning/LICENSE`.

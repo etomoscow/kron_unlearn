@@ -1,8 +1,8 @@
 # K-FORGE
 
-This repository contains the anonymous code release for K-FORGE, implemented on top of OpenUnlearning.
+K-FORGE is implemented on top of OpenUnlearning.
 
-For review, the relevant implementation files are:
+implementation is at: 
 
 ```text
 open-unlearning/src/trainer/unlearn/kforge.py
@@ -19,5 +19,3 @@ Minimal entry point:
 cd open-unlearning
 python src/train.py --config-name=unlearn experiment=unlearn/tofu/kforge
 ```
-
-The code inherits OpenUnlearning setup and dependencies. See `open-unlearning/README.md` for the base framework and `open-unlearning/LICENSE` for the upstream MIT license.

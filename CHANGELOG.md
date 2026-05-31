@@ -1173,3 +1173,634 @@
     directory `.open-unlearning.git.backup/`.
   - This lets the root repository track OpenUnlearning source files normally
     instead of committing `open-unlearning/` as an embedded git repository.
+
+## 2026-05-31: Review by the Hermes Agent
+
+    I reviewed the repo and the paper in main.tex, and ran several concrete checks:
+
+    - Read main.tex fully.
+    - Checked active citations, labels, refs, and figure paths.
+    - Attempted LaTeX compilation: blocked because latexmk/pdflatex are not installed in this environment.
+    - Ran static Python compilation for:
+      - open-unlearning/src/trainer/unlearn/kforge.py
+      - open-unlearning/scripts/kforge_make_corrected_figures.py
+    - Regenerated corrected figures into /tmp/kforge_figcheck.
+    - Checked tracked figure/data artifacts and README/script consistency.
+    - Visually inspected the two figures used in main.tex.
+
+    Bottom line:
+    The paper has a coherent and much improved story: K-FORGE is framed as a Fisher-guided initializer rather than overclaiming one-shot unlearning. The empirical table in the main paper is compelling for early-budget NPO/SimNPO on TOFU. However, the repo/paper is currently not submission-ready because of several hard reproducibility and LaTeX blockers, plus a few scientific-positioning risks reviewers will likely hit.
+
+    1. Hard blockers before submission / sharing
+
+    1.1 main.tex cannot compile from the repo as-is
+
+    Current main.tex uses:
+
+    - \usepackage[review]{acl}
+    - \bibliography{custom}
+    - figures under latex/figures/...
+
+    But the repo appears to lack:
+
+    - acl.sty
+    - custom.bib
+    - latex/figures/fig2_improved.pdf
+    - latex/figures/fig_matched_init_arrows.pdf
+
+    I verified:
+
+    - search_files("*.bib") found zero .bib files.
+    - search_files("*.sty") found zero .sty files.
+    - Figure files exist under:
+      - open-unlearning/saves/figures/kforge_corrected/fig2_improved.pdf
+      - open-unlearning/saves/figures/kforge_corrected/fig_matched_init_arrows.pdf
+      but not under latex/figures/.
+
+    Fix:
+    Either create a proper paper directory:
+
+    text
+    paper/
+      main.tex
+      custom.bib
+      acl.sty
+      figures/
+        fig2_improved.pdf
+        fig_matched_init_arrows.pdf
+
+
+    and update paths to figures/..., or change the current \includegraphics paths to the tracked figure location.
+
+    At minimum:
+
+    latex
+    \includegraphics[...]{open-unlearning/saves/figures/kforge_corrected/fig2_improved.pdf}
+    \includegraphics[...]{open-unlearning/saves/figures/kforge_corrected/fig_matched_init_arrows.pdf}
+
+
+    But for submission cleanliness, I would not reference open-unlearning/saves/... from the paper. Copy curated figures into latex/figures/ or paper/figures/.
+
+    1.2 Missing bibliography is the most serious paper artifact issue
+
+    main.tex actively cites 29 distinct citation keys, including:
+
+    text
+    tofu, rmu, muse, npo, simnpo, openunlearning, foster24, fila,
+    kfade, winu, chekalina_2026_gfwsvd, crispedit, pissa,
+    loraga, corda, lorada, ...
+
+
+    But custom.bib is absent. This means the paper cannot be independently built, and none of the citations are currently verifiable from the repo.
+
+    Fix:
+    Add custom.bib and verify every key in main.tex resolves. Given this is a research paper, do not hand-write from memory; fetch BibTeX programmatically from arXiv/Semantic Scholar/CrossRef.
+
+    1.3 README reproduction command does not reproduce the paper’s actual K-FORGE initializer
+
+    README gives:
+
+    bash
+    INIT_MODES="scratch kforge" \
+    RUN_TAG=v2lam0p01_corr \
+    bash scripts/kforge_week2_init_experiment.sh
+
+
+    But scripts/kforge_week2_init_experiment.sh defaults to:
+
+    bash
+    KFORGE_INIT_MODEL=saves/unlearn/KFORGE_TOFU_forget10_R2_M1_B2_S0p00305_kron_retain_stage3down
+    KFORGE_INIT_TAG=kforge
+
+
+    That does not match the paper’s corrected headline setup, which is described as:
+
+    - wiener_v2
+    - rank r=2
+    - lambda_ret = 1e-2
+    - strengths alpha=.45 and .60
+    - corrected run tags like kforge_s045, kforge_s06, v2lam0p01_corr
+
+    Fix:
+    README needs exact commands for producing the paper rows, e.g. something like:
+
+    bash
+    First create the corrected K-FORGE initializer checkpoint
+    python src/train.py ... \
+      trainer=KFORGE \
+      trainer.method_args.rank=2 \
+      trainer.method_args.strength=0.45 \
+      trainer.method_args.edit_variant=wiener_v2 \
+      trainer.method_args.lambda_tradeoff=0.01 \
+      trainer.method_args.max_target_modules=1 \
+      trainer.method_args.target_modules_regex='.*mlp\.down_proj$' \
+      ...
+
+    Then run downstream initialization experiments
+    KFORGE_INIT_MODEL=saves/unlearn/<actual_checkpoint> \
+    KFORGE_INIT_TAG=kforge_s045 \
+    RUN_TAG=v2lam0p01_corr \
+    ...
+    bash scripts/kforge_week2_init_experiment.sh
+
+
+    Right now a fresh user following README would likely run the old/default initializer, not the paper one.
+
+    1.4 Paper and implementation defaults are inconsistent
+
+    open-unlearning/configs/trainer/KFORGE.yaml defaults to:
+
+    yaml
+    rank: 8
+    strength: 1.0
+    edit_variant: legacy_v1
+    lambda_tradeoff: 0.0
+    max_target_modules: 4
+
+
+    But the paper’s main claims use corrected wiener_v2, rank 2, lambda 0.01, and one selected mlp.down_proj layer.
+
+    This is fine internally if documented, but dangerous for reviewers/users.
+
+    Fix:
+    Either:
+
+    - make the default config the paper config, or
+    - add a separate KFORGE_paper_wiener_v2.yaml, and make README use that.
+
+    Suggested:
+
+    text
+    open-unlearning/configs/trainer/KFORGE_wiener_v2_paper.yaml
+
+
+    with:
+
+    yaml
+    method_args:
+      target_modules_regex: .*mlp\.down_proj$
+      rank: 2
+      strength: 0.45
+      damping: 1e-4
+      max_calibration_batches: 32
+      max_target_modules: 1
+      factor_mode: kron
+      use_retain_fisher: true
+      edit_variant: wiener_v2
+      lambda_tradeoff: 1e-2
+      edit_weight_dtype: float32
+
+
+    2. Scientific evaluation
+
+    2.1 The main story is good
+
+    The paper’s current framing is much stronger than the original plan implied by PLAN.md.
+
+    Original planned story:
+    “closed-form, one-shot K-FORGE beats iterative unlearning.”
+
+    Current paper story:
+    “one-shot K-FORGE is useful but insufficient; its real value is as a curvature-aware initializer for NPO/SimNPO.”
+
+    That is the right pivot. The current results support this narrower claim better.
+
+    The strongest evidence is Table 2 / tab:init_forget10:
+
+    For 1B TOFU forget10:
+
+    - NPO S50:
+      - scratch: utility 0.509, forget prob 0.093
+      - K-FORGE .60: utility 0.574, forget prob 0.045
+    - SimNPO S50:
+      - scratch: utility 0.577, forget prob 0.662
+      - K-FORGE .60: utility 0.571, forget prob 0.534
+
+    This is a clean and understandable contribution: K-FORGE moves early optimization to a better part of the forget-retain frontier.
+
+    2.2 The main reviewer objection will be “matched steps are not matched compute”
+
+    You report K-FORGE overhead in Table tab:kforge_compute, which is good. But the main comparisons are matched by downstream training steps, not by wall-clock/FLOPs.
+
+    You state K-FORGE overhead is about 9–11% of a 50-step scratch run. Reviewers may ask:
+
+    - Would scratch NPO with 55 steps close the gap?
+    - Would scratch SimNPO with 55/110/275 steps close the gap?
+    - Is the advantage still present under wall-clock matched budgets?
+
+    Fix:
+    Add one small compute-matched control. You do not need a full sweep. For the headline case, run:
+
+    - NPO scratch at 55 or 56 steps vs K-FORGE+50
+    - SimNPO scratch at 55 or 56 steps vs K-FORGE+50
+
+    If expensive, at least interpolate from extra checkpoints if available. Then phrase claims as:
+
+    “K-FORGE improves matched downstream-step budgets; the advantage remains under an approximate wall-clock-matched check at S50+overhead.”
+
+    Without this, keep saying “matched downstream optimization budgets,” not “matched budgets” unqualified.
+
+    2.3 Statistical testing is currently too light
+
+    The paper reports means/std over 3 seeds, but no confidence intervals or paired tests. Three seeds is common but fragile; reviewers may still ask for significance.
+
+    Fix:
+    Add a compact statistical paragraph:
+
+    - Use paired bootstrap over seeds/tasks where possible.
+    - Report 95% CI for key delta:
+      - Δ forget probability
+      - Δ utility
+    - Or at least report per-seed deltas in appendix.
+
+    Example wording:
+
+    “Across three seeds, K-FORGE reduces forget probability for SimNPO S50/S100/S250 by X/Y/Z with no utility loss; bootstrap 95% CIs are ...”
+
+    2.4 The scope is honest, but maybe too narrow for a main conference unless positioned carefully
+
+    Current scope:
+
+    - TOFU only
+    - mostly Llama-3.2-1B
+    - limited 3B sanity check
+    - NPO/SimNPO only
+    - no MUSE/WMDP
+    - no relearning/robustness audit
+
+    The paper admits this in limitations, which is good. But reviewers may ask whether this is enough.
+
+    Best framing:
+    This is not a new full unlearning method. It is an initializer/primitive. The correct review category is closer to “optimization/initialization for unlearning” than “SOTA unlearning method.”
+
+    Strengthen contribution wording:
+    Avoid implying it competes with RMU/K-FADE as a full unlearning system. The current text mostly does this well, but some parts still invite SOTA comparison.
+
+    For example, line 126 says:
+
+    “one-shot or closed-form methods ... tend to either under-forget or sharply damage retained capabilities.”
+
+    Fine.
+
+    But the introduction should explicitly say:
+
+    “We do not aim to replace full unlearning algorithms; instead, we test whether curvature information can improve their early optimization trajectory.”
+
+    You say this later; I’d move it earlier.
+
+    2.5 Need a stronger explanation of why the objective corresponds to unlearning
+
+    The method objective is:
+
+    latex
+    J(Δ) = ||W + Δ||^2_{F_f} + λ_ret ||Δ||^2_{F_r}
+
+
+    This is mathematically clear, but the paper needs a more intuitive bridge:
+
+    - Why does shrinking the forget-Fisher norm of the weight reduce forget answer probability?
+    - Is this derived from a local quadratic approximation to forget loss, influence, memorization, or Fisher-weighted weight energy?
+    - Why is W + Δ ≈ 0 in forget-sensitive coordinates the right target?
+
+    Right now the paper says what it does, but a skeptical reviewer may see it as a heuristic dressed in second-order notation.
+
+    Fix:
+    Add a short paragraph before Eq. 4:
+
+    “Following Fisher-weighted compression/editing, we interpret high forget-Fisher directions as coordinates in which the current weight most supports forget-set likelihood. A one-shot erasure edit should shrink the component of the weight that lies in these forget-sensitive directions, while measuring collateral movement in the retain Fisher. This yields the quadratic surrogate...”
+
+    2.6 The method description may overstate “MFF” relative to the implementation
+
+    main.tex says the empirical Fisher factors are recovered through “matrix-free Fisher factorization (MFF)” and a truncated SVD of the rearranged Fisher.
+
+    But the implementation in kforge.py directly collects K-FAC-style factors:
+
+    python
+    A = x.T @ x
+    B = g.T @ g
+
+
+    from activations and output gradients.
+
+    That is a standard Kronecker empirical Fisher/K-FAC estimator, but not obviously the same as “MFF via Lanczos rearranged Fisher SVD” as described in lines 188–196.
+
+    This mismatch could be serious if a reviewer checks code.
+
+    Fix one of these:
+
+    Option A: Change paper wording to match code:
+    “we estimate Kronecker empirical Fisher factors from activation and output-gradient covariances.”
+
+    Option B: Change code/docs if you truly use MFF elsewhere.
+
+    I would choose A unless you have a separate MFF implementation path. The current paper can still cite MFF/GFWSVD as inspiration, but should not imply the implementation uses the exact MFF algorithm if it does not.
+
+    2.7 7B-scale tractability claim is unsupported by experiments
+
+    Line 196 says the construction is tractable for 7B-scale models.
+
+    But experiments are 1B and a limited 3B sanity check, and only one mlp.down_proj layer is edited in the paper setup.
+
+    Fix:
+    Change “making the procedure tractable for 7B-scale models” to a more cautious sentence:
+
+    “making the procedure tractable for the 1B–3B settings and single-layer edits studied here, and potentially scalable to larger settings with the same matrix-free machinery.”
+
+    3. Paper structure and writing
+
+    3.1 Abstract is solid but could be sharper
+
+    Current abstract is accurate but somewhat long and generic. It says:
+
+    - preference unlearning has early optimization problem
+    - K-FORGE uses forget/retain Fisher
+    - one-shot frontier
+    - initializer improves matched-budget runs
+    - controls show not arbitrary low-rank perturbation
+    - 3B sanity check
+
+    Good.
+
+    Suggested sharper 5-sentence version:
+
+    1. Preference-based LLM unlearning can achieve useful forget-retain tradeoffs, but early training spends many steps discovering directions that suppress forgotten content without damaging retained capability.
+    2. We introduce K-FORGE, a Kronecker-Fisher initializer that estimates separate forget and retain empirical Fishers, simultaneously diagonalizes them, and applies a closed-form low-rank Wiener edit before NPO or SimNPO training.
+    3. The full-rank edit has an exact solution; for practical low-rank edits we use a stated separable relaxation that is exact in the full-rank and zero-retain-penalty limits.
+    4. On TOFU with Llama-3.2-1B, one-shot K-FORGE traces a smooth forget-utility frontier but does not replace iterative unlearning; as an initializer, it consistently lowers forget probability at matched downstream step budgets while preserving utility.
+    5. Matched random, weight-SVD, diagonal-Fisher, forget-only, additional-split, and 3B sanity checks support the view that K-FORGE provides a useful curvature-aware starting direction for preference-based unlearning.
+
+    3.2 “Scratch training” is misleading terminology
+
+    The paper uses “scratch” to mean “pretrained checkpoint initialized without K-FORGE.” In ML, “scratch training” often means random initialization.
+
+    Fix:
+    Use:
+
+    - “pretrained initialization”
+    - “base-checkpoint initialization”
+    - “uninitialized NPO/SimNPO”
+    - “standard NPO/SimNPO initialization”
+
+    For table labels, “scratch” is okay if defined, but in prose I’d avoid it.
+
+    3.3 Section “Why K-FORGE Initialization Helps” is too short
+
+    This section is currently one paragraph and mostly restates the result. Since it has a strong title, reviewers will expect analysis.
+
+    Possible additions:
+
+    - Show/edit spectrum:
+      - Are there a few high forget/retain generalized singular directions?
+      - Does K-FORGE move mostly in those?
+    - Show gradient alignment:
+      - cosine between K-FORGE delta and first NPO/SimNPO gradients
+      - does K-FORGE reduce early gradient norm or change direction?
+    - Show initial model after K-FORGE is already closer to final NPO/SimNPO checkpoint.
+    - Use existing figA1_spectrum_heatmap if it is meaningful.
+
+    If no new analysis is available, rename section to “Interpretation” and keep it modest.
+
+    3.4 Related work is good but needs K-FADE positioning to be extra crisp
+
+    K-FADE is likely the most dangerous related work. The paper mentions it, but should make the distinction unmissable:
+
+    - K-FADE: iterative Gauss-Newton/second-order unlearning update.
+    - K-FORGE: closed-form low-rank two-Fisher edit used as initializer.
+    - K-FORGE’s downstream objective remains NPO/SimNPO; the intervention is only the initial checkpoint.
+
+    Add a sentence like:
+
+    “Unlike K-FADE, which uses curvature to define the unlearning update itself, K-FORGE uses curvature once, before training, to choose an initial displacement; the downstream optimizer and preference loss are unchanged.”
+
+    4. Figures and tables
+
+    4.1 Figure path issue aside, Figure 2 is visually strong
+
+    fig2_improved is clear:
+
+    - 2 rows: NPO / SimNPO
+    - 3 columns: forget10 / forget05 / forget01
+    - x-axis training steps
+    - y-axis forget probability
+    - scratch vs K-FORGE init
+
+    It supports the claim well.
+
+    Minor visual issues:
+
+    - “less desired / more desired” background text is useful but a little large.
+    - For forget01 NPO, the y-range is tiny and error bars overlap; the caption correctly says it is near the noise floor. Good.
+    - Legend inside first panel uses space but is acceptable.
+
+    4.2 Figure fig_matched_init_arrows is attractive but less necessary
+
+    The arrow figure is readable and intuitive, but:
+
+    - It duplicates Table 2’s message.
+    - The orange arrows are visually dominant.
+    - The SimNPO x-axis range is narrow, making utility changes look more dramatic than they are.
+    - It only shows forget10, while Figure 2 has broader split coverage.
+
+    Recommendation:
+    If page budget is tight, keep Figure 2 and move arrow figure to appendix. If you keep both, make the arrow figure the main intuitive “Pareto shift” visual and reduce table size.
+
+    4.3 Table 1 bolding is potentially misleading
+
+    In one-shot table, the best forget metrics occur at alpha 0.8, while best utility is base / alpha 0.1. That is technically correct but can encourage the reader to compare across trade-off points.
+
+    Fix:
+    Consider replacing bolding with a Pareto-frontier indication or say:
+
+    “Bold indicates column optimum, not a preferred operating point.”
+
+    4.4 Table 2 is strong but dense
+
+    The main table has many numbers. Consider adding a delta column:
+
+    text
+    Δ Forget Pr.
+    Δ Utility
+
+
+    For each K-FORGE row vs scratch. Reviewers should not have to mentally subtract.
+
+    Example:
+
+    text
+    S50 NPO K-FORGE .60: ΔForget -0.048, ΔUtility +0.065
+
+
+    5. Repo/reproducibility review
+
+    5.1 Good aspects
+
+    The repo has many good signs:
+
+    - Root README explains the current story.
+    - CHANGELOG.md records the important correction from legacy_v1 to wiener_v2.
+    - Corrected figure data CSVs are tracked under:
+      - open-unlearning/saves/figures/kforge_corrected/
+    - The figure script successfully runs:
+      - parsed 162 corrected downstream runs
+      - parsed 102 controls
+      - parsed 9 one-shot points
+    - Static compilation passed for the K-FORGE implementation and figure script.
+
+    5.2 But clean-clone reproduction is currently incomplete
+
+    The figure script works in this local checkout because ignored eval outputs are present under open-unlearning/saves/eval. A clean clone would have only the tracked CSVs/figures, not the raw eval summaries.
+
+    Fix:
+    Add one of these:
+
+    Option A:
+    Track minimal TOFU_SUMMARY.json files needed to regenerate figures/tables.
+
+    Option B:
+    Make kforge_make_corrected_figures.py support a --from-csv mode using tracked CSVs.
+
+    Option C:
+    Add a paper_data/ directory containing curated CSVs for every table/figure, and make all paper plots/tables generated from it.
+
+    I recommend C:
+
+    text
+    paper_data/
+      one_shot_forget10.csv
+      init_forget10.csv
+      init_controls_forget10.csv
+      transfer_controls.csv
+      init_3b_sanity.csv
+      compute_overhead.csv
+
+
+    Then add:
+
+    bash
+    python scripts/make_paper_tables.py
+    python scripts/kforge_make_corrected_figures.py --from-paper-data paper_data/
+
+
+    5.3 Add a table-generation script
+
+    Main paper tables are manually embedded in LaTeX. This is risky.
+
+    Fix:
+    Add:
+
+    text
+    open-unlearning/scripts/kforge_make_paper_tables.py
+
+
+    that produces .tex table fragments from the tracked CSVs:
+
+    text
+    paper/tables/oneshot_forget10.tex
+    paper/tables/init_forget10.tex
+    paper/tables/init_controls_forget10.tex
+    ...
+
+
+    Then in main.tex use:
+
+    latex
+    \input{tables/init_forget10}
+
+
+    This prevents transcription errors.
+
+    5.4 MANIFEST.md is stale or inconsistent
+
+    Tracked manifest says:
+
+    text
+    Corrected downstream seed runs parsed: 153
+
+
+    But I regenerated and got:
+
+    text
+    Parsed 162 corrected downstream runs, 102 controls, 9 one-shot points.
+
+
+    Fix:
+    Regenerate and commit the manifest, or make it clear which run set the tracked figures were generated from.
+
+    6. Code review notes
+
+    6.1 K-FORGE implementation compiles
+
+    This passed:
+
+    bash
+    cd open-unlearning
+    python -m py_compile src/trainer/unlearn/kforge.py scripts/kforge_make_corrected_figures.py
+
+
+    No syntax errors.
+
+    6.2 Implementation has useful safety choices
+
+    Good:
+
+    - single-process guard
+    - eval mode during calibration
+    - shifted causal-LM token mask
+    - summed loss scaling by valid token count
+    - fp32 checkpoint edit option
+    - separate legacy_v1 and wiener_v2
+    - logs Fisher factor scales
+    - supports diagonal / forget-only ablations
+
+    6.3 Potential issue: paper says MFF, code looks K-FAC
+
+    As noted above, code estimates direct activation/gradient covariances, not a Lanczos MFF SVD. Align wording.
+
+    6.4 Potential issue: default save_strategy: no
+
+    KFORGE.yaml has:
+
+    yaml
+    save_strategy: 'no'
+
+
+    This may be okay if the training harness saves at the end anyway, but for a one-shot checkpoint-producing trainer it is worth verifying from a clean run. If a user runs trainer=KFORGE, they expect an edited checkpoint. README should show a tested command that leaves a checkpoint at a known path.
+
+    7. Priority fix list
+
+    P0 — must fix before anyone else can build/evaluate
+
+    1. Add custom.bib.
+    2. Add/copy ACL style or document TeX template setup.
+    3. Fix \includegraphics paths or create latex/figures/.
+    4. Add exact reproduction commands for the paper’s wiener_v2 K-FORGE checkpoints.
+    5. Make config defaults or paper-specific config match the paper.
+
+    P1 — must fix before submission
+
+    6. Add compute-matched S50+overhead control or carefully qualify “matched downstream steps.”
+    7. Add statistical CIs / paired seed deltas for headline claims.
+    8. Align paper’s “MFF” wording with actual K-FAC-style implementation.
+    9. Add table-generation or table-verification script.
+    10. Update README figure list and manifest.
+
+    P2 — strong quality improvements
+
+    11. Expand “Why K-FORGE Initialization Helps” with spectrum/gradient/direction analysis.
+    12. Move arrow figure to appendix unless it is central to narrative.
+    13. Add delta columns to main initialization table.
+    14. Replace “scratch training” terminology with “base-checkpoint initialization.”
+    15. Add more explicit K-FADE distinction.
+
+    8. Overall assessment
+
+    Current readiness:
+
+    - Scientific idea: promising.
+    - Paper story: good and appropriately scoped.
+    - Main empirical result: credible and useful, especially for early-budget NPO/SimNPO.
+    - Repo state: not yet reproducible from clean checkout.
+    - Submission readiness: not ready until LaTeX/bib/figure/config/reproduction blockers are fixed.
+
+    My confidence:
+    This can become a solid workshop or main-conference submission if positioned as “curvature-aware initialization for preference-based unlearning,” not as a full unlearning SOTA method. The most important immediate work is not more writing; it is making the artifact buildable and making the exact paper experiments reproducible from documented commands.

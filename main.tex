@@ -539,7 +539,22 @@ Our ablations  show that the gain is not explained by simply moving the model in
 \subsection{Robustness Audits}
 \label{sec:robustness_audits}
 
-We will evaluate robustness using relearning and quantization-revert audits. For relearning, we will compare the strongest K-FORGE-initialized NPO setting on forget01 against a scratch NPO baseline with an equivalent utility--forget trade-off, followed by one epoch of supervised fine-tuning on a held-out forget subset. For quantization-revert, we will test whether 4-bit and 8-bit GPTQ quantization weakens or reverses the unlearning effect.
+We additionally audit whether the unlearned checkpoints are easily reversed by direct supervised exposure to the forget set. Starting from the \texttt{forget10} NPO $S50$ checkpoints, we fine-tune for one epoch on the forget-set QA data and re-evaluate TOFU. Table~\ref{tab:relearn_audit} reports paired post-minus-pre changes over three seeds. Both scratch and K-FORGE checkpoints are vulnerable to direct relearning, but K-FORGE recovers substantially less answer probability, lexical overlap, and extraction strength than scratch NPO. This audit should be read as a stress test rather than a deployment guarantee: it measures one epoch of direct supervised relearning, not arbitrary adversarial recovery. Quantization-revert robustness remains future work.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Relearning robustness audit on \texttt{forget10}. Values are paired post-relearning minus pre-relearning changes after one epoch of supervised fine-tuning on the forget-set QA data, averaged over three seeds. Lower recovery in forget probability, ROUGE, and extraction strength indicates less direct recoverability.}
+\label{tab:relearn_audit}
+\begin{tabular}{lccc}
+\toprule
+Method & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROUGE $\downarrow$ & $\Delta$ Extraction $\downarrow$ \\
+\midrule
+Scratch NPO $S50$ & $+0.434\,\pm\,0.042$ & $+0.343\,\pm\,0.012$ & $+0.203\,\pm\,0.056$ \\
+K-FORGE $+$ NPO $S50$ & $+0.317\,\pm\,0.006$ & $+0.076\,\pm\,0.010$ & $+0.067\,\pm\,0.004$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{K-FORGE compute overhead.}
 The proposed method poses additional computation overhead due to the need for gradient collection on the calibration data, which we study and discuss in this section. 
@@ -589,7 +604,7 @@ Our work has several limitations which we acknowledge below.
 
 First, \textbf{K-FORGE} is not a standalone unlearning method. It is complementary to existing iterative unlearning methods like NPO, SimNPO, but not a replacement for them.  
 
-Next, while our experiments are extensive, we still test only two models of relatively moderate size of 1B and 3B parameters across different (\texttt{forget10}, \texttt{forget05}, \texttt{forget01}) subsets of one benchmark TOFU. We therefore do not claim transfer to MUSE or other benchmarks, robustness against relearning or quantization revert, or broad large-model scaling. 
+Next, while our experiments are extensive, we still test only two models of relatively moderate size of 1B and 3B parameters across different (\texttt{forget10}, \texttt{forget05}, \texttt{forget01}) subsets of one benchmark TOFU. We therefore do not claim transfer to MUSE or other benchmarks, robustness against quantization revert, or broad large-model scaling. Our relearning audit is also limited to one epoch of direct supervised fine-tuning on \texttt{forget10}; stronger or longer recovery attacks may behave differently. 
 
 The method also uses the collection of gradients using calibration data and several dense factorizations, which are affordable at 1B--3B scale but might become challenging and pose an additional computational cost relative to scratch fine-tuning.
 

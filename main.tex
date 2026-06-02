@@ -378,7 +378,7 @@ We evaluate on TOFU~\cite{tofu}, using the \texttt{forget10}, \texttt{forget05},
 
 \subsection{Metrics.}
 
-We report several metrics from OpenUnlearning.  \textbf{Model Utility} is a harmonic mean over retained-question answering performance, real-author, and world-fact metrics. If utility metric is high, that means model did not lose its original performance. \textbf{Forget Q/A Probability} is the mean normalized probability assigned to the gold forget-set answers; lower values indicate that the model is less likely to reproduce the forgotten answers. \textbf{Forget Q/A ROUGE} measures ROUGE-L recall between generated answers and the forget-set ground-truth answers, the lower values indicate less lexical recovery of the forgotten content. \textbf{Extraction Strength} measures exact token-level extractability of forget-set answers; lower values indicate weaker memorized continuation.
+We report several metrics from OpenUnlearning.  \textbf{Model Utility} is a harmonic mean over retained-question answering performance, real-author, and world-fact metrics. If utility metric is high, that means model did not lose its original performance. \textbf{Forget Q/A Probability} is the mean normalized probability assigned to the gold forget-set answers; lower values indicate that the model is less likely to reproduce the forgotten answers. \textbf{Forget Q/A ROUGE} measures ROUGE-L recall between generated answers and the forget-set ground-truth answers, the lower values indicate less lexical recovery of the forgotten content. \textbf{Forget Quality} and \textbf{Forget Truth Ratio} are OpenUnlearning aggregate forgetting diagnostics; higher values indicate better forgetting under the benchmark's calibrated scoring. \textbf{PrivLeak} measures privacy leakage; lower values indicate weaker recoverability under the benchmark attack. \textbf{Extraction Strength} measures exact token-level extractability of forget-set answers; lower values indicate weaker memorized continuation.
 
 
 \subsection{Baselines.}
@@ -396,7 +396,7 @@ Concretely, our initializer competitors answer four separate failure modes. \tex
 In this work, we focus on NPO and SimNPO because these preference-based unlearning methods are sensitive to initialization. RMU~\citep{rmu}, GradDiff~\citep{tofu}, and other full unlearning methods are important for the field, but including them would answer a different question: which unlearning method performs best, rather than whether K-FORGE improves a fixed downstream optimizer. We therefore treat these comparisons as outside the scope of the initializer ablation.
 
 \subsection{K-FORGE configuration.}
-Unless stated otherwise, we use rank $r=2$, factor damping $10^{-4}$, retain penalty $\lambda_{\mathrm{ret}}=10^{-2}$, and target the \texttt{mlp.down\_proj} module of the selected layer. We use $B_{\mathrm{cal}}=32$ calibration batches for both forget and retain Fishers. The corrected initializer is the Wiener variant from Section~\ref{sec:method}; the main initialization experiments use strengths $\alpha \in \{0.45, 0.60\}$ and step budgets $N \in \{50,100,250\}$.
+Unless stated otherwise, we use rank $r=2$, factor damping $10^{-4}$, retain penalty $\lambda_{\mathrm{ret}}=10^{-2}$, and target the \texttt{mlp.down\_proj} module of the selected layer. We use $B_{\mathrm{cal}}=32$ calibration batches for both forget and retain Fishers. The corrected initializer is the Wiener variant from Section~\ref{sec:method}; the main initialization experiments use strengths $\alpha \in \{0.45, 0.60\}$ and step budgets $N \in \{50,100,250\}$. For the post-hoc placement and strength audit in Section~\ref{sec:layer_strength_audit}, we keep the downstream optimizer fixed to NPO at $N=50$ and sweep only the edited layer or scalar strength.
 
 \subsection{One-Shot K-FORGE: A Meaningful but Insufficient Forget Direction}
 \label{sec:oneshot_kforge}
@@ -484,6 +484,48 @@ The corrected frontier is smooth and interpretable: stronger edits monotonically
 K-FORGE improves every matched NPO budget (see Table~\ref{tab:init_forget10}). The strongest effect is early: at 50 steps, the $\alpha=.60$ initializer halves forget probability relative to scratch while improving utility by more than six points. At 250 steps, the gap is more narrow but still in favor of \textbf{K-FORGE}.
 
 Same yet slightly more uniform effect is observed for SimNPO. \textbf{K-FORGE} reduces forget probability at 50, 100, and 250 steps, while utility remains essentially unchanged. Our initializer is not tied to a specific preference loss: for NPO it gives a large early improvement, and for SimNPO it gives a steadier reduction in forget probability at negligible utility cost.
+
+\subsection{Late-layer placement and strength audit}
+\label{sec:layer_strength_audit}
+
+To check whether the initializer is sensitive to where the Fisher edit is applied, we ran a focused NPO $S50$ audit on the Llama-3.2-1B-Instruct \texttt{forget10} setting. We fixed rank $r=2$, $B_{\mathrm{cal}}=32$, $\lambda_{\mathrm{ret}}=10^{-2}$, the Wiener-v2 edit, and strength $\alpha=0.45$, then edited a single \texttt{mlp.down\_proj} layer. Table~\ref{tab:layer_ablation_review} shows that the early layer gives the strongest aggregate forgetting score but substantially higher privacy leakage and extraction strength. The middle layer has the weakest utility. The late layer is therefore the safer operating region for the follow-up strength sweep: it keeps utility competitive while avoiding the large privacy-leakage spike seen at layer 0.
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{rccccc}
+\toprule
+\textbf{Layer} & \textbf{FQ}$\uparrow$ & \textbf{FTR}$\uparrow$ & \textbf{Util.}$\uparrow$ & \textbf{PrivLeak}$\downarrow$ & \textbf{Extr.}$\downarrow$ \\
+\midrule
+0  & \textbf{0.813} & \textbf{0.656} & \textbf{0.553} & 31.574 & 0.073 \\
+7  & 0.758 & 0.649 & 0.529 & 12.109 & \textbf{0.053} \\
+15 & 0.523 & 0.653 & 0.541 & \textbf{5.091} & 0.062 \\
+\bottomrule
+\end{tabular}
+\caption{Single-seed layer-placement audit for K-FORGE-initialized NPO on TOFU \texttt{forget10} with Llama-3.2-1B-Instruct. All rows use $S50$, rank $2$, strength $\alpha=0.45$, and one edited \texttt{mlp.down\_proj} module. FQ denotes Forget Quality and FTR denotes Forget Truth Ratio.}
+\label{tab:layer_ablation_review}
+\end{table}
+
+We then fixed the edit to layer 15 and ran a three-seed strength sweep around the best operating region. Table~\ref{tab:strength_sweep_review} shows a shallow trade-off rather than a clean optimum. Strength $\alpha=0.60$ has the best mean Forget Quality and utility, while $\alpha=0.65$ has the lowest mean privacy leakage. The interpolated $\alpha=0.62$ point does not dominate either side: it slightly improves privacy leakage relative to $0.60$, but loses Forget Quality and does not improve extraction strength beyond $0.65$. Because the standard deviations are large relative to the between-strength differences, we use this audit to choose a conservative operating region rather than to claim a statistically significant scalar optimum.
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccccc}
+\toprule
+$\boldsymbol{\alpha}$ & \textbf{FQ}$\uparrow$ & \textbf{FTR}$\uparrow$ & \textbf{Util.}$\uparrow$ & \textbf{PrivLeak}$\downarrow$ & \textbf{Extr.}$\downarrow$ \\
+\midrule
+0.55 & 0.472\stderr{0.107} & \textbf{0.649}\stderr{0.002} & 0.536\stderr{0.010} & 5.184\stderr{5.518} & 0.0608\stderr{0.0019} \\
+0.60 & \textbf{0.501}\stderr{0.272} & 0.646\stderr{0.002} & 0.539\stderr{0.012} & 4.745\stderr{4.871} & 0.0612\stderr{0.0018} \\
+0.62 & 0.430\stderr{0.188} & 0.645\stderr{0.001} & \textbf{0.539}\stderr{0.009} & 3.683\stderr{6.128} & 0.0608\stderr{0.0019} \\
+0.65 & 0.459\stderr{0.164} & 0.645\stderr{0.001} & 0.539\stderr{0.009} & \textbf{2.924}\stderr{4.871} & \textbf{0.0608}\stderr{0.0015} \\
+\bottomrule
+\end{tabular}
+\caption{Three-seed layer-15 strength sweep for K-FORGE-initialized NPO on TOFU \texttt{forget10} with Llama-3.2-1B-Instruct. All rows use $S50$, rank $2$, $B_{\mathrm{cal}}=32$, $\lambda_{\mathrm{ret}}=10^{-2}$, and the Wiener-v2 edit. Entries are mean $\pm$ sample standard deviation over seeds $0,1,2$.}
+\label{tab:strength_sweep_review}
+\end{table}
 
 \subsection{Llama-3.2-3B sanity check.}
 We also check that the initializer effect is not specific to one model. We therefore repeat the \texttt{forget10} initialization experiments on Llama 3.2 3B Instruct. We report results in Table~\ref{tab:init_3b_sanity}. Across different random seeds on \texttt{forget10}, \textbf{K-FORGE} improves SimNPO at both 50 and 100 steps. The strongest benefit for NPO is at 50 steps. 

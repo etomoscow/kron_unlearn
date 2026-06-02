@@ -488,22 +488,22 @@ Same yet slightly more uniform effect is observed for SimNPO. \textbf{K-FORGE} r
 \subsection{Late-layer placement and strength audit}
 \label{sec:layer_strength_audit}
 
-To check whether the initializer is sensitive to where the Fisher edit is applied, we ran a focused NPO $S50$ audit on the Llama-3.2-1B-Instruct \texttt{forget10} setting. We fixed rank $r=2$, $B_{\mathrm{cal}}=32$, $\lambda_{\mathrm{ret}}=10^{-2}$, the Wiener-v2 edit, and strength $\alpha=0.45$, then edited a single \texttt{mlp.down\_proj} layer. Table~\ref{tab:layer_ablation_review} shows that the early layer gives the strongest aggregate forgetting score but substantially higher privacy leakage and extraction strength. The middle layer has the weakest utility. The late layer is therefore the safer operating region for the follow-up strength sweep: it keeps utility competitive while avoiding the large privacy-leakage spike seen at layer 0.
+To check whether the initializer is sensitive to where the Fisher edit is applied, we ran a focused NPO $S50$ audit on the Llama-3.2-1B-Instruct \texttt{forget10} setting. We fixed rank $r=2$, $B_{\mathrm{cal}}=32$, $\lambda_{\mathrm{ret}}=10^{-2}$, the Wiener-v2 edit, and strength $\alpha=0.45$, then edited a single \texttt{mlp.down\_proj} layer. Table~\ref{tab:layer_ablation_review} shows that the early layer gives the strongest aggregate forgetting score and highest utility, but with much larger privacy leakage and extraction strength. The middle layer has the lowest extraction strength but weaker utility and Forget Quality. The late layer is therefore the safer operating region for the follow-up strength sweep: it keeps utility competitive while avoiding the large privacy-leakage spike seen at layer 0.
 
 \begin{table}[htbp!]
 \centering
 \small
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{rccccc}
 \toprule
 \textbf{Layer} & \textbf{FQ}$\uparrow$ & \textbf{FTR}$\uparrow$ & \textbf{Util.}$\uparrow$ & \textbf{PrivLeak}$\downarrow$ & \textbf{Extr.}$\downarrow$ \\
 \midrule
-0  & \textbf{0.813} & \textbf{0.656} & \textbf{0.553} & 31.574 & 0.073 \\
-7  & 0.758 & 0.649 & 0.529 & 12.109 & \textbf{0.053} \\
-15 & 0.523 & 0.653 & 0.541 & \textbf{5.091} & 0.062 \\
+0  & \textbf{0.753}\stderr{0.151} & 0.652\stderr{0.005} & \textbf{0.550}\stderr{0.004} & 31.875\stderr{1.348} & 0.0723\stderr{0.0014} \\
+7  & 0.516\stderr{0.222} & 0.658\stderr{0.007} & 0.523\stderr{0.008} & 11.977\stderr{1.684} & \textbf{0.0544}\stderr{0.0017} \\
+15 & 0.544\stderr{0.088} & \textbf{0.659}\stderr{0.007} & 0.536\stderr{0.008} & \textbf{8.358}\stderr{3.090} & 0.0608\stderr{0.0013} \\
 \bottomrule
 \end{tabular}
-\caption{Single-seed layer-placement audit for K-FORGE-initialized NPO on TOFU \texttt{forget10} with Llama-3.2-1B-Instruct. All rows use $S50$, rank $2$, strength $\alpha=0.45$, and one edited \texttt{mlp.down\_proj} module. FQ denotes Forget Quality and FTR denotes Forget Truth Ratio.}
+\caption{Three-seed layer-placement audit for K-FORGE-initialized NPO on TOFU \texttt{forget10} with Llama-3.2-1B-Instruct. All rows use $S50$, rank $2$, strength $\alpha=0.45$, and one edited \texttt{mlp.down\_proj} module. Entries are mean $\pm$ sample standard deviation over seeds $0,1,2$. FQ denotes Forget Quality and FTR denotes Forget Truth Ratio.}
 \label{tab:layer_ablation_review}
 \end{table}
 

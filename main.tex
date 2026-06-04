@@ -507,6 +507,27 @@ To check whether the initializer is sensitive to where the Fisher edit is applie
 \label{tab:layer_ablation_review}
 \end{table}
 
+Because layer 7 had the lowest extraction strength in the placement audit, we also ran a targeted layer-7 strength frontier. Table~\ref{tab:layer7_frontier_review} shows that increasing $\alpha$ from $0.30$ to $0.50$ improves Forget Quality while preserving the low extraction-strength regime, but it does not remove the privacy-leakage gap relative to layer 15. Thus, layer 7 is useful as an extraction-focused variant, whereas layer 15 remains the safer default when considering privacy leakage and utility together.
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccccc}
+\toprule
+$\boldsymbol{\alpha}$ & \textbf{FQ}$\uparrow$ & \textbf{FTR}$\uparrow$ & \textbf{Util.}$\uparrow$ & \textbf{PrivLeak}$\downarrow$ & \textbf{Extr.}$\downarrow$ \\
+\midrule
+0.30 & 0.242\stderr{0.175} & \textbf{0.675}\stderr{0.004} & 0.515\stderr{0.014} & 12.539\stderr{0.811} & 0.0546\stderr{0.0029} \\
+0.35 & 0.282\stderr{0.039} & 0.669\stderr{0.003} & 0.517\stderr{0.013} & \textbf{11.311}\stderr{0.692} & \textbf{0.0544}\stderr{0.0025} \\
+0.40 & 0.435\stderr{0.080} & 0.660\stderr{0.007} & \textbf{0.522}\stderr{0.007} & 12.956\stderr{2.922} & 0.0545\stderr{0.0021} \\
+0.50 & \textbf{0.524}\stderr{0.057} & 0.658\stderr{0.006} & 0.522\stderr{0.012} & 13.470\stderr{2.032} & 0.0543\stderr{0.0011} \\
+0.55 & 0.491\stderr{0.111} & 0.658\stderr{0.003} & 0.521\stderr{0.014} & 14.029\stderr{2.684} & 0.0553\stderr{0.0015} \\
+\bottomrule
+\end{tabular}
+\caption{Three-seed layer-7 strength frontier for K-FORGE-initialized NPO on TOFU \texttt{forget10}. All rows use $S50$, rank $2$, $B_{\mathrm{cal}}=32$, $\lambda_{\mathrm{ret}}=10^{-2}$, and a single edited \texttt{mlp.down\_proj} module at layer 7. Entries are mean $\pm$ sample standard deviation over seeds $0,1,2$.}
+\label{tab:layer7_frontier_review}
+\end{table}
+
 We then fixed the edit to layer 15 and ran a three-seed strength sweep around the best operating region. Table~\ref{tab:strength_sweep_review} shows a shallow trade-off rather than a clean optimum. Strength $\alpha=0.60$ has the best mean Forget Quality and utility, while $\alpha=0.65$ has the lowest mean privacy leakage. The interpolated $\alpha=0.62$ point does not dominate either side: it slightly improves privacy leakage relative to $0.60$, but loses Forget Quality and does not improve extraction strength beyond $0.65$. Because the standard deviations are large relative to the between-strength differences, we use this audit to choose a conservative operating region rather than to claim a statistically significant scalar optimum.
 
 \begin{table}[htbp!]

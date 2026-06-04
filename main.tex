@@ -577,6 +577,27 @@ K-FORGE $+$ NPO $S50$ & $+0.317\,\pm\,0.006$ & $+0.076\,\pm\,0.010$ & $+0.067\,\
 \end{tabular}
 \end{table}
 
+We also ran the same relearning audit across the completed layer-7 frontier. Table~\ref{tab:layer7_relearn_frontier} reports paired post-minus-pre changes. The layer-7 settings remain directly recoverable, but their extraction recovery is consistently smaller than the layer-15 $\alpha=0.65$ setting in Table~\ref{tab:relearn_audit}. This reinforces the interpretation from Table~\ref{tab:layer7_frontier_review}: layer 7 is an extraction-focused variant, while layer 15 is the more balanced default because of its lower privacy leakage before the relearning attack.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Layer-7 relearning audit on \texttt{forget10}. Values are paired post-relearning minus pre-relearning changes after one epoch of supervised fine-tuning on the forget-set QA data, averaged over three seeds. Lower values indicate less direct recovery.}
+\label{tab:layer7_relearn_frontier}
+\begin{tabular}{cccc}
+\toprule
+$\boldsymbol{\alpha}$ & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROUGE $\downarrow$ & $\Delta$ Extraction $\downarrow$ \\
+\midrule
+0.30 & $+0.284\,\pm\,0.008$ & $+0.075\,\pm\,0.002$ & $+0.0547\,\pm\,0.0038$ \\
+0.35 & $+0.291\,\pm\,0.004$ & $+0.065\,\pm\,0.006$ & $+0.0542\,\pm\,0.0039$ \\
+0.40 & $+0.304\,\pm\,0.002$ & $+0.080\,\pm\,0.013$ & $+0.0565\,\pm\,0.0014$ \\
+0.50 & $+0.313\,\pm\,0.001$ & $+0.087\,\pm\,0.006$ & $+0.0561\,\pm\,0.0040$ \\
+0.55 & $+0.321\,\pm\,0.004$ & $+0.099\,\pm\,0.005$ & $+0.0579\,\pm\,0.0006$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{K-FORGE compute overhead.}
 The proposed method poses additional computation overhead due to the need for gradient collection on the calibration data, which we study and discuss in this section. 
 

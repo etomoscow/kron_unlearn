@@ -2,7 +2,12 @@
 
 import re
 import torch
-import deepspeed
+
+try:
+    import deepspeed
+except ImportError:  # DeepSpeed is optional; non-RMU trainers should import without it.
+    deepspeed = None
+
 from trainer.unlearn.grad_diff import GradDiff
 
 
@@ -50,7 +55,7 @@ class RMU(GradDiff):
     def _get_matching_module(self, model, module_regex):
         """Returns a single module matching the given regex from a DeepSpeed/DDP-wrapped model."""
         # Handle DeepSpeed and DDP-wrapped models by accessing the underlying module
-        if isinstance(model, deepspeed.DeepSpeedEngine):
+        if deepspeed is not None and isinstance(model, deepspeed.DeepSpeedEngine):
             model = model.module  # Extract the actual PyTorch model inside
 
         matched_modules = {

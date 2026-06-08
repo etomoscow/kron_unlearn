@@ -1,0 +1,630 @@
+{
+  "configs": [
+    {
+      "alpha": "0.55",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.0608093824773394,
+          "n": 3,
+          "sd": 0.0019063302819458045
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.09570628999596617,
+          "n": 3,
+          "sd": 0.0075484387767169375
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.34509262350804326,
+          "n": 3,
+          "sd": 0.010139094152136555
+        },
+        "forget_quality": {
+          "mean": 0.4721146209268713,
+          "n": 3,
+          "sd": 0.10712173838915788
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6492897638242686,
+          "n": 3,
+          "sd": 0.0018536036381977688
+        },
+        "model_utility": {
+          "mean": 0.5361661928070495,
+          "n": 3,
+          "sd": 0.010448998848473038
+        },
+        "privleak": {
+          "mean": 5.184480302589351,
+          "n": 3,
+          "sd": 5.518447609648897
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.06294440947882839,
+          "forget_Q_A_Prob": 0.10097307768126484,
+          "forget_Q_A_ROUGE": 0.34015114623139164,
+          "forget_quality": 0.4680435421303692,
+          "forget_truth_ratio": 0.6471509934740809,
+          "model_utility": 0.5432118805699273,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p55_S50_seed0_review_fine_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 0.5729788826995998,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.06020591630289716,
+          "forget_Q_A_Prob": 0.09908743176085409,
+          "forget_Q_A_ROUGE": 0.35675507482514346,
+          "forget_quality": 0.3670864569817871,
+          "forget_truth_ratio": 0.6504305106796147,
+          "model_utility": 0.5241609972530838,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p55_S50_seed1_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 3.681844869926608,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.05927782165029265,
+          "forget_Q_A_Prob": 0.08705836054577958,
+          "forget_Q_A_ROUGE": 0.33837164946759474,
+          "forget_quality": 0.5812138636684575,
+          "forget_truth_ratio": 0.6502877873191103,
+          "model_utility": 0.5411257005981371,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p55_S50_seed2_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 11.298617155141844,
+          "seed": 2
+        }
+      ],
+      "slug": "0p55"
+    },
+    {
+      "alpha": "0.56",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.06097205612163772,
+          "n": 3,
+          "sd": 0.001968596747150448
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.09568041120859562,
+          "n": 3,
+          "sd": 0.006542382618233663
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.34465055688219676,
+          "n": 3,
+          "sd": 0.010041213239304082
+        },
+        "forget_quality": {
+          "mean": 0.4631049592642339,
+          "n": 3,
+          "sd": 0.20641920550252635
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6473069818238733,
+          "n": 3,
+          "sd": 0.0020295471882133065
+        },
+        "model_utility": {
+          "mean": 0.5361247727160737,
+          "n": 3,
+          "sd": 0.01067853002514049
+        },
+        "privleak": {
+          "mean": 5.037692426279387,
+          "n": 3,
+          "sd": 5.132049797971519
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.0628983622692504,
+          "forget_Q_A_Prob": 0.09943412049033214,
+          "forget_Q_A_ROUGE": 0.3484995868707428,
+          "forget_quality": 0.3670864569817871,
+          "forget_truth_ratio": 0.6453105724104077,
+          "model_utility": 0.5440543418963314,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p56_S50_seed0_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 1.2056852461046401,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.06105407366650734,
+          "forget_Q_A_Prob": 0.09948114587081364,
+          "forget_Q_A_ROUGE": 0.35219782574460196,
+          "forget_quality": 0.32218506015364723,
+          "forget_truth_ratio": 0.649368118268562,
+          "model_utility": 0.5239824302411324,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p56_S50_seed1_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 3.039015204707092,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.058963732429155404,
+          "forget_Q_A_Prob": 0.08812596726464107,
+          "forget_Q_A_ROUGE": 0.3332542580312455,
+          "forget_quality": 0.7000433606572674,
+          "forget_truth_ratio": 0.6472422547926502,
+          "model_utility": 0.5403375460107572,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p56_S50_seed2_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 10.86837682802643,
+          "seed": 2
+        }
+      ],
+      "slug": "0p56"
+    },
+    {
+      "alpha": "0.58",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.06092135310972439,
+          "n": 3,
+          "sd": 0.0019860391424851268
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.09564664250060256,
+          "n": 3,
+          "sd": 0.007391354180071181
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.33998112506848205,
+          "n": 3,
+          "sd": 0.013498986541142073
+        },
+        "forget_quality": {
+          "mean": 0.49430621371331585,
+          "n": 3,
+          "sd": 0.17982994842522243
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6463317734205541,
+          "n": 3,
+          "sd": 0.0016716467242091145
+        },
+        "model_utility": {
+          "mean": 0.5384024453421253,
+          "n": 3,
+          "sd": 0.011301340010167093
+        },
+        "privleak": {
+          "mean": 4.85074878610531,
+          "n": 3,
+          "sd": 5.84499935622067
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.06236675264559714,
+          "forget_Q_A_Prob": 0.10032134893583133,
+          "forget_Q_A_ROUGE": 0.3446724791117648,
+          "forget_quality": 0.415788823500893,
+          "forget_truth_ratio": 0.6450883137090365,
+          "model_utility": 0.5444946865549368,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p58_S50_seed0_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 0.44643761001859905,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.06174055690938138,
+          "forget_Q_A_Prob": 0.09949333782933537,
+          "forget_Q_A_ROUGE": 0.350508522099621,
+          "forget_quality": 0.3670864569817871,
+          "forget_truth_ratio": 0.6482320801140249,
+          "model_utility": 0.5253621397374771,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p58_S50_seed1_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 2.623959830313382,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.05865674977419463,
+          "forget_Q_A_Prob": 0.08712524073664099,
+          "forget_Q_A_ROUGE": 0.3247623739940604,
+          "forget_quality": 0.7000433606572674,
+          "forget_truth_ratio": 0.645674926438601,
+          "model_utility": 0.545350509733962,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p58_S50_seed2_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 11.481848917983948,
+          "seed": 2
+        }
+      ],
+      "slug": "0p58"
+    },
+    {
+      "alpha": "0.60",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.06121371899619745,
+          "n": 3,
+          "sd": 0.0017631592150288333
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.0959236107741405,
+          "n": 3,
+          "sd": 0.006282364569598591
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.3405200408839164,
+          "n": 3,
+          "sd": 0.011455664528761058
+        },
+        "forget_quality": {
+          "mean": 0.5008951868277144,
+          "n": 3,
+          "sd": 0.2715788294762742
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6460001293284582,
+          "n": 3,
+          "sd": 0.001520382737901504
+        },
+        "model_utility": {
+          "mean": 0.5389271335391735,
+          "n": 3,
+          "sd": 0.011756309426885065
+        },
+        "privleak": {
+          "mean": 4.74479156044708,
+          "n": 3,
+          "sd": 4.871227117950205
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.06298746718065408,
+          "forget_Q_A_Prob": 0.100014939517132,
+          "forget_Q_A_ROUGE": 0.3385286177887231,
+          "forget_quality": 0.32218506015364723,
+          "forget_truth_ratio": 0.6474174496899971,
+          "model_utility": 0.5460096809546237,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p60_S50_seed0_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 1.3808183674951608,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.06119234675327029,
+          "forget_Q_A_Prob": 0.09906580496113747,
+          "forget_Q_A_ROUGE": 0.3528408539912105,
+          "forget_quality": 0.3670864569817871,
+          "forget_truth_ratio": 0.6461886680745071,
+          "model_utility": 0.5253564554163502,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p60_S50_seed1_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 2.522726812168578,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.05946134305466799,
+          "forget_Q_A_Prob": 0.088690087844152,
+          "forget_Q_A_ROUGE": 0.33019065087181554,
+          "forget_quality": 0.813414043347709,
+          "forget_truth_ratio": 0.6443942702208703,
+          "model_utility": 0.5454152642465467,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p60_S50_seed2_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 10.330829501677501,
+          "seed": 2
+        }
+      ],
+      "slug": "0p60"
+    },
+    {
+      "alpha": "0.62",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.060766502842809836,
+          "n": 3,
+          "sd": 0.0019430701197783117
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.09722112334968794,
+          "n": 3,
+          "sd": 0.00827853770990174
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.34088036257331505,
+          "n": 3,
+          "sd": 0.009404381618103622
+        },
+        "forget_quality": {
+          "mean": 0.4295917474265633,
+          "n": 3,
+          "sd": 0.18764036639960913
+        },
+        "forget_truth_ratio": {
+          "mean": 0.644636161633039,
+          "n": 3,
+          "sd": 0.000842380740137794
+        },
+        "model_utility": {
+          "mean": 0.5390811832398729,
+          "n": 3,
+          "sd": 0.00915999561901802
+        },
+        "privleak": {
+          "mean": 3.6833633651987823,
+          "n": 3,
+          "sd": 6.127790604412152
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.0627362387726434,
+          "forget_Q_A_Prob": 0.10469511654344388,
+          "forget_Q_A_ROUGE": 0.33252076139590614,
+          "forget_quality": 0.28118158736530297,
+          "forget_truth_ratio": 0.6439386119850323,
+          "model_utility": 0.5441574170474225,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S50_seed0_review_interp/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": -1.5048288147225475,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.06071202552994055,
+          "forget_Q_A_Prob": 0.09864540139373275,
+          "forget_Q_A_ROUGE": 0.351062678862534,
+          "forget_quality": 0.3670864569817871,
+          "forget_truth_ratio": 0.6455720256136271,
+          "model_utility": 0.5285069349603211,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S50_seed1_review_interp/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 2.110708428319205,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.05885124422584557,
+          "forget_Q_A_Prob": 0.08832285211188719,
+          "forget_Q_A_ROUGE": 0.3390576474615051,
+          "forget_quality": 0.6405071979325999,
+          "forget_truth_ratio": 0.6443978473004577,
+          "model_utility": 0.544579197711875,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S50_seed2_review_interp/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 10.44421048199969,
+          "seed": 2
+        }
+      ],
+      "slug": "0p62"
+    },
+    {
+      "alpha": "0.65",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.06075747902927235,
+          "n": 3,
+          "sd": 0.0015195003693107305
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.09800882793458489,
+          "n": 3,
+          "sd": 0.005653093679895849
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.3311832046256132,
+          "n": 3,
+          "sd": 0.0038723626334583646
+        },
+        "forget_quality": {
+          "mean": 0.45949369386238004,
+          "n": 3,
+          "sd": 0.16359961069643908
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6449348134957952,
+          "n": 3,
+          "sd": 0.0014011896156387472
+        },
+        "model_utility": {
+          "mean": 0.538690775514032,
+          "n": 3,
+          "sd": 0.008811363252978321
+        },
+        "privleak": {
+          "mean": 2.924284450809649,
+          "n": 3,
+          "sd": 4.871467086344062
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.062196672986846425,
+          "forget_Q_A_Prob": 0.10232322477328125,
+          "forget_Q_A_ROUGE": 0.3307299401720426,
+          "forget_quality": 0.32218506015364723,
+          "forget_truth_ratio": 0.646085175990044,
+          "model_utility": 0.5443386777672266,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p65_S50_seed0_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": -0.7339393815498447,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.060907032173707513,
+          "forget_Q_A_Prob": 0.10009391110565048,
+          "forget_Q_A_ROUGE": 0.33526225244087693,
+          "forget_quality": 0.415788823500893,
+          "forget_truth_ratio": 0.6433743242065626,
+          "model_utility": 0.5285377028521,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p65_S50_seed1_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 1.0528233887059972,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.05916873192726312,
+          "forget_Q_A_Prob": 0.09160934792482295,
+          "forget_Q_A_ROUGE": 0.32755742126392007,
+          "forget_quality": 0.6405071979325999,
+          "forget_truth_ratio": 0.645344940290779,
+          "model_utility": 0.5431959459227693,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p65_S50_seed2_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 8.453969345272794,
+          "seed": 2
+        }
+      ],
+      "slug": "0p65"
+    },
+    {
+      "alpha": "0.66",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.06080771443174908,
+          "n": 3,
+          "sd": 0.002759796390643338
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.09723122491894173,
+          "n": 3,
+          "sd": 0.0062351043568435955
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.32787879971216555,
+          "n": 3,
+          "sd": 0.01103500566813016
+        },
+        "forget_quality": {
+          "mean": 0.4693247269059496,
+          "n": 3,
+          "sd": 0.20368390864978905
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6445101628228055,
+          "n": 3,
+          "sd": 0.0014423179803877192
+        },
+        "model_utility": {
+          "mean": 0.5399050952083773,
+          "n": 3,
+          "sd": 0.008558830030910437
+        },
+        "privleak": {
+          "mean": 3.361442367498299,
+          "n": 3,
+          "sd": 5.32414680092577
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.06316889041196186,
+          "forget_Q_A_Prob": 0.10215066214033869,
+          "forget_Q_A_ROUGE": 0.32301233273215557,
+          "forget_quality": 0.24405687970418488,
+          "forget_truth_ratio": 0.645969487716649,
+          "model_utility": 0.5438561225303217,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p66_S50_seed0_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": -0.6752242310258679,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.06148053198567714,
+          "forget_Q_A_Prob": 0.09932407474916545,
+          "forget_Q_A_ROUGE": 0.340510536741662,
+          "forget_quality": 0.5234101030810641,
+          "forget_truth_ratio": 0.6430854757020726,
+          "model_utility": 0.530084480603252,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p66_S50_seed1_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 1.3641149195012707,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.05777372089760823,
+          "forget_Q_A_Prob": 0.09021893786732108,
+          "forget_Q_A_ROUGE": 0.32011352966267914,
+          "forget_quality": 0.6405071979325999,
+          "forget_truth_ratio": 0.6444755250496947,
+          "model_utility": 0.545774682491558,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p66_S50_seed2_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 9.395436414019494,
+          "seed": 2
+        }
+      ],
+      "slug": "0p66"
+    },
+    {
+      "alpha": "0.68",
+      "metrics": {
+        "extraction_strength": {
+          "mean": 0.06008986997686483,
+          "n": 3,
+          "sd": 0.0014547201699378661
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.0957372428881475,
+          "n": 3,
+          "sd": 0.005777114839052603
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.3359006841375667,
+          "n": 3,
+          "sd": 0.008783566358295969
+        },
+        "forget_quality": {
+          "mean": 0.5473699309786404,
+          "n": 3,
+          "sd": 0.18451048184220745
+        },
+        "forget_truth_ratio": {
+          "mean": 0.644580714521385,
+          "n": 3,
+          "sd": 0.0029141304167659907
+        },
+        "model_utility": {
+          "mean": 0.5404151706688467,
+          "n": 3,
+          "sd": 0.008325614387990172
+        },
+        "privleak": {
+          "mean": 3.7837527748590545,
+          "n": 3,
+          "sd": 5.2013672822017165
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "rows": [
+        {
+          "extraction_strength": 0.06051862100081557,
+          "forget_Q_A_Prob": 0.09864029838179704,
+          "forget_Q_A_ROUGE": 0.34294575281785794,
+          "forget_quality": 0.4680435421303692,
+          "forget_truth_ratio": 0.647638405588784,
+          "model_utility": 0.5446064475737357,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p68_S50_seed0_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 0.5061650907240395,
+          "seed": 0
+        },
+        {
+          "extraction_strength": 0.061282029282240226,
+          "forget_Q_A_Prob": 0.09948708587067813,
+          "forget_Q_A_ROUGE": 0.3386968754156192,
+          "forget_quality": 0.415788823500893,
+          "forget_truth_ratio": 0.6418352958956841,
+          "model_utility": 0.5308268188649242,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p68_S50_seed1_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 1.0639590207019178,
+          "seed": 1
+        },
+        {
+          "extraction_strength": 0.0584689596475387,
+          "forget_Q_A_Prob": 0.08908434441196732,
+          "forget_Q_A_ROUGE": 0.32605942417922296,
+          "forget_quality": 0.7582774273046589,
+          "forget_truth_ratio": 0.6442684420796868,
+          "model_utility": 0.5458122455678803,
+          "path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p68_S50_seed2_review_extra_strength/checkpoint-50/evals/TOFU_SUMMARY.json",
+          "privleak": 9.781134213151207,
+          "seed": 2
+        }
+      ],
+      "slug": "0p68"
+    }
+  ],
+  "description": "Layer15 down_proj alpha frontier for K-FORGE-initialized NPO S50; combines previous 0.55/0.60/0.62/0.65 sweep points with new 0.56/0.58/0.66/0.68 review_extra_strength runs.",
+  "experiment": "layer15_extra_strength_frontier"
+}

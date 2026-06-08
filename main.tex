@@ -512,6 +512,29 @@ As a budget-sensitivity audit, we also repeated NPO with the conservative layer-
 \label{tab:budget_sensitivity_review}
 \end{table}
 
+We next tested split generalization by repeating the $S50$ NPO comparison on TOFU \texttt{forget05} and \texttt{forget01}. Table~\ref{tab:split_generalization_review} shows that the layer-15 $\alpha=0.62$ initializer improves Forget Quality on both alternate splits, while reducing extraction strength and privacy leakage relative to scratch. This is the cleanest generalization evidence for the conservative layer-15 operating point: unlike the budget audit, the alternate-split runs show simultaneous gains in forgetting quality and privacy-side metrics.
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Split} & \textbf{Init} & \textbf{FQ}$\uparrow$ & \textbf{FTR}$\uparrow$ & \textbf{Util.}$\uparrow$ & \textbf{Extr.}$\downarrow$ \\
+\midrule
+\multirow{2}{*}{\texttt{forget05}}
+  & scratch & 0.216\stderr{0.099} & \textbf{0.656}\stderr{0.004} & 0.544\stderr{0.008} & 0.063\stderr{0.002} \\
+  & K-FORGE $(.62)$ & \textbf{0.736}\stderr{0.120} & 0.640\stderr{0.018} & \textbf{0.559}\stderr{0.009} & \textbf{0.059}\stderr{0.001} \\
+\midrule
+\multirow{2}{*}{\texttt{forget01}}
+  & scratch & 0.521\stderr{0.100} & 0.650\stderr{0.007} & \textbf{0.579}\stderr{0.002} & 0.049\stderr{0.003} \\
+  & K-FORGE $(.62)$ & \textbf{0.817}\stderr{0.088} & \textbf{0.651}\stderr{0.006} & 0.567\stderr{0.001} & \textbf{0.040}\stderr{0.002} \\
+\bottomrule
+\end{tabular}
+\caption{Alternate-split generalization for layer-15 K-FORGE-initialized NPO at $S50$. Rows report mean $\pm$ sample standard deviation over seeds $0,1,2$. K-FORGE improves Forget Quality and lowers extraction strength on both smaller forget splits.}
+\label{tab:split_generalization_review}
+\end{table}
+
 \subsection{Late-layer placement and strength audit}
 \label{sec:layer_strength_audit}
 

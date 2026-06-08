@@ -485,6 +485,33 @@ K-FORGE improves every matched NPO budget (see Table~\ref{tab:init_forget10}). T
 
 Same yet slightly more uniform effect is observed for SimNPO. \textbf{K-FORGE} reduces forget probability at 50, 100, and 250 steps, while utility remains essentially unchanged. Our initializer is not tied to a specific preference loss: for NPO it gives a large early improvement, and for SimNPO it gives a steadier reduction in forget probability at negligible utility cost.
 
+As a budget-sensitivity audit, we also repeated NPO with the conservative layer-15 $\alpha=0.62$ initializer at $S\in\{25,100,250\}$ (Table~\ref{tab:budget_sensitivity_review}). This setting is not uniformly better than scratch: at the smallest budget both methods fail to achieve useful Forget Quality, and at later budgets scratch has higher Forget Quality. However, the initialized runs preserve the main privacy-side benefit of the K-FORGE operating region, with lower extraction strength than scratch at $S100$ and $S250$ and comparable utility. We therefore treat $\alpha=0.62$ as a conservative privacy-side audit point rather than the headline NPO initializer.
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Steps} & \textbf{Init} & \textbf{FQ}$\uparrow$ & \textbf{FTR}$\uparrow$ & \textbf{Util.}$\uparrow$ & \textbf{Extr.}$\downarrow$ \\
+\midrule
+\multirow{2}{*}{25}
+  & scratch & 0.000\stderr{0.000} & 0.700\stderr{0.005} & 0.320\stderr{0.036} & \textbf{0.072}\stderr{0.003} \\
+  & K-FORGE $(.62)$ & 0.000\stderr{0.000} & 0.608\stderr{0.004} & \textbf{0.472}\stderr{0.006} & 0.095\stderr{0.004} \\
+\midrule
+\multirow{2}{*}{100}
+  & scratch & \textbf{0.886}\stderr{0.119} & 0.628\stderr{0.002} & \textbf{0.569}\stderr{0.013} & 0.066\stderr{0.002} \\
+  & K-FORGE $(.62)$ & 0.168\stderr{0.174} & \textbf{0.640}\stderr{0.006} & 0.566\stderr{0.004} & \textbf{0.054}\stderr{0.002} \\
+\midrule
+\multirow{2}{*}{250}
+  & scratch & \textbf{0.729}\stderr{0.231} & 0.613\stderr{0.006} & \textbf{0.596}\stderr{0.007} & 0.064\stderr{0.004} \\
+  & K-FORGE $(.62)$ & 0.071\stderr{0.096} & \textbf{0.625}\stderr{0.010} & 0.585\stderr{0.003} & \textbf{0.053}\stderr{0.001} \\
+\bottomrule
+\end{tabular}
+\caption{Budget-sensitivity audit for conservative layer-15 K-FORGE-initialized NPO on TOFU \texttt{forget10}. Rows report mean $\pm$ sample standard deviation over seeds $0,1,2$. The $\alpha=0.62$ point lowers extraction at larger budgets but does not dominate scratch on Forget Quality.}
+\label{tab:budget_sensitivity_review}
+\end{table}
+
 \subsection{Late-layer placement and strength audit}
 \label{sec:layer_strength_audit}
 

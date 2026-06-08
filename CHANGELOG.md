@@ -1,5 +1,24 @@
 # K-FORGE Implementation Changelog
 
+## 2026-06-08
+
+### Review Experiment Results Integrated
+
+- Added manuscript results for the layer-15 `alpha=0.62` budget-sensitivity
+  audit on TOFU `forget10`, comparing scratch vs. K-FORGE-initialized NPO at
+  budgets `S25`, `S100`, and `S250` over seeds `0,1,2`.
+- Added manuscript results for alternate-split generalization on TOFU
+  `forget05` and `forget01`, comparing scratch vs. K-FORGE-initialized NPO at
+  `S50` over seeds `0,1,2`.
+- Recorded aggregate JSON artifacts for these review audits under
+  `open-unlearning/logs/review_budget_sweep/` and
+  `open-unlearning/logs/review_split_generalization/`.
+- Paper-safe interpretation: the conservative layer-15 `alpha=0.62` point is a
+  privacy-side audit setting rather than the headline NPO initializer in the
+  `forget10` budget sweep, while the alternate-split runs give cleaner
+  generalization evidence with improved Forget Quality and lower extraction on
+  both smaller forget splits.
+
 ## 2026-05-24
 
 ### Manuscript Updated With Latest 3B Results

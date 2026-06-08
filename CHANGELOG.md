@@ -17,6 +17,10 @@
   `mlp.down_proj`, `mlp.up_proj`, `mlp.gate_proj`, and `self_attn.o_proj` over
   three seeds. The down-projection target remains the safest setting, with the
   lowest privacy leakage/extraction and the best aggregate Forget Quality.
+- Added the completed budget-dependent direct-relearning audit for layer-15
+  `alpha=0.62` at `S25`, `S100`, and `S250`. The `S100`/`S250` checkpoints show
+  lower extraction recovery than the undertrained `S25` checkpoint, but direct
+  forget-set fine-tuning still recovers answer probability.
 - Paper-safe interpretation: the conservative layer-15 `alpha=0.62` point is a
   privacy-side audit setting rather than the headline NPO initializer in the
   `forget10` budget sweep, while the alternate-split runs give cleaner

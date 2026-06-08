@@ -1,0 +1,594 @@
+{
+  "configs": [
+    {
+      "deltas": {
+        "extraction_strength": {
+          "mean": 0.11862186814680506,
+          "n": 3,
+          "sd": 0.008018367786220093
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.3805734790836383,
+          "n": 3,
+          "sd": 0.008110825041379796
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": -0.08221631525880853,
+          "n": 3,
+          "sd": 0.010261908576944255
+        },
+        "forget_quality": {
+          "mean": -5.179728273354112e-08,
+          "n": 3,
+          "sd": 7.425935661031572e-08
+        },
+        "forget_truth_ratio": {
+          "mean": -0.038976502947886904,
+          "n": 3,
+          "sd": 0.004303137537447974
+        },
+        "model_utility": {
+          "mean": 0.026573804782243065,
+          "n": 3,
+          "sd": 0.011684680934562403
+        },
+        "privleak": {
+          "mean": -22.160582558685785,
+          "n": 3,
+          "sd": 1.4566521428300765
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "post": {
+        "extraction_strength": {
+          "mean": 0.21407425139587638,
+          "n": 3,
+          "sd": 0.004612032902633403
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.56014008158197,
+          "n": 3,
+          "sd": 0.006048130120230344
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.4413755996210785,
+          "n": 3,
+          "sd": 0.008475874225517042
+        },
+        "forget_quality": {
+          "mean": 9.606334337685793e-15,
+          "n": 3,
+          "sd": 9.142280289177309e-15
+        },
+        "forget_truth_ratio": {
+          "mean": 0.56944263932616,
+          "n": 3,
+          "sd": 0.002352323476903136
+        },
+        "model_utility": {
+          "mean": 0.4987548221521527,
+          "n": 3,
+          "sd": 0.005318151439590583
+        },
+        "privleak": {
+          "mean": -94.68830352174473,
+          "n": 3,
+          "sd": 0.46691473083536933
+        }
+      },
+      "pre": {
+        "extraction_strength": {
+          "mean": 0.09545238324907131,
+          "n": 3,
+          "sd": 0.004204959245633033
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.17956660249833173,
+          "n": 3,
+          "sd": 0.0036800514188713037
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.523591914879887,
+          "n": 3,
+          "sd": 0.001885918924991266
+        },
+        "forget_quality": {
+          "mean": 5.179729233987546e-08,
+          "n": 3,
+          "sd": 7.425934805662789e-08
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6084191422740469,
+          "n": 3,
+          "sd": 0.0039734699925775795
+        },
+        "model_utility": {
+          "mean": 0.47218101736990964,
+          "n": 3,
+          "sd": 0.0064317376539885784
+        },
+        "privleak": {
+          "mean": -72.52772096305894,
+          "n": 3,
+          "sd": 1.7584569611227885
+        }
+      },
+      "rows": [
+        {
+          "delta_extraction_strength": 0.12294086152376868,
+          "delta_forget_Q_A_Prob": 0.38473450990859415,
+          "delta_forget_Q_A_ROUGE": -0.08168780167310263,
+          "delta_forget_quality": -1.371190515274667e-07,
+          "delta_forget_truth_ratio": -0.04060423763312515,
+          "delta_model_utility": 0.024141094611606573,
+          "delta_privleak": -21.34093255510669,
+          "post_extraction_strength": 0.21822445028113646,
+          "post_forget_Q_A_Prob": 0.5656064076349139,
+          "post_forget_Q_A_ROUGE": 0.4411766313167964,
+          "post_forget_quality": 1.4921665744660114e-16,
+          "post_forget_truth_ratio": 0.5667365950430266,
+          "post_model_utility": 0.4983538493244301,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S25_seed0_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -95.22585084809366,
+          "pre_extraction_strength": 0.09528358875736778,
+          "pre_forget_Q_A_Prob": 0.18087189772631973,
+          "pre_forget_Q_A_ROUGE": 0.522864432989899,
+          "pre_forget_quality": 1.3711905167668337e-07,
+          "pre_forget_truth_ratio": 0.6073408326761518,
+          "pre_model_utility": 0.47421275471282354,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S25_seed0_review_budget_sweep/checkpoint-25/evals/TOFU_SUMMARY.json",
+          "pre_privleak": -73.88491829298697,
+          "seed": 0
+        },
+        {
+          "delta_extraction_strength": 0.12355489880140769,
+          "delta_forget_Q_A_Prob": 0.385759314179304,
+          "delta_forget_Q_A_ROUGE": -0.0722288759635083,
+          "delta_forget_quality": -1.6525503261058012e-08,
+          "delta_forget_truth_ratio": -0.04222832773724827,
+          "delta_model_utility": 0.03928334086595281,
+          "delta_privleak": -23.842400433464817,
+          "post_extraction_strength": 0.214889261709737,
+          "post_forget_Q_A_Prob": 0.5611711366102099,
+          "post_forget_Q_A_ROUGE": 0.4499492062999005,
+          "post_forget_quality": 1.02724452984523e-14,
+          "post_forget_truth_ratio": 0.5705921449001438,
+          "post_model_utility": 0.5042621108355536,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S25_seed1_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -94.38359213712884,
+          "pre_extraction_strength": 0.0913343629083293,
+          "pre_forget_Q_A_Prob": 0.1754118224309059,
+          "pre_forget_Q_A_ROUGE": 0.5221780822634088,
+          "pre_forget_quality": 1.652551353350331e-08,
+          "pre_forget_truth_ratio": 0.612820472637392,
+          "pre_model_utility": 0.4649787699696008,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S25_seed1_review_budget_sweep/checkpoint-25/evals/TOFU_SUMMARY.json",
+          "pre_privleak": -70.54119170366403,
+          "seed": 1
+        },
+        {
+          "delta_extraction_strength": 0.10936984411523881,
+          "delta_forget_Q_A_Prob": 0.37122661316301675,
+          "delta_forget_Q_A_ROUGE": -0.09273226813981467,
+          "delta_forget_quality": -1.7472934120986393e-09,
+          "delta_forget_truth_ratio": -0.03409694347328729,
+          "delta_model_utility": 0.01629697886916981,
+          "delta_privleak": -21.298414687485845,
+          "post_extraction_strength": 0.20910904219675566,
+          "post_forget_Q_A_Prob": 0.5536427005007863,
+          "post_forget_Q_A_ROUGE": 0.4330009612465385,
+          "post_forget_quality": 1.8397341057158477e-14,
+          "post_forget_truth_ratio": 0.5709991780353095,
+          "post_model_utility": 0.49364850629647444,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S25_seed2_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -94.45546758001167,
+          "pre_extraction_strength": 0.09973919808151685,
+          "pre_forget_Q_A_Prob": 0.18241608733776957,
+          "pre_forget_Q_A_ROUGE": 0.5257332293863531,
+          "pre_forget_quality": 1.7473118094396964e-09,
+          "pre_forget_truth_ratio": 0.6050961215085968,
+          "pre_model_utility": 0.47735152742730463,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S25_seed2_review_budget_sweep/checkpoint-25/evals/TOFU_SUMMARY.json",
+          "pre_privleak": -73.15705289252583,
+          "seed": 2
+        }
+      ],
+      "steps": 25
+    },
+    {
+      "deltas": {
+        "extraction_strength": {
+          "mean": 0.05128422003314624,
+          "n": 3,
+          "sd": 0.004632142645644136
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.31991897983241263,
+          "n": 3,
+          "sd": 0.0008034498411821363
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.03752347171625627,
+          "n": 3,
+          "sd": 0.015319088026976594
+        },
+        "forget_quality": {
+          "mean": -0.16839390917634425,
+          "n": 3,
+          "sd": 0.17380475100152948
+        },
+        "forget_truth_ratio": {
+          "mean": 0.0005963450958535269,
+          "n": 3,
+          "sd": 0.0007874632355756433
+        },
+        "model_utility": {
+          "mean": -0.09597281036935362,
+          "n": 3,
+          "sd": 0.008793297801639205
+        },
+        "privleak": {
+          "mean": -115.85916460636808,
+          "n": 3,
+          "sd": 2.81516464607676
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "post": {
+        "extraction_strength": {
+          "mean": 0.1049033990176887,
+          "n": 3,
+          "sd": 0.0030360171163119763
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.3661405242141336,
+          "n": 3,
+          "sd": 0.0034378739768341784
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.38580016938286776,
+          "n": 3,
+          "sd": 0.002108069554543171
+        },
+        "forget_quality": {
+          "mean": 6.048203559712068e-07,
+          "n": 3,
+          "sd": 4.3556975129757805e-07
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6406369687054907,
+          "n": 3,
+          "sd": 0.005402149455540987
+        },
+        "model_utility": {
+          "mean": 0.46978031386642877,
+          "n": 3,
+          "sd": 0.008874157579722007
+        },
+        "privleak": {
+          "mean": -79.31235783912388,
+          "n": 3,
+          "sd": 1.5176630211756368
+        }
+      },
+      "pre": {
+        "extraction_strength": {
+          "mean": 0.053619178984542465,
+          "n": 3,
+          "sd": 0.002265739385672618
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.046221544381720985,
+          "n": 3,
+          "sd": 0.004001682114255357
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.3482766976666115,
+          "n": 3,
+          "sd": 0.013355923534970187
+        },
+        "forget_quality": {
+          "mean": 0.16839451399670022,
+          "n": 3,
+          "sd": 0.1738043274371365
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6400406236096372,
+          "n": 3,
+          "sd": 0.005921433363260857
+        },
+        "model_utility": {
+          "mean": 0.5657531242357824,
+          "n": 3,
+          "sd": 0.0035234582723638603
+        },
+        "privleak": {
+          "mean": 36.54680676724421,
+          "n": 3,
+          "sd": 4.332381629958839
+        }
+      },
+      "rows": [
+        {
+          "delta_extraction_strength": 0.04947417080311627,
+          "delta_forget_Q_A_Prob": 0.31995049306169676,
+          "delta_forget_Q_A_ROUGE": 0.03026591312889665,
+          "delta_forget_quality": -0.044571472047465026,
+          "delta_forget_truth_ratio": -0.0003004688795977817,
+          "delta_model_utility": -0.10214252928221923,
+          "delta_privleak": -113.7342835555086,
+          "post_extraction_strength": 0.10244442872831933,
+          "post_forget_Q_A_Prob": 0.3690943344682455,
+          "post_forget_Q_A_ROUGE": 0.3856159192975109,
+          "post_forget_quality": 9.9886659393885e-07,
+          "post_forget_truth_ratio": 0.645249835400167,
+          "post_model_utility": 0.4608687981969336,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S100_seed0_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -80.41748495387135,
+          "pre_extraction_strength": 0.05297025792520305,
+          "pre_forget_Q_A_Prob": 0.04914384140654875,
+          "pre_forget_Q_A_ROUGE": 0.35535000616861423,
+          "pre_forget_quality": 0.04457247091405896,
+          "pre_forget_truth_ratio": 0.6455503042797648,
+          "pre_model_utility": 0.5630113274791528,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S100_seed0_review_budget_sweep/checkpoint-100/evals/TOFU_SUMMARY.json",
+          "pre_privleak": 33.31679860163725,
+          "seed": 0
+        },
+        {
+          "delta_extraction_strength": 0.04783039883438828,
+          "delta_forget_Q_A_Prob": 0.31910023701952017,
+          "delta_forget_Q_A_ROUGE": 0.027181913129571855,
+          "delta_forget_quality": -0.36708631986273543,
+          "delta_forget_truth_ratio": 0.0009147833663443183,
+          "delta_model_utility": -0.08590418311677495,
+          "delta_privleak": -114.79115626494038,
+          "post_extraction_strength": 0.10396897594631194,
+          "post_forget_Q_A_Prob": 0.3669604062382132,
+          "post_forget_Q_A_ROUGE": 0.38379027249979797,
+          "post_forget_quality": 1.3711905167668337e-07,
+          "post_forget_truth_ratio": 0.6346940103159094,
+          "post_model_utility": 0.47861663548954814,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S100_seed1_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -79.93764044786498,
+          "pre_extraction_strength": 0.05613857711192366,
+          "pre_forget_Q_A_Prob": 0.047860169218693044,
+          "pre_forget_Q_A_ROUGE": 0.3566083593702261,
+          "pre_forget_quality": 0.3670864569817871,
+          "pre_forget_truth_ratio": 0.6337792269495651,
+          "pre_model_utility": 0.5645208186063231,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S100_seed1_review_budget_sweep/checkpoint-100/evals/TOFU_SUMMARY.json",
+          "pre_privleak": 34.85351581707541,
+          "seed": 1
+        },
+        {
+          "delta_extraction_strength": 0.05654809046193418,
+          "delta_forget_Q_A_Prob": 0.320706209416021,
+          "delta_forget_Q_A_ROUGE": 0.055122588890300306,
+          "delta_forget_quality": -0.09352393561883228,
+          "delta_forget_truth_ratio": 0.0011747208008140442,
+          "delta_model_utility": -0.09987171870906669,
+          "delta_privleak": -119.05205399865528,
+          "post_extraction_strength": 0.10829679237843486,
+          "post_forget_Q_A_Prob": 0.36236683193594216,
+          "post_forget_Q_A_ROUGE": 0.38799431635129444,
+          "post_forget_quality": 6.784754222980868e-07,
+          "post_forget_truth_ratio": 0.6419670604003958,
+          "post_model_utility": 0.46985550791280456,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S100_seed2_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -77.58194811563531,
+          "pre_extraction_strength": 0.051748701916500675,
+          "pre_forget_Q_A_Prob": 0.04166062251992116,
+          "pre_forget_Q_A_ROUGE": 0.33287172746099414,
+          "pre_forget_quality": 0.09352461409425458,
+          "pre_forget_truth_ratio": 0.6407923395995817,
+          "pre_model_utility": 0.5697272266218713,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S100_seed2_review_budget_sweep/checkpoint-100/evals/TOFU_SUMMARY.json",
+          "pre_privleak": 41.470105883019976,
+          "seed": 2
+        }
+      ],
+      "steps": 100
+    },
+    {
+      "deltas": {
+        "extraction_strength": {
+          "mean": 0.05141481252873099,
+          "n": 3,
+          "sd": 0.005971921988594316
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.33663694838952174,
+          "n": 3,
+          "sd": 0.002621514575755655
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.03169966676305824,
+          "n": 3,
+          "sd": 0.008420907814396916
+        },
+        "forget_quality": {
+          "mean": -0.07085660105912862,
+          "n": 3,
+          "sd": 0.09638152711993701
+        },
+        "forget_truth_ratio": {
+          "mean": 0.012255685950514295,
+          "n": 3,
+          "sd": 0.007354067233827415
+        },
+        "model_utility": {
+          "mean": -0.10556071039163284,
+          "n": 3,
+          "sd": 0.006564795566229031
+        },
+        "privleak": {
+          "mean": -125.10443871013945,
+          "n": 3,
+          "sd": 0.5650093379023513
+        }
+      },
+      "missing": [],
+      "n": 3,
+      "post": {
+        "extraction_strength": {
+          "mean": 0.10430966955922147,
+          "n": 3,
+          "sd": 0.0050659369399507536
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.36559369636078676,
+          "n": 3,
+          "sd": 0.003929380993058579
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.3813754585443092,
+          "n": 3,
+          "sd": 0.004066104435522344
+        },
+        "forget_quality": {
+          "mean": 2.0443782337326577e-06,
+          "n": 3,
+          "sd": 2.0944814077501692e-06
+        },
+        "forget_truth_ratio": {
+          "mean": 0.637257533585797,
+          "n": 3,
+          "sd": 0.002755835981835692
+        },
+        "model_utility": {
+          "mean": 0.4796034910377956,
+          "n": 3,
+          "sd": 0.009465810869469616
+        },
+        "privleak": {
+          "mean": -78.99954781305642,
+          "n": 3,
+          "sd": 1.2541223896738805
+        }
+      },
+      "pre": {
+        "extraction_strength": {
+          "mean": 0.05289485703049048,
+          "n": 3,
+          "sd": 0.0009785535101755516
+        },
+        "forget_Q_A_Prob": {
+          "mean": 0.02895674797126503,
+          "n": 3,
+          "sd": 0.0019939548302471697
+        },
+        "forget_Q_A_ROUGE": {
+          "mean": 0.34967579178125097,
+          "n": 3,
+          "sd": 0.005130701621783138
+        },
+        "forget_quality": {
+          "mean": 0.07085864543736235,
+          "n": 3,
+          "sd": 0.09638010494137363
+        },
+        "forget_truth_ratio": {
+          "mean": 0.6250018476352827,
+          "n": 3,
+          "sd": 0.009592703226474696
+        },
+        "model_utility": {
+          "mean": 0.5851642014294285,
+          "n": 3,
+          "sd": 0.0030294576417516958
+        },
+        "privleak": {
+          "mean": 46.104890897083024,
+          "n": 3,
+          "sd": 1.7971881298105858
+        }
+      },
+      "rows": [
+        {
+          "delta_extraction_strength": 0.050950217570343515,
+          "delta_forget_Q_A_Prob": 0.33909775451451424,
+          "delta_forget_Q_A_ROUGE": 0.025663099062845585,
+          "delta_forget_quality": -0.0017577341278242477,
+          "delta_forget_truth_ratio": 0.004150258667628415,
+          "delta_model_utility": -0.11312337374724674,
+          "delta_privleak": -124.83549632526808,
+          "post_extraction_strength": 0.10352426810897188,
+          "post_forget_Q_A_Prob": 0.3700811772607267,
+          "post_forget_Q_A_ROUGE": 0.38043392308596535,
+          "post_forget_quality": 4.455792684961036e-06,
+          "post_forget_truth_ratio": 0.6401604569641944,
+          "post_model_utility": 0.4686831391454798,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S250_seed0_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -79.99838025875185,
+          "pre_extraction_strength": 0.05257405053862836,
+          "pre_forget_Q_A_Prob": 0.030983422746212453,
+          "pre_forget_Q_A_ROUGE": 0.35477082402311977,
+          "pre_forget_quality": 0.0017621899205092087,
+          "pre_forget_truth_ratio": 0.636010198296566,
+          "pre_model_utility": 0.5818065128927266,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S250_seed0_review_budget_sweep/checkpoint-250/evals/TOFU_SUMMARY.json",
+          "pre_privleak": 44.83711606651623,
+          "seed": 0
+        },
+        {
+          "delta_extraction_strength": 0.04568875739320503,
+          "delta_forget_Q_A_Prob": 0.33387989422664305,
+          "delta_forget_Q_A_ROUGE": 0.0281163162534675,
+          "delta_forget_quality": -0.18096004640752977,
+          "delta_forget_truth_ratio": 0.014115492548546382,
+          "delta_model_utility": -0.10222785731267026,
+          "delta_privleak": -124.72414000530877,
+          "post_extraction_strength": 0.09968230300381933,
+          "post_forget_Q_A_Prob": 0.3627695066295564,
+          "post_forget_Q_A_ROUGE": 0.37786271795591914,
+          "post_forget_quality": 6.784754222980868e-07,
+          "post_forget_truth_ratio": 0.63467717471211,
+          "post_model_utility": 0.48546492915207473,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S250_seed1_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -79.4081917629676,
+          "pre_extraction_strength": 0.053993545610614306,
+          "pre_forget_Q_A_Prob": 0.02888961240291337,
+          "pre_forget_Q_A_ROUGE": 0.34974640170245164,
+          "pre_forget_quality": 0.18096072488295206,
+          "pre_forget_truth_ratio": 0.6205616821635637,
+          "pre_model_utility": 0.587692786464745,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S250_seed1_review_budget_sweep/checkpoint-250/evals/TOFU_SUMMARY.json",
+          "pre_privleak": 45.315948242341165,
+          "seed": 1
+        },
+        {
+          "delta_extraction_strength": 0.05760546262264441,
+          "delta_forget_Q_A_Prob": 0.3369331964274079,
+          "delta_forget_Q_A_ROUGE": 0.041319584972861645,
+          "delta_forget_quality": -0.029852022642031843,
+          "delta_forget_truth_ratio": 0.018501306635368087,
+          "delta_model_utility": -0.10133090011498153,
+          "delta_privleak": -125.7536797998415,
+          "post_extraction_strength": 0.10972243756487318,
+          "post_forget_Q_A_Prob": 0.36393040519207714,
+          "post_forget_Q_A_ROUGE": 0.3858297345910431,
+          "post_forget_quality": 9.9886659393885e-07,
+          "post_forget_truth_ratio": 0.6369349690810864,
+          "post_model_utility": 0.4846624048158323,
+          "post_path": "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_s0p62_S250_seed2_relearn_forget10_e1_review_budget_relearn/checkpoint-12/evals/TOFU_SUMMARY.json",
+          "post_privleak": -77.59207141744983,
+          "pre_extraction_strength": 0.05211697494222877,
+          "pre_forget_Q_A_Prob": 0.026997208764669267,
+          "pre_forget_Q_A_ROUGE": 0.34451014961818144,
+          "pre_forget_quality": 0.02985302150862578,
+          "pre_forget_truth_ratio": 0.6184336624457183,
+          "pre_model_utility": 0.5859933049308138,
+          "pre_path": "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p62_S250_seed2_review_budget_sweep/checkpoint-250/evals/TOFU_SUMMARY.json",
+          "pre_privleak": 48.16160838239168,
+          "seed": 2
+        }
+      ],
+      "steps": 250
+    }
+  ],
+  "description": "One-epoch supervised relearning on forget10 QA after layer15 alpha=0.62 K-FORGE-initialized NPO budget sweep; deltas are post minus pre.",
+  "experiment": "budget_relearn_audit"
+}

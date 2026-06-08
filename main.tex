@@ -668,6 +668,25 @@ $\boldsymbol{\alpha}$ & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROU
 \end{tabular}
 \end{table}
 
+We further repeated the direct-relearning audit over the conservative layer-15 $\alpha=0.62$ budget sweep. Table~\ref{tab:budget_relearn_review} shows that the weakest $S25$ checkpoint is the easiest to recover in extraction strength, whereas the $S100$ and $S250$ checkpoints have nearly identical post-relearning extraction recovery. Longer downstream NPO therefore does not remove direct relearning vulnerability, but it does reduce the extraction-strength recovery relative to the undertrained $S25$ case. This reinforces our framing of relearning as an attack-side stress test rather than a static TOFU metric.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Budget-dependent relearning audit for layer-15 $\alpha=0.62$ K-FORGE-initialized NPO. Values are paired post-minus-pre changes after one epoch of supervised forget-set fine-tuning, averaged over seeds $0,1,2$. Lower recovery is better.}
+\label{tab:budget_relearn_review}
+\begin{tabular}{cccc}
+\toprule
+\textbf{NPO steps} & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROUGE $\downarrow$ & $\Delta$ Extraction $\downarrow$ \\
+\midrule
+25  & $+0.381\,\pm\,0.008$ & $-0.082\,\pm\,0.010$ & $+0.119\,\pm\,0.008$ \\
+100 & $+0.320\,\pm\,0.001$ & $+0.038\,\pm\,0.015$ & $+0.051\,\pm\,0.005$ \\
+250 & $+0.337\,\pm\,0.003$ & $+0.032\,\pm\,0.008$ & $+0.051\,\pm\,0.006$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{K-FORGE compute overhead.}
 The proposed method poses additional computation overhead due to the need for gradient collection on the calibration data, which we study and discuss in this section. 
 

@@ -13,6 +13,10 @@
 - Recorded aggregate JSON artifacts for these review audits under
   `open-unlearning/logs/review_budget_sweep/` and
   `open-unlearning/logs/review_split_generalization/`.
+- Added the completed target-module audit for layer-15 `alpha=0.62`, comparing
+  `mlp.down_proj`, `mlp.up_proj`, `mlp.gate_proj`, and `self_attn.o_proj` over
+  three seeds. The down-projection target remains the safest setting, with the
+  lowest privacy leakage/extraction and the best aggregate Forget Quality.
 - Paper-safe interpretation: the conservative layer-15 `alpha=0.62` point is a
   privacy-side audit setting rather than the headline NPO initializer in the
   `forget10` budget sweep, while the alternate-split runs give cleaner

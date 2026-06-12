@@ -1,5 +1,19 @@
 # K-FORGE Implementation Changelog
 
+## 2026-06-12
+
+### Finalized Frontier And Relearning Audit Artifacts
+
+- Finalized compact aggregate summaries for the extended layer-15 strength frontier
+  (`alpha=0.55,0.56,0.58,0.60,0.62,0.65,0.66,0.68`, seeds `0,1,2`) and the
+  layer-15 budget-relearning audit (`S25/S100/S250`, seeds `0,1,2`).
+- Stored the durable aggregate JSONs under
+  `open-unlearning/logs/review_extra_strength/` and
+  `open-unlearning/logs/review_budget_relearn/`.
+- Paper-safe takeaway: the extra-strength frontier remains a broad plateau,
+  while budget relearning still recovers answer probability but shows lower
+  extraction recovery at `S100`/`S250` than at `S25`.
+
 ## 2026-06-08
 
 ### Review Experiment Results Integrated
@@ -21,6 +35,11 @@
   `alpha=0.62` at `S25`, `S100`, and `S250`. The `S100`/`S250` checkpoints show
   lower extraction recovery than the undertrained `S25` checkpoint, but direct
   forget-set fine-tuning still recovers answer probability.
+- Expanded the layer-15 strength frontier with additional `alpha` points
+  `0.56`, `0.58`, `0.66`, and `0.68` over seeds `0,1,2`. The extended frontier
+  is a broad plateau: utility and extraction are nearly unchanged across the
+  range, privacy leakage is lowest near `0.65`, and mean Forget Quality peaks at
+  `0.68` within large seed variance.
 - Paper-safe interpretation: the conservative layer-15 `alpha=0.62` point is a
   privacy-side audit setting rather than the headline NPO initializer in the
   `forget10` budget sweep, while the alternate-split runs give cleaner

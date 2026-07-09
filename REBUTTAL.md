@@ -10,24 +10,24 @@ We should avoid saying "better unlearning" without qualification. The strongest 
 
 All TOFU numbers below are means over three seeds unless stated otherwise. We report standard deviations in the revised paper tables, but omit them here for readability.
 
-For a metric value \(x_i\) over \(n\) seeds,
+For a metric value $x_i$ over $n$ seeds,
 
-\[
+$$
 \bar{x}=\frac{1}{n}\sum_{i=1}^n x_i,\qquad
 s=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i-\bar{x})^2}.
-\]
+$$
 
-For the compute-matched comparison requested by R1, we charge K-FORGE for its measured one-time setup time. Let \(t_{\rm KF}\) be the wall-clock time to estimate Fisher factors, compute the edit, and write the initialized checkpoint. Let \(\bar{t}_{\rm step}\) be the measured scratch training time per optimizer step. We compare a K-FORGE-initialized run of \(T\) steps against a scratch run with
+For the compute-matched comparison requested by R1, we charge K-FORGE for its measured one-time setup time. Let $t_{\rm KF}$ be the wall-clock time to estimate Fisher factors, compute the edit, and write the initialized checkpoint. Let $\bar{t}_{\rm step}$ be the measured scratch training time per optimizer step. We compare a K-FORGE-initialized run of $T$ steps against a scratch run with
 
-\[
+$$
 T_{\rm cm}=T+\left\lceil \frac{t_{\rm KF}}{\bar{t}_{\rm step}}\right\rceil
-\]
+$$
 
-steps. In our Llama-3.2-1B setup this rounds to scratch budgets \(55,105,255\) for K-FORGE budgets \(50,100,250\).
+steps. In our Llama-3.2-1B setup this rounds to scratch budgets $55,105,255$ for K-FORGE budgets $50,100,250$.
 
 We report relative forget-probability reduction and utility change as
 
-\[
+$$
 \operatorname{RelRed}_{\rm FP}
 =
 \frac{\operatorname{FP}_{\rm scratch}(T_{\rm cm})-\operatorname{FP}_{\rm KF}(T)}
@@ -36,15 +36,15 @@ We report relative forget-probability reduction and utility change as
 \Delta U
 =
 U_{\rm KF}(T)-U_{\rm scratch}(T_{\rm cm}).
-\]
+$$
 
 For relearning robustness, we use
 
-\[
+$$
 \Delta_{\rm relearn}(m)=m_{\rm post}-m_{\rm pre},\qquad
 \operatorname{PostGap}(m)=
 \frac{m_{\rm scratch,post}-m_{\rm KF,post}}{m_{\rm scratch,post}}.
-\]
+$$
 
 For forgetting metrics such as Forget Q/A Probability, extraction, and forget ROUGE, lower is better. For model utility and retain ROUGE, higher is better.
 
@@ -54,18 +54,18 @@ For forgetting metrics such as Forget Q/A Probability, extraction, and forget RO
 
 We agree that step-matched comparisons alone are incomplete. K-FORGE is a one-time curvature computation, so the relevant question is whether the initialization still helps after charging the method for Fisher estimation, factorizations, and checkpoint writing. We have added both an overhead table and a compute-matched comparison.
 
-For one edited `mlp.down_proj` layer with \(B_{\rm cal}=32\) forget and retain batches, the measured setup cost is modest relative to even a 50-step run:
+For one edited `mlp.down_proj` layer with $B_{\rm cal}=32$ forget and retain batches, the measured setup cost is modest relative to even a 50-step run:
 
-| Model | Edited \(W\) | Calibration | Time, calib./total | FLOPs | vs. 50-step NPO/SimNPO |
+| Model | Edited W | Calibration | Time, calib./total | FLOPs | vs. 50-step NPO/SimNPO |
 |---|---:|---:|---:|---:|---:|
-| Llama-3.2-1B | \(2048\times8192\) | 512 ex. / 18.6k tok. | 18 / 61 s | \(1.44\times 10^{14}\) | 8.9% / 9.7% |
-| Llama-3.2-3B | \(3072\times8192\) | 512 ex. / 18.6k tok. | 51 / 104 s | \(3.65\times 10^{14}\) | 10.0% / 10.9% |
+| Llama-3.2-1B | 2048 x 8192 | 512 ex. / 18.6k tok. | 18 / 61 s | $1.44\times 10^{14}$ | 8.9% / 9.7% |
+| Llama-3.2-3B | 3072 x 8192 | 512 ex. / 18.6k tok. | 51 / 104 s | $3.65\times 10^{14}$ | 10.0% / 10.9% |
 
 The cost scales with the edited matrices and calibration size, but it is not paid at every downstream step. It is also reusable across downstream step budgets and optimizer seeds for the same edit configuration.
 
-After charging this setup cost, K-FORGE still improves the 1B TOFU `forget10` runs. We compare K-FORGE at \(T\in\{50,100,250\}\) to scratch at \(T_{\rm cm}\in\{55,105,255\}\):
+After charging this setup cost, K-FORGE still improves the 1B TOFU `forget10` runs. We compare K-FORGE at $T\in\{50,100,250\}$ to scratch at $T_{\rm cm}\in\{55,105,255\}$:
 
-| Method | Budget | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | \(\Delta U\) |
+| Method | Budget | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | Delta U |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | NPO | 50 vs. 55 | 0.0783 | **0.0454** | 42.0% | 0.5224 | **0.5738** | +0.0514 |
 | NPO | 100 vs. 105 | 0.0411 | **0.0308** | 25.1% | 0.5712 | **0.5932** | +0.0220 |
@@ -80,7 +80,7 @@ Thus, the conclusion does not rely on giving K-FORGE a free setup. For NPO, the 
 
 We agree this was a real limitation in the submitted version. We expanded the Llama-3.2-3B sanity check from two seeds to three seeds and include the full 50/100/250-step comparison:
 
-| Method | Budget | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | \(\Delta U\) |
+| Method | Budget | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | Delta U |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | NPO | 50 | 0.0863 | **0.0649** | 24.8% | 0.5895 | **0.6393** | +0.0498 |
 | NPO | 100 | **0.0342** | 0.0388 | -13.5% | 0.6480 | **0.6700** | +0.0220 |
@@ -113,14 +113,14 @@ The compute-matched table above is the main quantitative support for this narrow
 
 This criticism is fair. We completed a relearning audit and will remove future-tense language from the main text. The audit takes matched post-unlearning models and then performs one epoch of supervised fine-tuning on held-out forget examples. The result is not that K-FORGE is recovery-proof; relearning increases forget-set behavior for both methods. The result is that the recovered forget-set behavior remains substantially lower for the K-FORGE-initialized run:
 
-| Init | FP pre | FP post | \(\Delta\) FP | Extraction pre | Extraction post |
+| Init | FP pre | FP post | Delta FP | Extraction pre | Extraction post |
 |---|---:|---:|---:|---:|---:|
 | Scratch | 0.2795 | 0.7135 | +0.4340 | 0.0938 | 0.2972 |
 | K-FORGE | **0.0980** | **0.4154** | **+0.3174** | **0.0608** | **0.1275** |
 
 After relearning, K-FORGE has 41.8% lower Forget Q/A Probability and 57.1% lower extraction than scratch:
 
-\[
+$$
 \operatorname{PostGap}_{\rm FP}
 =
 \frac{0.7135-0.4154}{0.7135}
@@ -130,7 +130,7 @@ After relearning, K-FORGE has 41.8% lower Forget Q/A Probability and 57.1% lower
 =
 \frac{0.2972-0.1275}{0.2972}
 =57.1\%.
-\]
+$$
 
 The limitation is that post-relearning utility is lower for K-FORGE than for scratch in this audit. We will report this as a robustness result with a clear trade-off, not as a complete solution to recovery attacks. We will also remove or clearly label quantization-revert as out of scope unless the corresponding audit is completed before the final response.
 

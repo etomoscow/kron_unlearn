@@ -91,7 +91,18 @@ We agree this was a real limitation in the submitted version. We expanded the Ll
 
 This result is more nuanced than the 1B result: SimNPO transfers cleanly at 3B, while NPO mainly benefits at early steps. We will reflect that in the claim rather than presenting this as broad scaling evidence.
 
-We also started a non-Llama Qwen2.5-1.5B pilot in response to this comment. The retain/full/K-FORGE stages have completed and downstream SimNPO runs are in progress. We will include the result only if all seeds finish and pass evaluation before the rebuttal deadline; otherwise, we will leave non-Llama model-family generality as an explicit limitation rather than overclaiming.
+More importantly, we completed a three-seed non-Llama evaluation on Gemma-3-1B. We selected the K-FORGE strength before downstream training using a one-shot grid: among the points whose utility drop from the base model was at most 0.01, we chose the point with the lowest Forget Q/A Probability. This selected $\alpha=0.8$; $\alpha=1.0$ was excluded because its utility drop was 0.0111. The matched downstream results are:
+
+| Method | Budget | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | Delta U |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| NPO | 50 | 0.07436 | **0.07434** | 0.02% | 0.34903 | **0.35804** | +0.00900 |
+| NPO | 100 | 0.06614 | **0.05184** | **21.63%** | 0.40045 | **0.40340** | +0.00295 |
+| SimNPO | 50 | 0.27334 | **0.27005** | 1.20% | **0.40401** | 0.40230 | -0.00171 |
+| SimNPO | 100 | 0.27249 | **0.26937** | 1.15% | **0.41049** | 0.40948 | -0.00102 |
+
+The strongest Gemma result is NPO at 100 steps: K-FORGE lowers Forget Q/A Probability by 21.6% and extraction from 0.0568 to 0.0320 while slightly increasing mean utility. Forget ROUGE moves in the opposite direction (0.3028 to 0.3661), so we do not present this as uniform improvement across all forgetting metrics. SimNPO gives smaller but highly consistent probability reductions at both budgets, together with lower extraction and nearly unchanged utility; two-sided paired tests on Forget Q/A Probability give $p=2.1\times10^{-4}$ at 50 steps and $p=3.2\times10^{-5}$ at 100 steps. These tests use only three paired seeds and will be reported as supporting rather than definitive evidence.
+
+The completed Qwen2.5-1.5B pilot was near-neutral: SimNPO Forget Q/A Probability changed by less than 0.06% relatively at both budgets. We therefore use Gemma as positive non-Llama evidence but do not claim universal transfer across architectures.
 
 ### Concern: Algorithm 1 readability.
 
@@ -105,7 +116,7 @@ We agree and will narrow the claim. The paper should not claim that K-FORGE is u
 
 > K-FORGE improves the early forget-probability trajectory of fixed downstream NPO/SimNPO optimizers, with comparable utility in the tested regimes.
 
-This change also addresses the extraction metric concern. In several settings, K-FORGE improves Forget Q/A Probability while extraction is similar or slightly worse. We will explicitly distinguish these metrics instead of treating them as interchangeable.
+This change also addresses the extraction metric concern. In several settings, K-FORGE improves Forget Q/A Probability while another forgetting metric is flat or worse. The new Gemma result makes this boundary explicit: NPO at 100 steps improves probability and extraction but worsens Forget ROUGE, whereas SimNPO improves probability, extraction, and Forget ROUGE with a utility change below 0.002 in magnitude. We will report these metrics separately instead of treating them as interchangeable.
 
 The compute-matched table above is the main quantitative support for this narrower claim. It shows that K-FORGE improves all compute-matched 1B NPO forget-probability comparisons and all compute-matched SimNPO forget-probability comparisons, while the utility effect differs by optimizer.
 
@@ -164,14 +175,25 @@ We added a MUSE-News pilot with Llama-2-7B and SimNPO over three seeds. This giv
 
 K-FORGE reduces MUSE forget ROUGE metrics, especially verbatim memorization, but extraction and retain quality are mixed. Therefore, the right claim is not "K-FORGE solves MUSE"; it is that the Fisher-guided initializer has measurable transfer beyond TOFU, while benchmark-robust unlearning remains an open limitation.
 
+We additionally completed the same three-seed comparison on the MUSE-Books domain:
+
+| Budget | Init | Extraction ↓ | Forget KnowMem ROUGE ↓ | Forget VerbMem ROUGE ↓ | Retain KnowMem ROUGE ↑ |
+|---:|---|---:|---:|---:|---:|
+| 50 | Scratch | 0.9110 | **0.4106** | **0.9941** | **0.6488** |
+| 50 | K-FORGE | **0.9109** | 0.4265 | 0.9958 | 0.6451 |
+| 100 | Scratch | **0.8519** | 0.3655 | **0.9554** | **0.6099** |
+| 100 | K-FORGE | 0.8692 | **0.3567** | 0.9632 | 0.5860 |
+
+The Books result is mixed rather than a headline win. At 100 steps K-FORGE improves Forget KnowMem ROUGE from 0.3655 to 0.3567, but extraction, VerbMem, and retain quality worsen; at 50 steps it provides no meaningful advantage. Together, the two MUSE domains show that the initializer can transfer individual forgetting gains beyond TOFU, but not yet a uniformly better benchmark-level trade-off.
+
 ### Concern: narrow empirical scope.
 
 We will revise the limitations accordingly. The final paper should say:
 
 1. The strongest evidence remains TOFU `forget10` on Llama-3.2-1B.
 2. The 3B results support transfer most clearly for SimNPO; NPO transfer is strongest at early steps.
-3. MUSE-News shows partial transfer on forget ROUGE but mixed extraction/retain behavior.
-4. Non-Llama model-family evidence is still being evaluated and should not be claimed unless the Qwen pilot completes cleanly.
+3. Gemma-3-1B provides positive non-Llama evidence, especially for NPO at 100 steps, while the completed Qwen pilot is near-neutral.
+4. MUSE-News shows partial transfer on forget ROUGE, whereas MUSE-Books is mixed and does not improve the overall forget-retain trade-off.
 
 ## Proposed Claim Revision for the Paper
 
@@ -181,6 +203,6 @@ Old phrasing to avoid:
 
 Better phrasing:
 
-> K-FORGE improves the early forget-probability trajectory of fixed downstream preference-based unlearning methods. On TOFU `forget10`, the improvement remains after charging the one-time Fisher-estimation overhead in wall-clock terms. Additional 3B and MUSE-News experiments show partial transfer: SimNPO benefits most consistently, while NPO and non-TOFU metrics are more mixed.
+> K-FORGE improves the forget-probability trajectory of fixed downstream preference-based unlearning methods. On TOFU `forget10`, the improvement remains after charging the one-time Fisher-estimation overhead in wall-clock terms. The effect transfers to Gemma-3-1B, where K-FORGE reduces NPO Forget Q/A Probability by 21.6% at 100 steps while slightly increasing mean utility, and gives smaller consistent SimNPO gains. Results on Qwen and the two MUSE domains are more mixed, so we do not claim universal model- or benchmark-level transfer.
 
 This is more defensible and directly answers the main reviewer concerns without overclaiming.

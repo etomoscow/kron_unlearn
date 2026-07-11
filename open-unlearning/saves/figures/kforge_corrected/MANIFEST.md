@@ -5,10 +5,14 @@ Generated from corrected `wiener_v2` one-shot runs, `v2lam0p01_corr` downstream 
 - Corrected downstream seed runs parsed: 153
 - Init-control seed runs parsed: 102
 - Corrected one-shot strength points parsed: 9
+- `kforge_compute_overhead_data.csv` records the audited FLOP components and
+  version-aligned evaluation-free S50 wall-clock confirmation. Blank 3B timing
+  fields indicate that no corresponding evaluation-free timing rerun was made.
 
 Figures:
 - `fig1_wiener_v2_strength_sweep.{png,pdf}`
 - `fig2_corrected_steps_to_target.{png,pdf}`
+- `fig2_improved.{png,pdf}`
 - `fig3_corrected_pareto_forget10.{png,pdf}`
 - `figA1_spectrum_heatmap.{png,pdf}`
 - `figA2_init_controls_forget10.{png,pdf}`

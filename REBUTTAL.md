@@ -2,17 +2,17 @@
 
 ## Response Overview
 
-We thank the reviewers for identifying three concrete gaps in the submitted version: compute-aligned evaluation, model/benchmark breadth, and completed recovery audits. We ran the requested additions. After charging the full one-time setup in both FLOPs and wall-clock, K-FORGE lowers Llama-3.2-1B Forget Q/A Probability by 19--42% for NPO and 17--19% for SimNPO across the tested budgets, with every mean utility change inside a -0.01 margin. A held-out fourth Gemma-3-1B seed independently preserves the primary direction; at 100 steps, NPO probability falls by 18.7% and extraction by 40.0% at unchanged mean utility, while SimNPO gives a smaller but highly consistent probability gain.
+We thank the reviewers for identifying three concrete gaps in the submitted version: compute-aligned evaluation, model/benchmark breadth, and completed recovery audits. We ran the requested additions. In a direct Llama-3.2-1B wall- and FLOP-matched S50 comparison, K-FORGE lowers NPO Forget Q/A Probability by 22.3% and raises utility by 0.0280. SimNPO preserves a smaller 2.8% probability gain in every seed, but its utility change is -0.0109 and narrowly misses our prespecified -0.01 margin. A held-out fourth Gemma-3-1B seed independently preserves the primary direction; at 100 steps, NPO probability falls by 18.7% and extraction by 40.0% at unchanged mean utility, while SimNPO gives a smaller but highly consistent probability gain.
 
 The added controls, MUSE experiments, and recovery audits also define where the result stops. Random and forget-only edits do not reproduce the Gemma result, MUSE transfer is metric-dependent, and matched relearning shows that K-FORGE is not a recovery defense. We therefore revise the central claim to:
 
 > K-FORGE is not a new unlearning loss and not a standalone robustness guarantee. It is a one-time Fisher-guided initialization that improves the early forget-probability trajectory of fixed downstream preference-based optimizers.
 
-The strongest supported result is lower Forget Q/A Probability at matched compute budgets, usually with comparable or better utility; extraction and Forget ROUGE are reported separately wherever they disagree.
+The strongest supported result is lower Forget Q/A Probability at matched compute budgets: NPO also improves utility, while strict SimNPO matching exposes a small utility trade-off. Extraction and Forget ROUGE are reported separately wherever they disagree.
 
 ## Common Notation for Added Results
 
-All TOFU numbers below are means over three seeds unless stated otherwise; sample sizes and standard deviations are shown where space permits and are included in the revised paper tables. The primary endpoint, utility margin, and selection rules were fixed in the rebuttal experiment design before the new confirmation runs; audits labeled post-hoc remain labeled as such. We use two-sided paired tests and require $p<0.001$ for exploratory inferential claims; larger $p$-values are reported as descriptive evidence only.
+All TOFU numbers below are means over three seeds unless stated otherwise; sample sizes and standard deviations are shown where space permits and are included in the revised paper tables. The primary endpoint, utility margin, and selection rules were fixed in the rebuttal experiment design before the new compute runs; audits labeled post-hoc remain labeled as such. We use two-sided paired tests and require $p<0.001$ for exploratory inferential claims; larger $p$-values are reported as descriptive evidence only.
 
 For a metric value $x_i$ over $n$ seeds,
 
@@ -21,20 +21,31 @@ $$
 s=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i-\bar{x})^2}.
 $$
 
-For the compute-matched comparison requested by R1, we charge K-FORGE for its measured one-time setup time. Let $t_{\rm KF}$ be the wall-clock time to estimate Fisher factors, compute the edit, and write the initialized checkpoint. Let $\bar{t}_{\rm step}$ be the measured scratch training time per optimizer step. The wall-clock-equivalent budget is
+For the compute-matched comparison requested by R1, we charge K-FORGE for its measured one-time setup time. Let $t_{\rm setup}$ be the wall-clock time to estimate Fisher factors, compute the edit, and write the initialized checkpoint; let $t_{\rm train}^{a}(T)$ and $F_{\rm train}^{a}(T)$ be the measured training time and analytical training FLOPs for arm $a$ at $T$ steps. We choose the smallest tested scratch budget that satisfies both resources directly:
 
 $$
-T_{\rm wall}=T+\left\lceil \frac{t_{\rm KF}}{\bar{t}_{\rm step}}\right\rceil.
+T_{\rm cm}=\min\left\{T':
+\begin{aligned}
+t_{\rm train}^{\rm scratch}(T')&\ge t_{\rm setup}+t_{\rm train}^{\rm KF}(T),\\
+F_{\rm train}^{\rm scratch}(T')&\ge F_{\rm KF}+F_{\rm train}^{\rm KF}(T)
+\end{aligned}
+\right\}.
 $$
 
-We also charge analytical FLOPs using the same parameter-token convention as the K-FORGE estimate. If $P$ is the parameter count and $\tau_f,\tau_r$ are forget/retain tokens per optimizer step, then
+We also charge analytical FLOPs using the same parameter-token convention as the K-FORGE estimate. For an edited $n\times m$ matrix, our one-time setup convention is
+
+$$
+F_{\rm KF}\simeq 6PT_{\rm cal}+2N_F(m^2+n^2)+10(m^3+n^3),
+$$
+
+where $T_{\rm cal}$ denotes non-padding prompt and answer tokens processed by calibration and $N_F$ counts loss-bearing rows accumulated into the factors. Numerically, we estimate $T_{\rm cal}$ from the exact tokenizer/template length distribution and use the recorded $N_F=18{,}614$. If $\tau_f,\tau_r$ are forget/retain tokens per optimizer step, then
 
 $$
 F_{\rm step}^{\rm SimNPO}\simeq 6P(\tau_f+\tau_r),\qquad
 F_{\rm step}^{\rm NPO}\simeq F_{\rm step}^{\rm SimNPO}+2P\tau_f,
 $$
 
-where the second term is NPO's reference-model forward pass. We use $T_{\rm cm}=T+\max(\lceil t_{\rm KF}/\bar t_{\rm step}\rceil,\lceil F_{\rm KF}/F_{\rm step}\rceil)$. In our Llama-3.2-1B setup, FLOP matching adds three NPO or four SimNPO steps, while wall-clock matching adds five; hence the reported scratch budgets $55,105,255$ conservatively satisfy both criteria for K-FORGE budgets $50,100,250$.
+where the second term is NPO's reference-model forward pass. In our Llama-3.2-1B setup, the audited setup equals 7.00 NPO or 8.19 SimNPO steps by FLOPs; a dynamic-padding sensitivity calculation raises the largest ratio only to 8.65 steps. The stricter wall-clock comparison uses evaluation-free trainer runtimes from the same software stack and charges the complete 80.157 s setup without amortization. Before inspecting final metrics, this selected scratch S73 for NPO and scratch S86 for SimNPO against K-FORGE S50.
 
 We report relative forget-probability reduction and utility change as
 
@@ -66,31 +77,27 @@ For forgetting metrics such as Forget Q/A Probability, extraction, and forget RO
 
 We agree that step-matched comparisons alone are incomplete. K-FORGE is a one-time curvature computation, so the relevant question is whether the initialization still helps after charging the method for Fisher estimation, factorizations, and checkpoint writing. We have added both an overhead table and a compute-matched comparison. Wall-clock quantities use the same single-GPU NVIDIA RTX PRO 6000 Blackwell hardware class for the paired measurements.
 
-For one edited `mlp.down_proj` layer with $B_{\rm cal}=32$ batches per forget/retain split, the measured setup cost is modest relative to even a 50-step run:
+For one edited `mlp.down_proj` layer with $B_{\rm cal}=32$ batches per forget/retain split, we report the measured estimator/edit runtime, an observed serialization bound, and analytical FLOPs:
 
-| Model | Edited W | Calibration | Time, calib./total | FLOPs | Setup time / 50-step NPO/SimNPO |
+| Model | Edited W | Calibration | Time, calib./edit/end-to-end | FLOPs | FLOP-equivalent NPO/SimNPO steps |
 |---|---:|---:|---:|---:|---:|
-| Llama-3.2-1B | 2048 x 8192 | 512 ex. / 18.6k tok. | 18 / 61 s | $1.44\times 10^{14}$ | 8.9% / 9.7% |
-| Llama-3.2-3B | 3072 x 8192 | 512 ex. / 18.6k tok. | 51 / 104 s | $3.65\times 10^{14}$ | 10.0% / 10.9% |
+| Llama-3.2-1B | 2048 x 8192 | 512 ex. / est. 47.7k input tok. | 18 / 62 / 80.2 s | $3.62\times 10^{14}$ | 7.00 / 8.19 |
+| Llama-3.2-3B | 3072 x 8192 | 512 ex. / est. 47.7k input tok. | 51 / 104 / 145.0 s | $9.29\times 10^{14}$ | 6.90 / 8.08 |
 
-The final column is the measured wall-clock setup time divided by the wall-clock time of the corresponding 50-step scratch run. We agree with the reviewer that the dense MFF algebra has an additional width dependence, $\mathcal{O}(mn^2+m^2n)$ for an $n\times m$ edited matrix. In these measured configurations, however, model calibration passes account for 96.2% (1B) and 98.3% (3B) of the estimated FLOPs; covariance accumulation and dense factorizations account for 3.8% and 1.7%. The cost remains an important scaling limitation if many layers are edited, but here it is a one-layer, one-time cost reusable across downstream budgets and optimizer seeds. Our comparisons conservatively charge the full setup to every run rather than amortizing it across that reuse.
+The middle runtime covers calibration through edit application. End-to-end time runs from command-log creation to the final checkpoint file and includes model/data startup and serialization. An implementation audit also clarified an imprecise description in the submitted draft: every reported checkpoint used streamed K-FAC covariance factors, not a Lanczos/rearranged-Fisher MFF routine. We corrected the terminology and complexity without changing the method code or any checkpoint. The executed factor cost is $\mathcal{O}(N_F(m^2+n^2)+m^3+n^3)$ with $\mathcal{O}(m^2+n^2)$ memory. Calibration model passes account for 97.7% (1B) and 99.1% (3B) of estimated FLOPs; factor accumulation and dense factorizations account for the remainder. The width and many-layer costs remain important limitations, but here setup is one-layer and one-time. We charge it in full to every comparison rather than amortizing it across downstream budgets or optimizer seeds.
 
-For the 1B FLOP conversion, $P=1.236$B and the effective batch contains on average $\tau_f=3042$ forget and $\tau_r=2924$ retain tokens. This gives $F_{\rm step}=5.18\times10^{13}$ for NPO and $4.42\times10^{13}$ for SimNPO; the measured K-FORGE estimate $1.435\times10^{14}$ is therefore 2.77 and 3.24 steps, respectively. Measured 50-step scratch times are 691.5 s for NPO and 629.1 s for SimNPO (13.83/12.58 s per step), so five extra steps cost 69.2/62.9 s and cover the full 61.2 s K-FORGE setup. This wall-clock charge is stricter than the FLOP charge.
+For the 1B conversion, $P=1.236$B and an effective batch contains on average $\tau_f=3042$ forget and $\tau_r=2924$ retain tokens. This gives $F_{\rm step}=5.18\times10^{13}$ for NPO and $4.42\times10^{13}$ for SimNPO; the estimated $3.62\times10^{14}$ setup is 7.00 and 8.19 steps, respectively. A late audit found that our earlier 50-step wall-clock denominator included evaluation and therefore understated the setup charge. We discarded that comparison. Under the version-aligned, evaluation-free rerun, S50 training averages 197.0 s for NPO and 130.3 s for SimNPO, so the complete setup is 40.7% and 61.5% of S50 training time. Final metrics were not inspected until the longer scratch budgets had been selected from runtime alone: S73 for NPO and S86 for SimNPO. Both also exceed the FLOP requirement, including the dynamic-padding sensitivity check.
 
-After charging this setup cost, K-FORGE still improves the 1B TOFU `forget10` runs. We compare K-FORGE at $T\in\{50,100,250\}$ to scratch at $T_{\rm cm}\in\{55,105,255\}$:
+The strict S50 comparison reruns both arms under PyTorch 2.9.1+cu130, Transformers 4.51.3, and Accelerate 0.34.2 with evaluation disabled during training. Mean wall time includes the complete setup separately for every K-FORGE arm:
 
-| Method | Budget | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | Delta U |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| NPO | 50 vs. 55 | 0.0783 | **0.0454** | 42.0% | 0.5224 | **0.5738** | +0.0514 |
-| NPO | 100 vs. 105 | 0.0411 | **0.0308** | 25.2% | 0.5712 | **0.5932** | +0.0220 |
-| NPO | 250 vs. 255 | 0.0276 | **0.0223** | 19.1% | 0.5925 | **0.6034** | +0.0109 |
-| SimNPO | 50 vs. 55 | 0.6462 | **0.5341** | 17.3% | **0.5795** | 0.5712 | -0.0083 |
-| SimNPO | 100 vs. 105 | 0.5030 | **0.4066** | 19.2% | **0.5872** | 0.5817 | -0.0055 |
-| SimNPO | 250 vs. 255 | 0.3290 | **0.2719** | 17.4% | **0.5957** | 0.5917 | -0.0040 |
+| Method | K-FORGE / scratch steps | Wall: scratch / K-FORGE+setup | Scratch FP | K-FORGE FP | Rel. FP red. | Scratch U | K-FORGE U | Delta U |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| NPO | 50 / 73 | 285.5 / **277.2 s** | 0.0590 | **0.0459** | **22.3%** | 0.5486 | **0.5766** | **+0.0280** |
+| SimNPO | 50 / 86 | 221.6 / **210.5 s** | 0.5527 | **0.5371** | **2.8%** | **0.5832** | 0.5722 | -0.0109 |
 
-The Forget-Probability direction holds for every paired seed at every budget. Thus, the conclusion does not rely on giving K-FORGE a free setup. For NPO, the compute-matched comparison improves both forget probability and utility. For SimNPO, it consistently lowers forget probability with a small utility cost.
+Every paired seed satisfies the wall inequality, with minimum margins of 3.56 s (NPO) and 3.97 s (SimNPO), and the longer scratch runs exceed the FLOP requirement. NPO improves FP in all three seeds and utility in all three; the paired FP test is descriptive ($p=.00696$), while the utility comparison meets our exploratory threshold ($p=4.91\times10^{-4}$). Its extraction and ROUGE means worsen, so this is not metric-wide dominance. SimNPO also improves FP and ROUGE in every seed, with favorable mean extraction, but its FP test is descriptive ($p=.126$) and the utility margin is missed by 0.00093. This is the distinction compute alignment was intended to expose: NPO retains a substantial residual gain after paying for curvature, whereas the SimNPO advantage largely attenuates. We therefore present strict compute matching as evidence that the NPO gain survives the charge, and SimNPO as a weaker trade-off, rather than claiming that both optimizers retain comparable utility.
 
-We repeated the same accounting on Gemma-3-1B over four paired seeds. Its measured 35-second setup corresponds to three NPO or five SimNPO steps, so we compare K-FORGE S100 against scratch S103/S105. For NPO, K-FORGE improves Forget Probability from 0.06397 to **0.05328** ($p=0.0048$, descriptive under our $p<.001$ threshold) and extraction from 0.05278 to **0.03298** ($p=5.5\times10^{-4}$), while utility changes from 0.40058 to 0.40122; Forget ROUGE worsens from 0.31613 to 0.36471. For SimNPO, it improves Forget Probability from 0.27223 to **0.26930** ($p=9.4\times10^{-6}$), extraction from 0.12633 to **0.12191**, and ROUGE from 0.40864 to **0.39480**, with utility changing by only -0.00090. Thus the primary compute-matched conclusion transfers to a non-Llama architecture, while the NPO ROUGE exception remains explicit.
+We repeated the same accounting on Gemma-3-1B over four paired seeds. Its measured 35-second setup corresponds to three NPO or five SimNPO steps, so we compare K-FORGE S100 against scratch S103/S105. For NPO, K-FORGE improves Forget Probability from 0.06397 to **0.05328** ($p=0.0048$, descriptive under our $p<0.001$ threshold) and extraction from 0.05278 to **0.03298** ($p=5.5\times10^{-4}$), while utility changes from 0.40058 to 0.40122; Forget ROUGE worsens from 0.31613 to 0.36471. For SimNPO, it improves Forget Probability from 0.27223 to **0.26930** ($p=9.4\times10^{-6}$), extraction from 0.12633 to **0.12191**, and ROUGE from 0.40864 to **0.39480**, with utility changing by only -0.00090. Thus the primary compute-matched conclusion transfers to a non-Llama architecture, while the NPO ROUGE exception remains explicit.
 
 We also tested whether the effect follows automatically from extra computation or from injecting any low-rank edit. Over four Gemma seeds, NPO K-FORGE reaches FP/extraction `0.05328/0.03298`, compared with `0.06579/0.04842` for a matched random edit, `0.06374/0.06131` for diagonal Fisher, and `0.05850/0.03530` for forget-only Fisher. Weight-SVD reaches FP `0.05297`, but its utility is `0.32702` versus `0.40122` for K-FORGE and therefore fails our prespecified -0.01 utility margin. The SimNPO result is more nuanced: diagonal Fisher has nearly identical FP (`0.26924` versus `0.26930`; the difference is not distinguishable in this sample, $p=0.45$) and slightly higher utility, whereas K-FORGE has lower extraction (`0.12191` versus `0.12420`) and ROUGE (`0.39480` versus `0.40731`). Thus an arbitrary low-rank displacement does not generally reproduce the result, and retain-aware Fisher structure is important for the NPO comparison; the controls do not support a universal advantage of full Kronecker structure on every optimizer and metric.
 
@@ -204,13 +211,13 @@ The four-seed Gemma audit shows that this stability is optimizer-dependent. For 
 
 We agree that “K-FORGE improves unlearning” is too broad. We therefore replace it with the following evidence-aligned claim:
 
-> K-FORGE improves the early Forget Q/A Probability trajectory of fixed downstream NPO and SimNPO optimizers in the tested regimes, generally with comparable utility. We do not claim uniform improvement across extraction, Forget ROUGE, model families, or benchmarks.
+> K-FORGE improves the early Forget Q/A Probability trajectory of fixed downstream NPO and SimNPO optimizers in the tested regimes. Direct wall- and FLOP-matching supports the NPO gain; SimNPO retains a smaller probability gain with a slight utility trade-off. We do not claim uniform improvement across extraction, Forget ROUGE, model families, or benchmarks.
 
 The revised tables report Forget Q/A Probability, extraction, and Forget ROUGE separately. We explicitly retain both the Gemma NPO case where probability/extraction improve but ROUGE worsens and the Llama NPO rows where extraction moves against the probability gain. For those rows we claim only an improved Forget Q/A Probability trajectory, not broadly better unlearning. This aligns each claim with the metric directly supported by the evidence rather than treating different notions of forgetting as interchangeable.
 
 ### Concern: no usable software.
 
-We have expanded the artifact rather than only promising a later release. It now includes the K-FORGE trainer/config, the exact initialization harness, matched relearning and 4/8-bit quantization runners, and a structured aggregator invoked as `python open-unlearning/scripts/summarize_rebuttal_additions.py --check`. Every runner records a TSV manifest, fixes the paired seeds and attack settings, and skips only an existing summary that contains all required metrics; the aggregator exits nonzero on missing or malformed results. A compact per-seed metric snapshot reproduces the reviewer-requested aggregate tables and paired tests without checkpoints. We also added a CPU algebra test that compares the implemented full-rank Wiener edit against a direct Hessian solve of the quadratic objective. The root README gives the executable commands and identifies calibration size, edited layer, rank/strength, and evaluation dtype settings.
+We have expanded the artifact rather than only promising a later release. It now includes the K-FORGE trainer/config, the exact initialization harness, matched relearning and 4/8-bit quantization runners, and a structured aggregator invoked as `python open-unlearning/scripts/summarize_rebuttal_additions.py --check`. Every runner records a TSV manifest, fixes the paired seeds and attack settings, and skips only an existing summary that contains all required metrics; the aggregator exits nonzero on missing or malformed results. A compact per-seed metric snapshot reproduces the reviewer-requested aggregate tables and paired tests without checkpoints. CPU algebra tests compare the implemented full-rank Wiener edit against a direct Hessian solve and the zero-penalty rank-$r$ edit against its Eckart--Young solution. The root README gives the executable commands and identifies calibration size, edited layer, rank/strength, and evaluation dtype settings.
 
 ## Reviewer 3
 
@@ -250,10 +257,10 @@ MUSE-Books is less favorable. At 100 steps K-FORGE lowers KnowMem ROUGE from 0.3
 
 Accordingly, the revised claim is:
 
-> K-FORGE improves the early Forget Q/A Probability trajectory of fixed preference-based optimizers on TOFU, generally with comparable utility. MUSE provides partial benchmark-transfer evidence, while matched relearning shows that K-FORGE is an optimization initializer rather than a recovery defense. We do not claim recovery immunity or uniform improvement across forgetting metrics and benchmarks.
+> K-FORGE improves the early Forget Q/A Probability trajectory of fixed preference-based optimizers on TOFU. Direct wall- and FLOP-matching supports the NPO gain, while strict SimNPO matching shows a smaller utility trade-off. MUSE provides partial benchmark-transfer evidence, and matched relearning shows that K-FORGE is an optimization initializer rather than a recovery defense. We do not claim recovery immunity or uniform improvement across forgetting metrics and benchmarks.
 
 We have added the exact attack, quantization, and aggregation scripts and documented the MUSE model, strength, budgets, seeds, dtype, and selection rule in the artifact.
 
 ## Revised Paper Claim
 
-> K-FORGE improves the forget-probability trajectory of fixed downstream preference-based unlearning methods. On TOFU `forget10`, the improvement remains after charging the one-time Fisher-estimation overhead in both FLOPs and wall-clock time. A held-out fourth seed confirms transfer to Gemma-3-1B: at 100 steps, K-FORGE reduces NPO Forget Q/A Probability by 18.7% and extraction by 40.0% at unchanged mean utility, and gives a smaller but highly consistent SimNPO gain. Results on Qwen and the two MUSE domains are more mixed, so we do not claim universal model- or benchmark-level transfer.
+> K-FORGE improves the forget-probability trajectory of fixed downstream preference-based unlearning methods. On TOFU `forget10`, the NPO improvement remains after charging the one-time setup in both FLOPs and wall-clock time; SimNPO retains a smaller probability gain with a slight utility trade-off. A held-out fourth seed strengthens the Gemma-3-1B evidence: at 100 steps, K-FORGE reduces NPO Forget Q/A Probability by 18.7% and extraction by 40.0% at unchanged mean utility, and gives a smaller but highly consistent SimNPO gain. Results on Qwen and the two MUSE domains are more mixed, so we do not claim universal model- or benchmark-level transfer.

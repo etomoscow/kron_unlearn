@@ -541,6 +541,7 @@ def write_manifest(out_dir: Path, runs: pd.DataFrame, controls: pd.DataFrame, on
         "Figures:",
         "- `fig1_wiener_v2_strength_sweep.{png,pdf}`",
         "- `fig2_corrected_steps_to_target.{png,pdf}`",
+        "- `fig2_improved.{png,pdf}`",
         "- `fig3_corrected_pareto_forget10.{png,pdf}`",
         "- `figA1_spectrum_heatmap.{png,pdf}`",
         "- `figA2_init_controls_forget10.{png,pdf}`",

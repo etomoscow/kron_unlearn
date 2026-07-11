@@ -143,15 +143,39 @@ def llama_unlearn_rows(method: str, arm: str, steps: int) -> list[dict]:
     ]
 
 
-def llama_fp32_rows(method: str, init: str, steps: int, tag: str) -> list[dict]:
+def llama_fp32_rows(
+    method: str, init: str, steps: int, tag: str, seeds=range(3)
+) -> list[dict]:
     return [
         read(
             EVAL
             / f"tofu_Llama-3.2-1B-Instruct_forget10_{method}_{init}_S{steps}_seed{seed}_{tag}"
             / "TOFU_SUMMARY.json"
         )
-        for seed in range(3)
+        for seed in seeds
     ]
+
+
+def llama_wall_exact_rows(method: str, arm: str) -> list[dict]:
+    if method == "NPO":
+        scratch_steps = 73
+    elif method == "SimNPO":
+        scratch_steps = 86
+    else:
+        raise ValueError(f"unsupported wall-clock method: {method}")
+
+    rows = []
+    for seed in range(3):
+        if arm == "kforge":
+            tag = "rebuttal_wall_exact_v1_EVAL_FP32"
+            init, steps = "kforge_s06_pinned", 50
+        elif arm == "scratch":
+            tag = "rebuttal_wall_exact_v1_EVAL_FP32"
+            init, steps = "scratch", scratch_steps
+        else:
+            raise ValueError(f"unsupported wall-clock arm: {arm}")
+        rows.extend(llama_fp32_rows(method, init, steps, tag, seeds=(seed,)))
+    return rows
 
 
 def matched_quant_rows(arm: str, bits: int) -> list[dict]:
@@ -333,27 +357,16 @@ def main() -> None:
         MUSE_METRICS,
     )
 
-    for method in ("NPO", "SimNPO"):
-        for steps in (50, 100, 250):
-            compute_steps = steps + 5
-            scratch = llama_fp32_rows(
-                method,
-                "scratch",
-                compute_steps,
-                "rebuttal_compute_matched_v3_EVAL_FP32",
-            )
-            kforge = llama_fp32_rows(
-                method,
-                "kforge_s06",
-                steps,
-                "v2lam0p01_corr_EVAL_FP32",
-            )
-            expected += len(scratch) + len(kforge)
-            paired(
-                f"Llama {method}: compute-matched scratch S{compute_steps} vs K-FORGE S{steps}",
-                scratch,
-                kforge,
-            )
+    for method, scratch_steps in (("NPO", 73), ("SimNPO", 86)):
+        scratch = llama_wall_exact_rows(method, "scratch")
+        kforge = llama_wall_exact_rows(method, "kforge")
+        expected += len(scratch) + len(kforge)
+        paired(
+            f"Llama {method}: exact wall/FLOP-matched scratch S{scratch_steps} "
+            "vs K-FORGE S50",
+            scratch,
+            kforge,
+        )
 
     for bits in (8, 4):
         left, right = [], []

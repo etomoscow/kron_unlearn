@@ -249,7 +249,7 @@ Final edits from this pass: state explicitly that the K-FORGE edit is folded int
 
 ### 2026-07-11 19:38 UTC: final verification matrix
 
-- `PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py' -v` passes all six CPU tests.
+- `PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py' -v` passes all seven CPU tests. The added proof-regression check verifies that the zero-penalty rank-$r$ implementation has rank at most $r$ and exactly reaches the Eckart--Young residual in the whitened basis, complementing the existing full-rank direct-Hessian test.
 - `py_compile` passes for the aggregator, four modified source modules, and both test files.
 - `bash -n` passes for all eight new or modified rebuttal/initialization runners.
 - Direct aggregation and snapshot-only aggregation both report `PASS: parsed 386 expected summaries`; their complete outputs are byte-for-byte identical.
@@ -260,3 +260,197 @@ Final edits from this pass: state explicitly that the K-FORGE edit is folded int
 - Static LaTeX checks find balanced braces, 47 unique labels, and 49 resolved internal references. Two fresh `pdflatex` passes produce 15 pages with no overfull boxes; main text ends on page 8 and the appendix begins on page 9. Visual inspection of all main-text pages and the appendix transition finds no overlap or clipping.
 - The checkout lacks `custom.bib`, so local citation resolution remains impossible; this is recorded rather than hidden. Generated LaTeX products were removed before staging.
 - No `rebuttal10_*` experiment or watchdog session remains running. Unrelated user tmux sessions were left untouched.
+
+The matched-control construction was also checked against the actual saved Gemma checkpoints, not only its metadata. K-FORGE, random, and weight-SVD modify only `model.layers.13.mlp.down_proj`; all use rank 2. Relative to the same base checkpoint, their saved FP32 Frobenius norms are `3.626694`, `3.627478`, and `3.626677`, respectively (maximum difference below `0.022%`). Random and weight-SVD have zero measurable residual beyond rank 2; K-FORGE's randomized-SVD residual ratio is `5.4e-4`. This directly supports the same-module/rank/norm control claim.
+
+### 2026-07-11 20:04 UTC: prespecified all-input-token compute confirmation
+
+A final accounting audit found that the earlier analytical calibration estimate counted `18.6k` loss-bearing response tokens. Forward/backward computation also processes prompt tokens. Re-tokenizing the exact TOFU calibration protocol gives approximately `47.7k` input tokens across the 512 forget/retain examples. Under the same conservative `6PT` calibration convention, the corrected one-time setup estimate is approximately `3.59e14` FLOPs for Llama-3.2-1B and `9.26e14` FLOPs for Llama-3.2-3B. Calibration dominates these estimates (`98.4%` and `99.3%`, respectively); dense factor operations contribute the remainder.
+
+Before observing any new outcomes, I fixed a stricter comparison protocol: compare K-FORGE runs at 50/100/250 downstream steps against scratch runs at 60/110/260 steps for the same optimizer, data, FP32 model, and three seeds. Ten extra scratch steps exceed both the all-input-token FLOP charge (approximately 6.95 NPO or 8.13 SimNPO steps at 1B) and the measured calibration-through-edit wall-clock charge (fewer than five steps), with no amortization across runs. The later command-to-checkpoint audit refines the complete wall-clock bound to at most six NPO or seven SimNPO steps, still below ten. All four prespecified endpoints will be retained: Forget Q/A Probability (primary), Model Utility, extraction strength, and Forget Q/A ROUGE. Relative forget reductions will be calculated from full-precision seed means; adverse directions will not be suppressed.
+
+The original base checkpoint was no longer present locally. It was reconstructed by subtracting the deterministic saved rank-2 random initialization from its checkpoint. Independent reconstructions from seeds 1 and 2 agree with the recovered target tensor to relative Frobenius error about `7.1e-7` (maximum element error `7.5e-9`), and all non-target weights are identical. The recovered checkpoint is used only to regenerate scratch baselines; it does not affect any K-FORGE arm.
+
+The FLOP convention was then checked against the trainer implementation. Both NPO and SimNPO run forward/backward passes on forget and retain batches; NPO additionally evaluates the frozen reference model on the forget batch. This confirms
+`F_SimNPO = 6P(tau_f+tau_r)` and `F_NPO = F_SimNPO+2P tau_f`. A checked calculator at `open-unlearning/scripts/estimate_kforge_compute.py` reproduces the setup and step estimates. For 1B, the corrected setup is `6.95` NPO or `8.13` SimNPO steps, so the prespecified ten-step charge remains conservative for both FLOPs and wall-clock time.
+
+**First all-token checkpoint (three seeds, scratch S60 versus K-FORGE S50).** NPO scratch/K-FORGE means are FP `0.072231/0.045373`, utility `0.539452/0.573835`, extraction `0.068461/0.070551`, and ROUGE `0.246537/0.269792`. This is a `37.2%` relative FP reduction and `+0.03438` utility, with adverse secondary forgetting metrics. SimNPO means are FP `0.630792/0.534098`, utility `0.580250/0.571165`, extraction `0.245438/0.188034`, and ROUGE `0.515074/0.452531`: a `15.3%` FP reduction and `-0.00909` utility, with favorable extraction and ROUGE. Every seed preserves the FP direction for both optimizers; the prespecified mean-utility margin is met, narrowly for SimNPO. The S110/S260 confirmations remain in progress.
+
+**Estimator-description audit.** The implementation and its historical logs confirm that every reported checkpoint streams K-FAC-style factors `A=E[xx^T]` and `B=E[gg^T]` over shifted loss-bearing token rows. It does not execute the Lanczos/rearranged-Fisher MFF procedure described in the submitted draft. This mismatch had already been identified in the repository's earlier internal audit but remained in `main.tex`. The revision now matches the executed method: it defines the covariance estimator explicitly, changes Algorithm 1 from `MFF` to `KronFisher`, states accumulation/storage costs `O(N(m^2+n^2))`/`O(m^2+n^2)` and dense factor cost `O(m^3+n^3)`, and retains MFF/GFWSVD only as low-rank-factorization context. The theorem requires SPD Kronecker factors and is unchanged. I also corrected damping to the implemented trace-scaled form `C + epsilon max(tr(C)/d, 1e-12) I`. No checkpoint, metric, or experimental selection changed as a result of these documentation fixes.
+
+### 2026-07-11 20:49 UTC: explicit factor-compute accounting
+
+The compute calculator now exposes the factor-accumulation term instead of absorbing it into a generic dense envelope. The convention is
+
+`F_KF ~= 6 P T_cal + 2 N_F (m^2+n^2) + 10(m^3+n^3)`,
+
+where `T_cal=47,727.9` estimates non-padding prompt and answer tokens processed by calibration from the exact tokenizer/template length distribution, while `N_F=18,614` is the exact loss-bearing-row total (`9,515+9,099`) recorded in the headline run log. The resulting one-layer setup estimates round to `3.62e14` FLOPs at 1B and `9.29e14` at 3B, equal to `7.00/8.19` and `6.90/8.08` NPO/SimNPO steps. A red/green unit check first failed on the absent `factor_token_rows` argument, then passed after the calculator returned model-pass, factor-accumulation, and dense-algebra components separately.
+
+As a sensitivity check, I also counted dynamic-padding overhead from the exact TOFU/tokenizer length distributions at the calibration batch size of 8 and downstream microbatch size of 4. Expected processed positions are about `58.9k` for the two calibration passes and `3,544/3,393` per forget/retain optimizer step. Applying the same formula raises the largest setup ratio to approximately `8.65` SimNPO steps (`7.39` NPO), still below the outcome-blind uniform ten-step charge fixed before the new runs. The main accounting retains the conventional non-padding parameter-token definition and records this padded-position calculation as a robustness check rather than silently switching conventions after seeing results.
+
+### 2026-07-11 21:10 UTC: all-input-token compute confirmation complete
+
+All 18 new scratch evaluations completed with `ok` manifests and no error/OOM signature. The three seed queues exited normally; the ten-minute watchdog was stopped only after all required summaries validated. K-FORGE at 50/100/250 steps is compared against scratch at 60/110/260 steps:
+
+| Method | KF/scratch steps | Scratch FP | K-FORGE FP | Relative FP reduction | Utility delta | FP paired p |
+|---|---:|---:|---:|---:|---:|---:|
+| NPO | 50/60 | 0.072231 | 0.045373 | 37.18% | +0.034383 | 0.00155 |
+| NPO | 100/110 | 0.039470 | 0.030760 | 22.07% | +0.017747 | 0.00713 |
+| NPO | 250/260 | 0.027547 | 0.022316 | 18.99% | +0.011089 | 0.0136 |
+| SimNPO | 50/60 | 0.630792 | 0.534098 | 15.33% | -0.009086 | 0.000671 |
+| SimNPO | 100/110 | 0.491669 | 0.406559 | 17.31% | -0.006830 | 0.000481 |
+| SimNPO | 250/260 | 0.327671 | 0.271863 | 17.03% | -0.004944 | 0.00260 |
+
+Every one of the 18 paired-seed FP differences is favorable. All six mean utility changes satisfy the prespecified `-0.01` margin, although one SimNPO seed at each of the first two budgets is below that margin; the claim is correctly stated for the prespecified mean endpoint, not per seed. Only the first two SimNPO FP tests meet the exploratory `p<.001` threshold. The NPO rows and SimNPO S250 remain descriptive despite seed consistency.
+
+The secondary outcomes remain visible. NPO extraction worsens at all three budgets (`+0.002091/+0.008803/+0.010247`); ROUGE worsens at S50 (`+0.023255`) and is effectively tied at S100/S250 (`-0.000912/-0.000832`). SimNPO improves extraction (`-0.057404/-0.020096/-0.003843`) and ROUGE (`-0.062543/-0.041796/-0.034322`) at every budget. This supports an FP-plus-utility initializer claim, not metric-wide dominance.
+
+The expanded direct aggregator now passes `422` expected reads over `367` unique summaries. The regenerated snapshot is `159,309` bytes with SHA-256 `f15fde9f849e1dfa6283fda338bcae5f28186a98f06444ca37596cbf31b2730d`. Snapshot-only aggregation reports the same expected count and is byte-for-byte identical to direct aggregation.
+
+### 2026-07-11 21:18 UTC: post-confirmation hostile audit
+
+I reread each final portal response against the original review rather than against our intended narrative.
+
+| Reviewer | Final hostile score | Residual concern and treatment |
+|---|---:|---|
+| R1 | 9.4/10 | The submitted estimator description did not match the released K-FAC implementation. The response now discloses this directly, states the corrected complexity, notes that all old/new checkpoints used the same implementation, and explains that the SPD-factor derivation is unchanged. Compute matching uses a uniform outcome-blind ten-step charge, reports adverse secondary metrics, and includes Gemma plus a Qwen null result. Remaining limits are one hardware class and one edited layer, both explicit. |
+| R2 | 9.5/10 | MUSE is mixed and active relearning is unfavorable, but these are now completed evidence rather than promises. The exact Table-2 extraction objection is answered: NPO extraction worsens even when FP and utility improve, and the revised claim is metric-specific. The artifact response names executable runners, failure checks, proof regressions, and the structured snapshot. |
+| R3 | 9.4/10 | The requested additional benchmark is not a uniform win, and recovery resistance is decisively negative. The answer nevertheless reports both MUSE domains/budgets and matched-start attacks across optimizers/model families, making the boundary credible rather than evasive. |
+
+No endpoint was removed after this audit. The only response edit was to make R1's opening say explicitly that experiments used the originally released implementation and that the estimator terminology correction follows, preventing the later disclosure from appearing inconsistent with the opening claim.
+
+### 2026-07-11 21:27 UTC: effective-configuration audit
+
+Hydra's composed configuration revealed one remaining documentation mismatch. The base trainer config lists `damping=1e-4`, but `configs/experiment/unlearn/tofu/kforge.yaml` overrides it to `1e-3`; the K-FORGE launchers do not override that field. The saved headline Hydra config confirms rank 2, strength 0.60, fixed trace-scaled damping `1e-3`, retain penalty 0.01, 32 calibration batches, one module, and the Wiener-v2 edit. Its log confirms layer 0, 256 forget plus 256 retain examples, and `9,515/9,099` factor rows. The Gemma primary log independently confirms layer 13 and 16 examples per split; Qwen/MUSE launchers set 32 one-example batches. I corrected `main.tex` and the root README from `1e-4` to the executed `1e-3`. No run, selection, or metric changed.
+
+### 2026-07-11 21:42 UTC: calibration-count wording audit
+
+The `47.7k` calibration input-token quantity is an analytical estimate obtained from the exact local tokenizer/template length distribution, whereas `18,614` is the exact loss-bearing-row count recorded by the estimator. A dataloader replay with seed 0, batch size 8, and the saved tokenizer reproduced the headline forget side exactly: 256 examples, 9,515 loss rows, and 23,720 non-padding input tokens. Historical retain sampling depends on the older runtime's RNG state, so its exact prompt-token total cannot be reconstructed solely from the saved checkpoint. I therefore changed every current-facing description from an exact count to an estimate. The prespecified ten-step charge remains conservative under the separate dynamic-padding sensitivity estimate (8.65 SimNPO steps, the largest ratio). No compute-matched outcome or budget changed.
+
+### 2026-07-11 21:47 UTC: anonymous artifact availability
+
+An external request to `https://anonymous.4open.science/r/kforge-C710/` redirects to its repository API and returns HTTP 401 with `{"error":"not_connected"}`. The manuscript URL is therefore not currently usable from a fresh unauthenticated client. I did not replace it with the public GitHub remote because that would compromise submission anonymity. The local artifact itself has executable runners, a 159 KB structured metric snapshot, CPU proof tests, and reproduction commands; after the final commit is pushed, the repository owner must reconnect or recreate the anonymous 4open snapshot and verify it from a logged-out browser before posting the rebuttal. This is the only remaining manual release action.
+
+### 2026-07-11 22:02 UTC: end-to-end wall-clock correction
+
+Code inspection showed that K-FORGE's `train_runtime` timer ends before `train.py` calls `save_model`. A stricter filesystem audit uses the runner log's birth time as command start and the final checkpoint file's timestamp as completion. This gives complete command-to-checkpoint intervals of `80.2 s` at 1B and `145.0 s` at 3B, including model/data startup and serialization; the paper rounds these upward to `<=81/<=145 s`. Relative to measured S50 scratch runs, the bounds are `11.6/12.7%` at 1B and `13.9/15.1%` at 3B for NPO/SimNPO. The 1B bound costs at most six NPO or seven SimNPO steps; the prespecified uniform ten-step charge still exceeds both this wall-clock bound and the stricter 8.65-step dynamic-padding FLOP estimate. The compute CSV, paper, full rebuttal, and portal response now use this same end-to-end definition.
+
+### 2026-07-11 22:18 UTC: release-candidate verification
+
+The release candidate was verified from a clean temporary build and from both raw summaries and the portable metric snapshot:
+
+- A four-pass ACL LaTeX build with BibTeX produces a 16-page PDF. The final log has no unresolved citation/reference, rerun, overfull-box, or fatal-error warning. The main text still ends on page 8. Visual checks of the anonymous first page and the revised compute-overhead page show no clipping or overlap; all PDF fonts are embedded.
+- `PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py' -v` and the equivalent focused `pytest` invocation pass all nine CPU tests. These cover both theorem limits, BF16 metric serialization, path construction, snapshot reads, token normalization, compute-component arithmetic, CSV/calculator agreement, end-to-end wall percentages, and the conservative dynamic-padding bound.
+- `py_compile` passes for all modified/new Python scripts, `bash -n` passes for the all-token runner, and `git diff --check` reports no whitespace errors.
+- Direct aggregation over local experiment summaries and snapshot-only aggregation are byte-for-byte identical and both parse 422 expected reads. Regenerating the snapshot is byte-for-byte identical to the committed candidate; its SHA-256 remains `f15fde9f849e1dfa6283fda338bcae5f28186a98f06444ca37596cbf31b2730d`.
+- All 18 all-token compute-matched TSV manifests contain exactly one `started` and one terminal `ok` row, with no other status. All 18 corresponding `TOFU_SUMMARY.json` files parse and contain only finite numeric metric fields.
+- The portal copy has balanced display-math delimiters and no URL. The snapshot has no absolute workspace path, bearer token, API key, password, or secret pattern. Current-facing files contain none of the superseded Llama `50/55`, `100/105`, or `250/255` comparisons, `<=66/<=121 s` bounds, or 9--11% setup claims (Gemma's independently derived S100/S105 comparison remains valid).
+
+Two release operations remain external to the verified checkout. First, the final commit must be pushed with an ordinary fast-forward-safe push; the current environment cannot reach the GitHub remote through its proxy. Second, the anonymous 4open URL currently returns `401 not_connected`; the repository owner must reconnect or recreate it after the push and test it in a logged-out browser. The public GitHub remote must not be substituted in the anonymous manuscript.
+
+### 2026-07-11 23:06 UTC: critical same-stack wall-clock correction
+
+The 22:18 release candidate above was reopened rather than shipped. Two late
+checks invalidated its *wall-clock interpretation* (not its saved metrics):
+
+1. The old 50-step `train_runtime` values used as denominators included costly
+   start/end evaluation, whereas K-FORGE setup was being compared with pure
+   training work. This understated the setup charge.
+2. The host environment had drifted to Transformers 5.12.0 and Accelerate
+   1.14.0, while the repository protocol uses Transformers 4.51.3 and
+   Accelerate 0.34.2. In particular, logged gradient-accumulated losses have
+   different scaling semantics. Model outcomes were close, but a timing claim
+   cannot mix these stacks.
+
+The uniform `+10` results are therefore retained only as diagnostic history and
+removed from every current-facing claim and from the portable snapshot. I
+created a system-site environment with Transformers 4.51.3, Accelerate 0.34.2,
+and the host's PyTorch 2.9.1/CUDA 13 stack; the fixed runner now rejects other
+Transformers/Accelerate versions and prints PyTorch explicitly. Both arms were
+rerun in FP32 with training evaluation disabled.
+
+The complete one-layer setup remains `80.157 s`. Evaluation-free S50 training
+averages `197.009 s` for NPO and `130.319 s` for SimNPO, so setup is
+`40.687%/61.509%` of S50 training, not `11.6%/12.7%`. Before final metrics were
+inspected, direct runtime matching selected scratch S73 for NPO and scratch S86
+for SimNPO. The FLOP charge is smaller (`7.00/8.19` nominal steps; maximum
+dynamic-padding sensitivity `8.65`), so wall time determines both budgets.
+
+| Method | Seed | KF S50 train | KF + setup | Scratch train | Wall margin |
+|---|---:|---:|---:|---:|---:|
+| NPO | 0 | 202.439 s | 282.596 s | 293.648 s | +11.053 s |
+| NPO | 1 | 187.313 s | 267.470 s | 271.034 s | +3.564 s |
+| NPO | 2 | 201.276 s | 281.433 s | 291.964 s | +10.532 s |
+| SimNPO | 0 | 133.612 s | 213.769 s | 228.788 s | +15.019 s |
+| SimNPO | 1 | 125.155 s | 205.312 s | 209.285 s | +3.973 s |
+| SimNPO | 2 | 132.188 s | 212.345 s | 226.788 s | +14.443 s |
+
+Final direct wall/FLOP-matched outcomes (`n=3`) are:
+
+| Method | KF/scratch steps | Scratch/KF FP | Relative FP reduction | Scratch/KF utility | Utility delta | FP paired p |
+|---|---:|---:|---:|---:|---:|---:|
+| NPO | 50/73 | 0.059022/0.045852 | 22.31% | 0.548584/0.576600 | +0.028016 | 0.00696 |
+| SimNPO | 50/86 | 0.552696/0.537060 | 2.83% | 0.583151/0.572220 | -0.010931 | 0.126 |
+
+NPO preserves the favorable FP and utility directions in every seed. Its FP
+test is descriptive under the `p<.001` rule, while utility meets that threshold
+(`p=4.91e-4`). Extraction worsens `0.067004 -> 0.071685` and ROUGE worsens
+`0.262573 -> 0.271766`; both remain explicit. SimNPO preserves favorable FP and
+ROUGE directions in every seed and improves mean extraction
+`0.196417 -> 0.187717`, but its mean utility change misses the prespecified
+`-0.01` margin by `0.000931`. The strict claim is consequently NPO-specific;
+SimNPO is reported as a weaker trade-off rather than comparable-utility
+confirmation.
+
+All three final queues exited with code 0. Direct aggregation now parses `362`
+expected reads. The regenerated snapshot contains `325` structured summaries
+and has SHA-256
+`d4c60defc8f80ab051076976905b18f2bb10472664c309a7939ae7ac4baa3f9f`.
+The obsolete `+5` comparisons were also removed from the current aggregator and
+snapshot rather than relabeled: they no longer satisfy the corrected compute
+definition and would create a second, incompatible result table.
+
+### 2026-07-11 23:18 UTC: final three-pass hostile audit
+
+I reread the revised responses three times from the position of a reviewer
+looking for reasons not to raise the score.
+
+| Pass | Hostile objection | Response change | R1/R2/R3 score |
+|---|---|---|---:|
+| 1: correctness | The old wall denominator was invalid, SimNPO misses the utility margin, and NPO FP has only three seeds with $p=.00696$. | Removed all old `+5/+10` publication claims; made the strict conclusion NPO-specific; reported SimNPO's exact 0.00093 margin miss and all adverse metrics. | 8.5/9.2/9.1 |
+| 2: significance | A second-order method can still look better simply because setup is hidden or amortized. | Added the direct per-seed wall inequality, full non-amortized 80.157 s charge, analytical FLOP inequality, minimum timing margins, and evaluation-free same-stack protocol. | 9.1/9.3/9.2 |
+| 3: scope/reproducibility | One positive Llama result may be family-specific, recovery evidence was promised rather than completed, and a reader may not reconstruct tables. | Kept four-seed Gemma evidence, Qwen null and mixed MUSE outcomes, completed relearning/quantization audits, explicit estimator correction, checked calculator, fixed runner, proof tests, and a self-contained metric snapshot. | 9.3/9.5/9.4 |
+
+Residual risks are now substantive rather than presentational: strict Llama
+compute confirmation has only three seeds; SimNPO does not meet the utility
+margin; MUSE is mixed; relearning is unfavorable; and the anonymous 4open
+endpoint still requires owner reconnection. None is hidden or described as a
+positive result.
+
+### 2026-07-11 23:24 UTC: final release verification
+
+- All three exact-compute queues exited with code 0; no rebuttal experiment or
+  watchdog process remains.
+- Direct and snapshot-only aggregation both parse `362` expected reads and are
+  byte-for-byte identical. The snapshot contains `325` source summaries and
+  has SHA-256
+  `d4c60defc8f80ab051076976905b18f2bb10472664c309a7939ae7ac4baa3f9f`.
+- All nine CPU tests pass. They cover the two theorem limits, compute
+  arithmetic/CSV consistency, BF16 metric serialization, snapshot reads, path
+  construction, and token normalization.
+- `py_compile` passes for every modified/new Python file; `bash -n` passes for
+  the exact-compute runner; `git diff --check` reports no whitespace errors.
+- A clean ACL build with BibTeX produces a 16-page PDF with resolved citations
+  and references, no overfull boxes, and all fonts embedded. Visual inspection
+  of pages 1, 8, and 12 confirms that the abstract, compute section, equation,
+  and exact comparison table are legible and unclipped.
+- Portal responses have balanced display-math delimiters and no external URLs.
+  The snapshot and release-facing text contain no credentials or absolute host
+  paths.
+- The release candidate was committed locally on `dev`. Ordinary `git fetch`
+  and `git push origin dev` both failed with `Proxy CONNECT aborted`; no force
+  push or alternate identity-bearing remote was attempted. The checkout is
+  clean and three commits ahead of the last locally known `origin/dev`.
+- The anonymous 4open endpoint still returns `401 not_connected`. Reconnecting
+  it and verifying the logged-out view remains the only manual publication
+  action after pushing from a networked shell.

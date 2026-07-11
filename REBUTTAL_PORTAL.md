@@ -20,14 +20,16 @@ $$
 F_{\mathrm{KF}}\simeq6PT_{\mathrm{cal}}+2N_F(m^2+n^2)+10(m^3+n^3),
 $$
 
-and, with $P=1.236$B, $\tau_f=3042$ and $\tau_r=2924$ tokens per optimizer step,
+Here $P$ is model parameter count, $T_{\mathrm{cal}}$ is the calibration input-token count, $N_F$ is the number of loss-bearing factor rows, and $n\times m$ is the edited matrix shape.
+
+With $P=1.236$B, $\tau_f=3042$ and $\tau_r=2924$ tokens per optimizer step,
 
 $$
 F_{\mathrm{step}}^{\mathrm{SimNPO}}\simeq6P(\tau_f+\tau_r),\qquad
 F_{\mathrm{step}}^{\mathrm{NPO}}\simeq F_{\mathrm{step}}^{\mathrm{SimNPO}}+2P\tau_f.
 $$
 
-The setup equals 7.00 NPO or 8.19 SimNPO steps by FLOPs; a dynamic-padding sensitivity calculation raises the largest ratio only to 8.65. The edit is folded into model weights, so later optimizer steps and inference have no added cost. A timing audit found that our earlier 50-step denominator included evaluation, so we discarded that comparison and reran both arms with evaluation disabled under PyTorch 2.9.1+cu130, Transformers 4.51.3, and Accelerate 0.34.2. Evaluation-free S50 training averages 197.0 s for NPO and 130.3 s for SimNPO; the full 80.2 s setup is therefore 40.7% and 61.5% of S50 training time. Before inspecting final metrics, direct runtime matching selected scratch S73 for NPO and S86 for SimNPO:
+The setup equals 7.00 NPO or 8.19 SimNPO steps by FLOPs; a dynamic-padding sensitivity calculation raises the largest ratio only to 8.65. The edit is folded into model weights, so later optimizer steps and inference have no added cost. A timing audit found that our earlier 50-step denominator included evaluation, so we discarded that comparison and reran both arms with evaluation disabled under PyTorch 2.9.1+cu130, Transformers 4.51.3, and Accelerate 0.34.2. The strict runs use layer-0 `mlp.down_proj`, rank 2, factor damping $10^{-3}$, retain penalty $10^{-2}$, FP32, and seeds 0/1/2. We reused the previously reported $\alpha=.60$ initialized checkpoint rather than selecting a new edit from these outcomes. Evaluation-free S50 training averages 197.0 s for NPO and 130.3 s for SimNPO; the full 80.2 s setup is therefore 40.7% and 61.5% of S50 training time. Before inspecting final metrics, direct runtime matching selected scratch S73 for NPO and S86 for SimNPO:
 
 | Method | K-FORGE / scratch steps | Wall: scratch / K-FORGE+setup | Scratch FP | K-FORGE FP | Rel. reduction | Scratch / K-FORGE utility |
 |---|---:|---:|---:|---:|---:|---:|
@@ -38,7 +40,7 @@ Every seed satisfies the wall inequality, with minimum margins of 3.56/3.97 s, a
 
 At 3B, calibration through edit takes 104 s, complete setup is 145 s, and the analytical setup is $9.29\times10^{14}$ FLOPs; we do not infer an evaluation-free 3B step equivalent without a corresponding timing rerun. A code audit clarified that the executed estimator always streamed K-FAC covariance factors rather than running the Lanczos MFF routine described in the submitted text; we corrected the description, not the checkpoints. The derivation, which assumes SPD Kronecker factor pairs, is unchanged. Executed cost is $\mathcal{O}(N_F(m^2+n^2)+m^3+n^3)$ and remains a limitation for wide matrices or many edited layers. Calibration model passes account for 97.7%/99.1% of estimated setup FLOPs. We charge the full setup to every comparison although one initialized checkpoint can in principle be reused.
 
-**Non-Llama family.** We added Gemma-3-1B and held out seed 3 until the configuration and one-shot selection rule were fixed. At 100 steps over four seeds, NPO FP changes from 0.06557 to **0.05328** (-18.7%) and extraction from 0.05496 to **0.03298** (-40.0%), while utility is 0.40062/0.40122. Forget ROUGE worsens from 0.29801 to 0.36471, which we report explicitly. SimNPO FP changes from 0.27240 to **0.26930** ($p=8.8\times10^{-7}$), extraction from 0.12651 to **0.12191**, and ROUGE from 0.39930 to **0.39480**, with utility delta -0.00154. All four paired seeds preserve the FP direction for both methods; the held-out seed also satisfies the utility margin.
+**Non-Llama family.** We added Gemma-3-1B; the utility-constrained one-shot rule selected $\alpha=.8$ before downstream training, and seed 3 remained held out until the configuration and rule were fixed. At 100 steps over four seeds, NPO FP changes from 0.06557 to **0.05328** (-18.7%) and extraction from 0.05496 to **0.03298** (-40.0%), while utility is 0.40062/0.40122. Forget ROUGE worsens from 0.29801 to 0.36471, which we report explicitly. SimNPO FP changes from 0.27240 to **0.26930** ($p=8.8\times10^{-7}$), extraction from 0.12651 to **0.12191**, and ROUGE from 0.39930 to **0.39480**, with utility delta -0.00154. All four paired seeds preserve the FP direction for both methods; the held-out seed also satisfies the utility margin.
 
 The Gemma conclusion also survives the setup charge. Comparing K-FORGE S100 against scratch S103/S105 over four seeds gives NPO FP 0.06397 to **0.05328** ($p=0.0048$, treated descriptively) and SimNPO FP 0.27223 to **0.26930** ($p=9.4\times10^{-6}$). NPO extraction improves, but its ROUGE exception remains. We use $p<0.001$ for exploratory inferential claims.
 
@@ -67,7 +69,7 @@ We also evaluated MUSE-News and MUSE-Books with Llama-2-7B and SimNPO over three
 | Books | Scratch | **0.8519** | 0.3655 | **0.9554** | **0.6099** |
 | Books | K-FORGE | 0.8692 | **0.3567** | 0.9632 | 0.5860 |
 
-MUSE-News improves both forgetting-ROUGE metrics but worsens extraction and retain quality; Books improves only KnowMem. A News follow-up fixed its selection rule before downstream training: minimize one-shot KnowMem subject to at most 0.01 one-shot retain drop. The selected point improves extraction 0.3034 to 0.3012 and VerbMem 0.5727 to 0.5507, but KnowMem and downstream retain quality worsen slightly. We therefore present MUSE as partial metric-level transfer, not benchmark dominance.
+MUSE-News improves both forgetting-ROUGE metrics but worsens extraction and retain quality; Books improves only KnowMem. A News follow-up fixed its selection rule before downstream training: minimize one-shot KnowMem subject to at most 0.01 one-shot retain drop. The rule selected $\alpha=1.0$; it improves extraction 0.3034 to 0.3012 and VerbMem 0.5727 to 0.5507, but KnowMem and downstream retain quality worsen slightly. We therefore present MUSE as partial metric-level transfer, not benchmark dominance.
 
 **Completed robustness audits.** We replaced the submitted future-tense paragraph with matched-start experiments. For NPO, scratch S100 and K-FORGE S50 begin close in FP (0.0472/0.0519) and utility (0.5683/0.5754). Both receive the same supervised `forget10` attack (AdamW, $10^{-5}$, effective batch 32) for 13 and 39 steps. After 13 steps, scratch/K-FORGE FP is **0.3757**/0.5464, extraction **0.1122**/0.2002, ROUGE **0.3755**/0.4741, and utility 0.4553/**0.4926**. K-FORGE recovers more FP (+0.4945 versus +0.3285, $p=4.7\times10^{-4}$); 39 steps strengthens the same conclusion.
 

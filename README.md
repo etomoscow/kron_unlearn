@@ -62,6 +62,11 @@ Reported estimator/edit and scratch wall-clock measurements use single-GPU
 NVIDIA RTX PRO 6000 Blackwell hardware; no multi-GPU speedup is included.
 End-to-end setup bounds span command-log creation through the final checkpoint
 file, including model/data startup and checkpoint serialization.
+The base package retains OpenUnlearning's `torch==2.4.1` dependency, whereas
+the Blackwell timing rerun used PyTorch 2.9.1+cu130 for hardware support. The
+exact runner enforces the outcome-relevant Transformers/Accelerate versions
+and prints PyTorch explicitly; on different hardware, remeasure the wall-clock
+budget with the published inequality instead of reusing S73/S86 mechanically.
 
 ## Rebuttal Configurations
 

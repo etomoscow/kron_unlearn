@@ -435,22 +435,61 @@ positive result.
   byte-for-byte identical. The snapshot contains `325` source summaries and
   has SHA-256
   `d4c60defc8f80ab051076976905b18f2bb10472664c309a7939ae7ac4baa3f9f`.
-- All nine CPU tests pass. They cover the two theorem limits, compute
+- All nine CPU tests pass with the documented command
+  `cd open-unlearning && PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'`.
+  A bare `pytest` invocation does not add `src` and the repository root to
+  `sys.path`; the equivalent focused command is
+  `PYTHONPATH=.:src pytest -q tests/test_kforge_wiener.py tests/test_rebuttal_compat.py`.
+  The tests cover the two theorem limits, compute
   arithmetic/CSV consistency, BF16 metric serialization, snapshot reads, path
   construction, and token normalization.
 - `py_compile` passes for every modified/new Python file; `bash -n` passes for
   the exact-compute runner; `git diff --check` reports no whitespace errors.
-- A clean ACL build with BibTeX produces a 16-page PDF with resolved citations
-  and references, no overfull boxes, and all fonts embedded. Visual inspection
-  of pages 1, 8, and 12 confirms that the abstract, compute section, equation,
-  and exact comparison table are legible and unclipped.
+- The official ACL style and bibliography-style files are now bundled in the
+  repository. A clean standalone ACL build in a temporary directory, without
+  an external `TEXINPUTS`, produces a 16-page PDF with resolved citations and
+  references, no overfull boxes, and all fonts embedded. Visual inspection of
+  pages 1, 8, and 12 confirms that the abstract, compute section, equation, and
+  exact comparison table are legible and unclipped.
+- `aclpubcheck==0.2.0` reports `All Clear` for its page-size, page-limit, and
+  font checks. Its raster margin pass cannot run under the host's standard
+  ImageMagick PDF security policy; I did not weaken that global policy. Margins
+  were instead inspected from rendered pages 1, 2, 6, 8, and 12. The complete
+  Conclusion ends on page 8; the required Limitations section follows, which
+  ARR explicitly excludes from the content-page limit.
 - Portal responses have balanced display-math delimiters and no external URLs.
   The snapshot and release-facing text contain no credentials or absolute host
   paths.
-- The release candidate was committed locally on `dev`. Ordinary `git fetch`
-  and `git push origin dev` both failed with `Proxy CONNECT aborted`; no force
-  push or alternate identity-bearing remote was attempted. The checkout is
-  clean and three commits ahead of the last locally known `origin/dev`.
-- The anonymous 4open endpoint still returns `401 not_connected`. Reconnecting
-  it and verifying the logged-out view remains the only manual publication
-  action after pushing from a networked shell.
+- The three standalone portal responses contain `994/746/566` words (`2306`
+  total). A final selection audit now states explicitly that the strict
+  compute-matched runs reused the previously reported `alpha=.60` checkpoint;
+  only the longer scratch budget was chosen from evaluation-free runtime, and
+  it was fixed before final metrics were inspected. The main results section
+  also distinguishes downstream-step matching from the later full-setup
+  comparison so that the small strict SimNPO utility trade-off is not obscured.
+- A final primary-source novelty audit caught an over-broad taxonomy in the
+  submitted prose: FILA is already Fisher-weighted LoRA initialization, VILA
+  refines that line, and the newly published ReGLU/RILA is a
+  representation-guided LoRA initializer. The revision now cites and credits
+  these direct precedents and explicitly does *not* claim informed or
+  Fisher-guided initialization itself as novel. The narrower distinction is
+  the two-Fisher Kronecker Wiener checkpoint edit, exact full-rank solution,
+  stated low-rank relaxation, and use with an otherwise unchanged NPO/SimNPO
+  optimizer. K-FADE is also correctly described as few-step Gauss--Newton,
+  rather than as a one-shot method. After compressing this context and the
+  compute prose, the complete Conclusion remains on main-text page 8; the PDF
+  remains 16 pages with Limitations/references/appendix following the main
+  limit.
+- The audited evidence release is committed as `b99d434`; the final
+  text/novelty/format refinements and this audit are recorded in the current
+  `dev` HEAD. A proxy-free fetch confirmed that `dev` is zero commits behind
+  and four commits ahead of `origin/dev`, so the update is a fast-forward.
+  Pushing through the configured proxy failed with `Proxy CONNECT aborted`;
+  direct HTTPS push reached GitHub but this non-interactive environment has no
+  credential helper, and SSH has no authorized key. No force push or alternate
+  identity-bearing remote was attempted. The remaining Git action is an
+  ordinary authenticated `git push origin dev` from the owner's shell.
+- A fresh logged-out check of the anonymous 4open endpoint still returns
+  `401 not_connected`. Reconnecting it and verifying the logged-out view
+  remains the other manual publication action after pushing from an
+  authenticated shell.

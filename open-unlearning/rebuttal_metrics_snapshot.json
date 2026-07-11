@@ -1,0 +1,3089 @@
+{
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_kforge_S100_seed0_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.8547619047619048,
+    "forget_knowmem_ROUGE": 0.35815590635418215,
+    "forget_verbmem_ROUGE": 0.9568783525240684,
+    "privleak": -57.562869811841175,
+    "retain_knowmem_ROUGE": 0.5818407545670703
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_kforge_S100_seed1_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.8605555555555557,
+    "forget_knowmem_ROUGE": 0.3579286698225978,
+    "forget_verbmem_ROUGE": 0.9547353721284526,
+    "privleak": -57.729289930153605,
+    "retain_knowmem_ROUGE": 0.5717848105111263
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_kforge_S100_seed2_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.8923809523809524,
+    "forget_knowmem_ROUGE": 0.3541054013036771,
+    "forget_verbmem_ROUGE": 0.9779885948011858,
+    "privleak": -57.655325433125846,
+    "retain_knowmem_ROUGE": 0.6042848105111263
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_kforge_S50_seed0_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.910873015873016,
+    "forget_knowmem_ROUGE": 0.4211164458147218,
+    "forget_verbmem_ROUGE": 0.9969097917340559,
+    "privleak": -57.359467445014914,
+    "retain_knowmem_ROUGE": 0.6496376623376624
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_kforge_S50_seed1_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.9107142857142858,
+    "forget_knowmem_ROUGE": 0.42911644581472175,
+    "forget_verbmem_ROUGE": 0.9937022445642447,
+    "privleak": -57.285502947987176,
+    "retain_knowmem_ROUGE": 0.6479709956709957
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_kforge_S50_seed2_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.9111111111111111,
+    "forget_knowmem_ROUGE": 0.4293128743861503,
+    "forget_verbmem_ROUGE": 0.9969097917340559,
+    "privleak": -57.23002957521638,
+    "retain_knowmem_ROUGE": 0.6377294497772759
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_scratch_S100_seed0_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.8367460317460319,
+    "forget_knowmem_ROUGE": 0.3545228727211486,
+    "forget_verbmem_ROUGE": 0.9398931554884312,
+    "privleak": -57.72928993015363,
+    "retain_knowmem_ROUGE": 0.6038086200349359
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_scratch_S100_seed1_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.8375396825396827,
+    "forget_knowmem_ROUGE": 0.36744267221989546,
+    "forget_verbmem_ROUGE": 0.9486913659851528,
+    "privleak": -57.84023667569523,
+    "retain_knowmem_ROUGE": 0.6151181438444596
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_scratch_S100_seed2_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.8812698412698414,
+    "forget_knowmem_ROUGE": 0.3744906826889586,
+    "forget_verbmem_ROUGE": 0.9774760022488366,
+    "privleak": -57.784763302924425,
+    "retain_knowmem_ROUGE": 0.610872112098428
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_scratch_S50_seed0_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.9111111111111111,
+    "forget_knowmem_ROUGE": 0.39633866803694395,
+    "forget_verbmem_ROUGE": 0.9969097917340559,
+    "privleak": -57.488905314813465,
+    "retain_knowmem_ROUGE": 0.6479709956709957
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_scratch_S50_seed1_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.9107142857142858,
+    "forget_knowmem_ROUGE": 0.4196389325872085,
+    "forget_verbmem_ROUGE": 0.9883732063682024,
+    "privleak": -57.303994072244116,
+    "retain_knowmem_ROUGE": 0.6479709956709957
+  },
+  "saves/eval/muse_Llama-2-7b-hf_Books_SimNPO_scratch_S50_seed2_rebuttal_muse_books_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.9110317460317461,
+    "forget_knowmem_ROUGE": 0.4157202817935577,
+    "forget_verbmem_ROUGE": 0.9969097917340559,
+    "privleak": -57.285502947987155,
+    "retain_knowmem_ROUGE": 0.6504709956709956
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_S100_seed0_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.308968253968254,
+    "forget_knowmem_ROUGE": 0.6254642836810018,
+    "forget_verbmem_ROUGE": 0.5762710417312662,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5153532520005861
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_S100_seed1_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.30920634920634926,
+    "forget_knowmem_ROUGE": 0.6230133032888451,
+    "forget_verbmem_ROUGE": 0.5573566065167203,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5215887773448071
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_S100_seed2_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.310952380952381,
+    "forget_knowmem_ROUGE": 0.6349839920428155,
+    "forget_verbmem_ROUGE": 0.5532850700377234,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5279759052094462
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_S50_seed0_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.31722222222222224,
+    "forget_knowmem_ROUGE": 0.6341027693783111,
+    "forget_verbmem_ROUGE": 0.560481864868994,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5275684812158152
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_S50_seed1_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.31079365079365084,
+    "forget_knowmem_ROUGE": 0.6145567206557918,
+    "forget_verbmem_ROUGE": 0.5538999097897723,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.538362524146065
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_S50_seed2_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.31682539682539684,
+    "forget_knowmem_ROUGE": 0.6217275890031307,
+    "forget_verbmem_ROUGE": 0.5772554238106532,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5302465085025382
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_grid_1p00_S100_seed0_rebuttal_muse_followup_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.3010317460317461,
+    "forget_knowmem_ROUGE": 0.6296799699555117,
+    "forget_verbmem_ROUGE": 0.557957853077543,
+    "privleak": -99.89504615871219,
+    "retain_knowmem_ROUGE": 0.5116073143633441
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_grid_1p00_S100_seed1_rebuttal_muse_followup_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.3010317460317461,
+    "forget_knowmem_ROUGE": 0.6226323509078926,
+    "forget_verbmem_ROUGE": 0.5443521812887726,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5150073865134162
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_kforge_grid_1p00_S100_seed2_rebuttal_muse_followup_v2/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.30142857142857143,
+    "forget_knowmem_ROUGE": 0.635822055939703,
+    "forget_verbmem_ROUGE": 0.5498137336362177,
+    "privleak": -99.89504615871219,
+    "retain_knowmem_ROUGE": 0.5325908477381818
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_scratch_S100_seed0_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.30269841269841274,
+    "forget_knowmem_ROUGE": 0.6304642836810019,
+    "forget_verbmem_ROUGE": 0.5691906381710435,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5227191450613816
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_scratch_S100_seed1_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.2996825396825397,
+    "forget_knowmem_ROUGE": 0.6272773725529143,
+    "forget_verbmem_ROUGE": 0.5747794085248138,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5334268209603619
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_scratch_S100_seed2_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.30777777777777776,
+    "forget_knowmem_ROUGE": 0.6281268491856727,
+    "forget_verbmem_ROUGE": 0.5742548912624471,
+    "privleak": -99.89504615871219,
+    "retain_knowmem_ROUGE": 0.53933833907188
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_scratch_S50_seed0_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.3085714285714286,
+    "forget_knowmem_ROUGE": 0.6356583249338668,
+    "forget_verbmem_ROUGE": 0.5741751063371496,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5265176412511822
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_scratch_S50_seed1_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.30873015873015874,
+    "forget_knowmem_ROUGE": 0.6233445994436706,
+    "forget_verbmem_ROUGE": 0.5719678406124465,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.540347540337603
+  },
+  "saves/eval/muse_Llama-2-7b-hf_News_SimNPO_scratch_S50_seed2_rebuttal_muse_clean_v3/MUSE_SUMMARY.json": {
+    "extraction_strength": 0.3050793650793651,
+    "forget_knowmem_ROUGE": 0.6312997815164998,
+    "forget_verbmem_ROUGE": 0.5760872822538264,
+    "privleak": -99.8740553946528,
+    "retain_knowmem_ROUGE": 0.5344278049838347
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_S50_seed0_quant4_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06017236032577946,
+    "forget_Q_A_Prob": 0.11013206481933593,
+    "forget_Q_A_ROUGE": 0.3501046886304837,
+    "forget_quality": 0.07829787069468755,
+    "forget_truth_ratio": 0.6439775935257424,
+    "model_utility": 0.5019500454441224,
+    "privleak": -13.631025893198178
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_S50_seed0_quant8_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06241287058863979,
+    "forget_Q_A_Prob": 0.1045361328125,
+    "forget_Q_A_ROUGE": 0.3288334685632276,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.6488239395512523,
+    "model_utility": 0.5425668250858984,
+    "privleak": -2.6841934761095274
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_S50_seed1_quant4_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.061355507285528466,
+    "forget_Q_A_Prob": 0.10601421356201172,
+    "forget_Q_A_ROUGE": 0.3569211472021416,
+    "forget_quality": 0.15461291961180293,
+    "forget_truth_ratio": 0.6471823856656583,
+    "model_utility": 0.49255122106647403,
+    "privleak": -8.894332974202701
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_S50_seed1_quant8_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06202142921728124,
+    "forget_Q_A_Prob": 0.10231435775756836,
+    "forget_Q_A_ROUGE": 0.34304059134239623,
+    "forget_quality": 0.28118158736530297,
+    "forget_truth_ratio": 0.6439691558421071,
+    "model_utility": 0.5280524832424726,
+    "privleak": -0.49756028418171505
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_S50_seed2_quant4_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05796185508970821,
+    "forget_Q_A_Prob": 0.09944068908691406,
+    "forget_Q_A_ROUGE": 0.340590862975468,
+    "forget_quality": 0.28118158736530297,
+    "forget_truth_ratio": 0.6470046749750793,
+    "model_utility": 0.5084099016282431,
+    "privleak": -2.8476848004134045
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_S50_seed2_quant8_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05760135668864548,
+    "forget_Q_A_Prob": 0.09243827819824219,
+    "forget_Q_A_ROUGE": 0.3319790745076993,
+    "forget_quality": 0.4680435421303692,
+    "forget_truth_ratio": 0.6445791787384846,
+    "model_utility": 0.5404148894560898,
+    "privleak": 6.894474700752053
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed0_quant4_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06939609107038688,
+    "forget_Q_A_Prob": 0.06328724384307861,
+    "forget_Q_A_ROUGE": 0.26453705565109964,
+    "forget_quality": 0.5234101030810641,
+    "forget_truth_ratio": 0.6416421670731871,
+    "model_utility": 0.516921319018163,
+    "privleak": 26.538741871751746
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed0_quant8_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07333028484355124,
+    "forget_Q_A_Prob": 0.05387758731842041,
+    "forget_Q_A_ROUGE": 0.2729472880559122,
+    "forget_quality": 0.9067578225553679,
+    "forget_truth_ratio": 0.6342130522577193,
+    "model_utility": 0.5665749732864674,
+    "privleak": 37.19908484749058
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed1_quant4_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06342869490881531,
+    "forget_Q_A_Prob": 0.0689405083656311,
+    "forget_Q_A_ROUGE": 0.26423057799035005,
+    "forget_quality": 0.5812138636684575,
+    "forget_truth_ratio": 0.6502177238859999,
+    "model_utility": 0.5263924538160325,
+    "privleak": 21.719037877877508
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed1_quant8_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07097634326664373,
+    "forget_Q_A_Prob": 0.05716147780418396,
+    "forget_Q_A_ROUGE": 0.27271962568856806,
+    "forget_quality": 0.813414043347709,
+    "forget_truth_ratio": 0.6380648249800814,
+    "model_utility": 0.5665624678434265,
+    "privleak": 32.11668117153059
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed2_quant4_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06289126749731365,
+    "forget_Q_A_Prob": 0.058551709651947025,
+    "forget_Q_A_ROUGE": 0.2736882348537566,
+    "forget_quality": 0.7000433606572674,
+    "forget_truth_ratio": 0.6517607241629761,
+    "model_utility": 0.5334918166433587,
+    "privleak": 28.108359818086964
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed2_quant8_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07025376991744013,
+    "forget_Q_A_Prob": 0.049628167152404784,
+    "forget_Q_A_ROUGE": 0.278311659244976,
+    "forget_quality": 0.9416341827445021,
+    "forget_truth_ratio": 0.6473119115892291,
+    "model_utility": 0.5746103203354351,
+    "privleak": 39.21058491802789
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S100_seed0_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0735150417844961,
+    "forget_Q_A_Prob": 0.03196064507163101,
+    "forget_Q_A_ROUGE": 0.2803590521007122,
+    "forget_quality": 0.9416341827445021,
+    "forget_truth_ratio": 0.6308054339332066,
+    "model_utility": 0.5881799290297961,
+    "privleak": 47.08347673914948
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S100_seed1_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07676949821946813,
+    "forget_Q_A_Prob": 0.0314767387356369,
+    "forget_Q_A_ROUGE": 0.2635924387355331,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.617694827047998,
+    "model_utility": 0.5940473403334432,
+    "privleak": 46.60768155386891
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S100_seed2_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06990039331617127,
+    "forget_Q_A_Prob": 0.02884297986351271,
+    "forget_Q_A_ROUGE": 0.256923175027362,
+    "forget_quality": 0.9067578225553679,
+    "forget_truth_ratio": 0.6258104332545686,
+    "model_utility": 0.5972282567978564,
+    "privleak": 49.40981149611714
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S250_seed0_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07457006723821377,
+    "forget_Q_A_Prob": 0.022971848592229095,
+    "forget_Q_A_ROUGE": 0.27525531212619214,
+    "forget_quality": 0.9416341827445021,
+    "forget_truth_ratio": 0.6123077497115458,
+    "model_utility": 0.5997273911209898,
+    "privleak": 51.3696827274006
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S250_seed1_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07410704010419016,
+    "forget_Q_A_Prob": 0.02238512117605751,
+    "forget_Q_A_ROUGE": 0.2675624961140328,
+    "forget_quality": 0.9067578225553679,
+    "forget_truth_ratio": 0.6102003765516598,
+    "model_utility": 0.6034735931447369,
+    "privleak": 51.374744378307824
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S250_seed2_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07306423352349131,
+    "forget_Q_A_Prob": 0.021591943222985747,
+    "forget_Q_A_ROUGE": 0.2632201432522721,
+    "forget_quality": 0.9843558982396782,
+    "forget_truth_ratio": 0.6180484697827034,
+    "model_utility": 0.606870389537661,
+    "privleak": 52.93980683882654
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed0_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07139031540298137,
+    "forget_Q_A_Prob": 0.04613801042138221,
+    "forget_Q_A_ROUGE": 0.2670852332476296,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6398116941675919,
+    "model_utility": 0.5749460571495567,
+    "privleak": 42.54621286589926
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed1_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06950319465400315,
+    "forget_Q_A_Prob": 0.047689079013516676,
+    "forget_Q_A_ROUGE": 0.26847258780888117,
+    "forget_quality": 0.4680435421303692,
+    "forget_truth_ratio": 0.6393097828762355,
+    "model_utility": 0.5696244314120784,
+    "privleak": 39.0253284948229
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed2_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07076003128749755,
+    "forget_Q_A_Prob": 0.0422921982028538,
+    "forget_Q_A_ROUGE": 0.27381745986510975,
+    "forget_quality": 0.7000433606572674,
+    "forget_truth_ratio": 0.6499879767785142,
+    "model_utility": 0.5769335401843974,
+    "privleak": 44.86647364177823
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S105_seed0_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06579409107400859,
+    "forget_Q_A_Prob": 0.04246290968379981,
+    "forget_Q_A_ROUGE": 0.2735370346418902,
+    "forget_quality": 0.8635251702254226,
+    "forget_truth_ratio": 0.6233709775716914,
+    "model_utility": 0.5639771361260479,
+    "privleak": 40.00830110100896
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S105_seed1_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0669297128424226,
+    "forget_Q_A_Prob": 0.04258270081423689,
+    "forget_Q_A_ROUGE": 0.2646489328163614,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6317214276846664,
+    "model_utility": 0.569659390843232,
+    "privleak": 39.624627962240154
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S105_seed2_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06118529329676046,
+    "forget_Q_A_Prob": 0.038304882817392354,
+    "forget_Q_A_ROUGE": 0.25569190394526986,
+    "forget_quality": 0.7582774273046589,
+    "forget_truth_ratio": 0.6256339834339143,
+    "model_utility": 0.5799024989207684,
+    "privleak": 41.81227348434942
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S255_seed0_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06659884627178536,
+    "forget_Q_A_Prob": 0.02918852967998646,
+    "forget_Q_A_ROUGE": 0.278485021293915,
+    "forget_quality": 0.5812138636684575,
+    "forget_truth_ratio": 0.6063425201953352,
+    "model_utility": 0.5799282492571324,
+    "privleak": 44.6154157567791
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S255_seed1_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06494700807994754,
+    "forget_Q_A_Prob": 0.027759877442298374,
+    "forget_Q_A_ROUGE": 0.2759141768567621,
+    "forget_quality": 0.7000433606572674,
+    "forget_truth_ratio": 0.6138063075899214,
+    "model_utility": 0.6001358126475523,
+    "privleak": 44.938349084661034
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S255_seed2_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06107293566352853,
+    "forget_Q_A_Prob": 0.02575650727213997,
+    "forget_Q_A_ROUGE": 0.2625776586877942,
+    "forget_quality": 0.813414043347709,
+    "forget_truth_ratio": 0.6133662991869774,
+    "model_utility": 0.5973607153425445,
+    "privleak": 47.346682586325976
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed0_quant4_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11628525730141707,
+    "forget_Q_A_Prob": 0.371962890625,
+    "forget_Q_A_ROUGE": 0.3399386633233072,
+    "forget_quality": 2.734462451060329e-12,
+    "forget_truth_ratio": 0.6175627652719271,
+    "model_utility": 0.4438949058798459,
+    "privleak": -88.3860419771398
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed0_quant8_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.09532428788978219,
+    "forget_Q_A_Prob": 0.28435791015625,
+    "forget_Q_A_ROUGE": 0.29618673067712736,
+    "forget_quality": 6.85594912218188e-10,
+    "forget_truth_ratio": 0.6412854289633377,
+    "model_utility": 0.4016399576561855,
+    "privleak": -82.5626126083598
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed1_quant4_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.119048878347391,
+    "forget_Q_A_Prob": 0.3684130859375,
+    "forget_Q_A_ROUGE": 0.3341188503538954,
+    "forget_quality": 4.640299916950861e-12,
+    "forget_truth_ratio": 0.6133116449722794,
+    "model_utility": 0.45122301485029226,
+    "privleak": -87.95985097075015
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed1_quant8_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10052931409357793,
+    "forget_Q_A_Prob": 0.302569580078125,
+    "forget_Q_A_ROUGE": 0.30627153554002584,
+    "forget_quality": 6.027592497096867e-11,
+    "forget_truth_ratio": 0.6331082510081601,
+    "model_utility": 0.425952963007573,
+    "privleak": -83.60025104434405
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed2_quant4_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11542372008966058,
+    "forget_Q_A_Prob": 0.36583251953125,
+    "forget_Q_A_ROUGE": 0.3365198113051925,
+    "forget_quality": 1.6027740307205098e-12,
+    "forget_truth_ratio": 0.6193797017909486,
+    "model_utility": 0.4436464728265547,
+    "privleak": -88.48525033492169
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed2_quant8_rebuttal_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.08847076952594157,
+    "forget_Q_A_Prob": 0.264320068359375,
+    "forget_Q_A_ROUGE": 0.2875030667343673,
+    "forget_quality": 9.906736183347326e-11,
+    "forget_truth_ratio": 0.6470311461857285,
+    "model_utility": 0.3819059856740591,
+    "privleak": -81.5138385403796
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S55_seed0_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07198091080562277,
+    "forget_Q_A_Prob": 0.08258607646159362,
+    "forget_Q_A_ROUGE": 0.2482613481861423,
+    "forget_quality": 0.813414043347709,
+    "forget_truth_ratio": 0.6551561137176455,
+    "model_utility": 0.5136707669516811,
+    "privleak": 24.617845352454044
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S55_seed1_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06782951513788898,
+    "forget_Q_A_Prob": 0.08139621991191234,
+    "forget_Q_A_ROUGE": 0.23925179987985123,
+    "forget_quality": 0.415788823500893,
+    "forget_truth_ratio": 0.6639498997985105,
+    "model_utility": 0.5193246977476071,
+    "privleak": 27.292421691839834
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S55_seed2_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06651337430888365,
+    "forget_Q_A_Prob": 0.07087995660112938,
+    "forget_Q_A_ROUGE": 0.2550730607597681,
+    "forget_quality": 0.813414043347709,
+    "forget_truth_ratio": 0.6485889743605319,
+    "model_utility": 0.5341264199086763,
+    "privleak": 26.406632783072777
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed0_quant4_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06401159842850457,
+    "forget_Q_A_Prob": 0.055746750831604006,
+    "forget_Q_A_ROUGE": 0.27726720489722806,
+    "forget_quality": 0.813414043347709,
+    "forget_truth_ratio": 0.6362233526126221,
+    "model_utility": 0.5245521311684005,
+    "privleak": 28.659573601885448
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed0_quant8_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06754330879646357,
+    "forget_Q_A_Prob": 0.0494877290725708,
+    "forget_Q_A_ROUGE": 0.2794028589270403,
+    "forget_quality": 0.9416341827445021,
+    "forget_truth_ratio": 0.6310822500279181,
+    "model_utility": 0.5604360861058783,
+    "privleak": 33.75463140511355
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed1_quant4_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06231695768028147,
+    "forget_Q_A_Prob": 0.05641395092010498,
+    "forget_Q_A_ROUGE": 0.26490733808984546,
+    "forget_quality": 0.9067578225553679,
+    "forget_truth_ratio": 0.6376244258469537,
+    "model_utility": 0.5316476034963493,
+    "privleak": 30.060638573009573
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed1_quant8_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06702477029784318,
+    "forget_Q_A_Prob": 0.0513224470615387,
+    "forget_Q_A_ROUGE": 0.26435690806100604,
+    "forget_quality": 0.8635251702254226,
+    "forget_truth_ratio": 0.6276624376904798,
+    "model_utility": 0.563311034787125,
+    "privleak": 35.64009636806056
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed2_quant4_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06073225128571689,
+    "forget_Q_A_Prob": 0.05477115631103516,
+    "forget_Q_A_ROUGE": 0.25259253542809945,
+    "forget_quality": 0.9416341827445021,
+    "forget_truth_ratio": 0.6413063648729181,
+    "model_utility": 0.535642904583801,
+    "privleak": 29.865258847990084
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed2_quant8_rebuttal_matched_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06374259407838133,
+    "forget_Q_A_Prob": 0.04623830795288086,
+    "forget_Q_A_ROUGE": 0.2667017294637672,
+    "forget_quality": 0.813414043347709,
+    "forget_truth_ratio": 0.6260527959662922,
+    "model_utility": 0.5694661381688013,
+    "privleak": 38.627988898604535
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_S50_seed0_quant4_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13965848819400628,
+    "forget_Q_A_Prob": 0.47285400390625,
+    "forget_Q_A_ROUGE": 0.43111785681880815,
+    "forget_quality": 6.027592497096867e-11,
+    "forget_truth_ratio": 0.5550857152304648,
+    "model_utility": 0.5326871853980933,
+    "privleak": -94.67008157847867
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_S50_seed0_quant8_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19882070599624296,
+    "forget_Q_A_Prob": 0.55854736328125,
+    "forget_Q_A_ROUGE": 0.4603467742458699,
+    "forget_quality": 1.7928838057651826e-13,
+    "forget_truth_ratio": 0.5376079758025508,
+    "model_utility": 0.5770145393568255,
+    "privleak": -96.47000464109331
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_S50_seed1_quant4_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13443730557948594,
+    "forget_Q_A_Prob": 0.471649169921875,
+    "forget_Q_A_ROUGE": 0.42316885496678497,
+    "forget_quality": 9.906736183347326e-11,
+    "forget_truth_ratio": 0.5541223069025627,
+    "model_utility": 0.5266849318889422,
+    "privleak": -94.77333925698635
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_S50_seed1_quant8_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.18596873907034833,
+    "forget_Q_A_Prob": 0.55966064453125,
+    "forget_Q_A_ROUGE": 0.4587178964962436,
+    "forget_quality": 1.3150137716657251e-11,
+    "forget_truth_ratio": 0.5450909632208192,
+    "model_utility": 0.5702206350134057,
+    "privleak": -96.65121174357252
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_S50_seed2_quant4_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13779511324436128,
+    "forget_Q_A_Prob": 0.47291259765625,
+    "forget_Q_A_ROUGE": 0.4268824856943692,
+    "forget_quality": 1.3150137716657251e-11,
+    "forget_truth_ratio": 0.5578713526928668,
+    "model_utility": 0.5245284429325314,
+    "privleak": -95.15296307502938
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_S50_seed2_quant8_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19250135783982386,
+    "forget_Q_A_Prob": 0.56480712890625,
+    "forget_Q_A_ROUGE": 0.4747756048534737,
+    "forget_quality": 5.418551024174982e-13,
+    "forget_truth_ratio": 0.5394602914586278,
+    "model_utility": 0.5708545400687962,
+    "privleak": -96.89973880311803
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S100_seed0_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13894993836195282,
+    "forget_Q_A_Prob": 0.39420535914599897,
+    "forget_Q_A_ROUGE": 0.4216918604936206,
+    "forget_quality": 2.7675164465641644e-09,
+    "forget_truth_ratio": 0.5661274221313067,
+    "model_utility": 0.5789376364097465,
+    "privleak": -91.2575165368172
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S100_seed1_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14616962787281948,
+    "forget_Q_A_Prob": 0.4121331877633929,
+    "forget_Q_A_ROUGE": 0.40963884949200347,
+    "forget_quality": 1.7473118094396964e-09,
+    "forget_truth_ratio": 0.564748795203944,
+    "model_utility": 0.5828091205672384,
+    "privleak": -92.18278632266076
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S100_seed2_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14784161053785772,
+    "forget_Q_A_Prob": 0.41333838753402236,
+    "forget_Q_A_ROUGE": 0.41602233552150863,
+    "forget_quality": 2.7675164465641644e-09,
+    "forget_truth_ratio": 0.5631882684562239,
+    "model_utility": 0.5833564298051676,
+    "privleak": -92.7922090918925
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S250_seed0_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10967543880448918,
+    "forget_Q_A_Prob": 0.2626240970753133,
+    "forget_Q_A_ROUGE": 0.3931076335404882,
+    "forget_quality": 4.455792684961036e-06,
+    "forget_truth_ratio": 0.5777962365119198,
+    "model_utility": 0.5878170026027517,
+    "privleak": -82.0169666405593
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S250_seed1_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11073903778494096,
+    "forget_Q_A_Prob": 0.2743986196257174,
+    "forget_Q_A_ROUGE": 0.38169626981326593,
+    "forget_quality": 4.5846770167841434e-07,
+    "forget_truth_ratio": 0.5761580030659031,
+    "model_utility": 0.5952478290730372,
+    "privleak": -82.53629202364216
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S250_seed2_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10934253705219983,
+    "forget_Q_A_Prob": 0.27856544483453033,
+    "forget_Q_A_ROUGE": 0.3930068555808282,
+    "forget_quality": 6.784754222980868e-07,
+    "forget_truth_ratio": 0.5758996139039188,
+    "model_utility": 0.5921158550491604,
+    "privleak": -83.63365794033184
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S50_seed0_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.18575667763517584,
+    "forget_Q_A_Prob": 0.5341200888156891,
+    "forget_Q_A_ROUGE": 0.44692394311668565,
+    "forget_quality": 3.1252666340221845e-13,
+    "forget_truth_ratio": 0.5379471538912708,
+    "model_utility": 0.5763529491332685,
+    "privleak": -95.95371624855481
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S50_seed1_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.18418699615402687,
+    "forget_Q_A_Prob": 0.5323697849363088,
+    "forget_Q_A_ROUGE": 0.45193016632998934,
+    "forget_quality": 1.3150137716657251e-11,
+    "forget_truth_ratio": 0.5429935475722599,
+    "model_utility": 0.5693552005785698,
+    "privleak": -96.18857685065075
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S50_seed2_v2lam0p01_corr_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19415833934955004,
+    "forget_Q_A_Prob": 0.5358048230037094,
+    "forget_Q_A_ROUGE": 0.45873888607142327,
+    "forget_quality": 1.0229984068189572e-13,
+    "forget_truth_ratio": 0.5424565685082487,
+    "model_utility": 0.567785731458889,
+    "privleak": -96.38294424548877
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S105_seed0_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.16358314131304738,
+    "forget_Q_A_Prob": 0.4955637917108834,
+    "forget_Q_A_ROUGE": 0.4603619034160731,
+    "forget_quality": 1.0229984068189572e-13,
+    "forget_truth_ratio": 0.5156046466222505,
+    "model_utility": 0.5899251688270519,
+    "privleak": -95.73404059918059
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S105_seed1_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.17067364046655015,
+    "forget_Q_A_Prob": 0.5016961284726859,
+    "forget_Q_A_ROUGE": 0.46346860648858806,
+    "forget_quality": 1.0229984068189572e-13,
+    "forget_truth_ratio": 0.5156118077114855,
+    "model_utility": 0.5850316546532517,
+    "privleak": -95.36960173385928
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S105_seed2_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.17483196260736328,
+    "forget_Q_A_Prob": 0.5118684471771121,
+    "forget_Q_A_ROUGE": 0.4583577362754428,
+    "forget_quality": 7.975373070421785e-17,
+    "forget_truth_ratio": 0.5101254403339258,
+    "model_utility": 0.5865480665210785,
+    "privleak": -96.51859648980282
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S255_seed0_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1123411201378029,
+    "forget_Q_A_Prob": 0.32578493844717743,
+    "forget_Q_A_ROUGE": 0.4277046086834379,
+    "forget_quality": 7.832452544383501e-12,
+    "forget_truth_ratio": 0.5365733998724412,
+    "model_utility": 0.5962988354146699,
+    "privleak": -89.3654714276908
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S255_seed1_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1133378660397147,
+    "forget_Q_A_Prob": 0.330759892873466,
+    "forget_Q_A_ROUGE": 0.41899770232291944,
+    "forget_quality": 4.640299916950861e-12,
+    "forget_truth_ratio": 0.5371876783286165,
+    "model_utility": 0.6004693710636657,
+    "privleak": -88.91194750640207
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S255_seed2_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11688279224385884,
+    "forget_Q_A_Prob": 0.3303341396711767,
+    "forget_Q_A_ROUGE": 0.4204717198539976,
+    "forget_quality": 9.906736183347326e-11,
+    "forget_truth_ratio": 0.5387846724479307,
+    "model_utility": 0.5903421853772622,
+    "privleak": -87.57870865743496
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed0_quant4_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1822856012952288,
+    "forget_Q_A_Prob": 0.55967529296875,
+    "forget_Q_A_ROUGE": 0.4652591555884984,
+    "forget_quality": 9.456104707095184e-16,
+    "forget_truth_ratio": 0.5190768914732891,
+    "model_utility": 0.5376458653331511,
+    "privleak": -96.69170495083044
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed0_quant8_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2751887705243764,
+    "forget_Q_A_Prob": 0.693505859375,
+    "forget_Q_A_ROUGE": 0.5472766829612473,
+    "forget_quality": 4.353260441808186e-19,
+    "forget_truth_ratio": 0.5015164113769748,
+    "model_utility": 0.5791833330153241,
+    "privleak": -98.6222186068519
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed1_quant4_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1701859968891624,
+    "forget_Q_A_Prob": 0.5650146484375,
+    "forget_Q_A_ROUGE": 0.471366738024804,
+    "forget_quality": 1.02724452984523e-14,
+    "forget_truth_ratio": 0.5182001803351913,
+    "model_utility": 0.5350307998171879,
+    "privleak": -97.09258770268387
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed1_quant8_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2888688870234002,
+    "forget_Q_A_Prob": 0.6920654296875,
+    "forget_Q_A_ROUGE": 0.5408333886459722,
+    "forget_quality": 6.159412995752159e-18,
+    "forget_truth_ratio": 0.4965625569966042,
+    "model_utility": 0.5770698784397273,
+    "privleak": -98.68295841773877
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed2_quant4_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.18074708798538872,
+    "forget_Q_A_Prob": 0.56389404296875,
+    "forget_Q_A_ROUGE": 0.4673999459889535,
+    "forget_quality": 5.7046977773929285e-15,
+    "forget_truth_ratio": 0.518930501773848,
+    "model_utility": 0.5232815737677062,
+    "privleak": -97.07132876887346
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed2_quant8_rebuttal_simnpo_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2892833240536896,
+    "forget_Q_A_Prob": 0.6951171875,
+    "forget_Q_A_ROUGE": 0.554432500768229,
+    "forget_quality": 2.241003819205479e-17,
+    "forget_truth_ratio": 0.498718889851287,
+    "model_utility": 0.5679738400356101,
+    "privleak": -98.6434775406623
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S55_seed0_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.25060206637721216,
+    "forget_Q_A_Prob": 0.6484130580350757,
+    "forget_Q_A_ROUGE": 0.5210038096859771,
+    "forget_quality": 4.2392996435511593e-17,
+    "forget_truth_ratio": 0.5022221540786993,
+    "model_utility": 0.5867085352565755,
+    "privleak": -98.01684515834596
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S55_seed1_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2609884613940433,
+    "forget_Q_A_Prob": 0.6403008967638015,
+    "forget_Q_A_ROUGE": 0.5152235491374781,
+    "forget_quality": 2.776495661774257e-16,
+    "forget_truth_ratio": 0.49955848488151233,
+    "model_utility": 0.5795893789962151,
+    "privleak": -97.8660079613102
+  },
+  "saves/eval/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S55_seed2_rebuttal_compute_matched_v3_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.25228081129315477,
+    "forget_Q_A_Prob": 0.6498467235267162,
+    "forget_Q_A_ROUGE": 0.5252121539638313,
+    "forget_quality": 6.159412995752159e-18,
+    "forget_truth_ratio": 0.4942282745016878,
+    "model_utility": 0.5723478451681167,
+    "privleak": -98.464295098546
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S100_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07615542656428939,
+    "forget_Q_A_Prob": 0.04067989492436034,
+    "forget_Q_A_ROUGE": 0.31635098585791865,
+    "forget_quality": 0.21070561249668102,
+    "forget_truth_ratio": 0.5998314288418832,
+    "model_utility": 0.6746705796151228,
+    "privleak": 40.782321688901916
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S100_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07733744261479353,
+    "forget_Q_A_Prob": 0.03936006277548131,
+    "forget_Q_A_ROUGE": 0.3058963718366613,
+    "forget_quality": 0.8635251702254226,
+    "forget_truth_ratio": 0.6187461236400147,
+    "model_utility": 0.663556215565653,
+    "privleak": 41.73276261494793
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S100_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07752560074588144,
+    "forget_Q_A_Prob": 0.0364774095751136,
+    "forget_Q_A_ROUGE": 0.2964243026495845,
+    "forget_quality": 0.5234101030810641,
+    "forget_truth_ratio": 0.6168995298976204,
+    "model_utility": 0.6717793913932325,
+    "privleak": 46.1843123022129
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S250_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0774032279475248,
+    "forget_Q_A_Prob": 0.030256181574980303,
+    "forget_Q_A_ROUGE": 0.2927686856324444,
+    "forget_quality": 0.28118158736530297,
+    "forget_truth_ratio": 0.6046182322864426,
+    "model_utility": 0.6608904502246974,
+    "privleak": 49.282656894553966
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S250_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07887734119066363,
+    "forget_Q_A_Prob": 0.029295964067613624,
+    "forget_Q_A_ROUGE": 0.30751743591904374,
+    "forget_quality": 0.5812138636684575,
+    "forget_truth_ratio": 0.6101646413615122,
+    "model_utility": 0.655045956690868,
+    "privleak": 50.80707543898806
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S250_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.08083519166343935,
+    "forget_Q_A_Prob": 0.027819385406229316,
+    "forget_Q_A_ROUGE": 0.30688721441004224,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.5981814365032816,
+    "model_utility": 0.6713731867329219,
+    "privleak": 51.596101275586236
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S50_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06917001331840343,
+    "forget_Q_A_Prob": 0.06971983159435695,
+    "forget_Q_A_ROUGE": 0.29181880524967346,
+    "forget_quality": 0.8635251702254226,
+    "forget_truth_ratio": 0.6416084492964228,
+    "model_utility": 0.6307787251984799,
+    "privleak": 28.64318497799711
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S50_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07135389113221591,
+    "forget_Q_A_Prob": 0.06176206648833613,
+    "forget_Q_A_ROUGE": 0.2887577220898773,
+    "forget_quality": 0.9982016927289219,
+    "forget_truth_ratio": 0.6487348170724002,
+    "model_utility": 0.6301923827711173,
+    "privleak": 28.501882311835086
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_kforge_s045_S50_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07014960763697987,
+    "forget_Q_A_Prob": 0.06333892554190243,
+    "forget_Q_A_ROUGE": 0.2980451514410077,
+    "forget_quality": 0.5234101030810641,
+    "forget_truth_ratio": 0.6385734999709414,
+    "model_utility": 0.6568455546171644,
+    "privleak": 32.33046258040033
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S100_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.054465030935783434,
+    "forget_Q_A_Prob": 0.03229483135288774,
+    "forget_Q_A_ROUGE": 0.26317699962223956,
+    "forget_quality": 0.004907932356726081,
+    "forget_truth_ratio": 0.6163073653875527,
+    "model_utility": 0.6396234162225312,
+    "privleak": 43.6625238440658
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S100_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05956112438356965,
+    "forget_Q_A_Prob": 0.03773175447510539,
+    "forget_Q_A_ROUGE": 0.2703514360686032,
+    "forget_quality": 0.054052912731737235,
+    "forget_truth_ratio": 0.6182168470487275,
+    "model_utility": 0.6747333279015062,
+    "privleak": 37.320406367932286
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S100_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05213575978683607,
+    "forget_Q_A_Prob": 0.03262778142076286,
+    "forget_Q_A_ROUGE": 0.24650920346069044,
+    "forget_quality": 0.0004368337391825136,
+    "forget_truth_ratio": 0.6258063617642224,
+    "model_utility": 0.6295182315006196,
+    "privleak": 46.81140734620204
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S250_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.057176741621506544,
+    "forget_Q_A_Prob": 0.027066564957880245,
+    "forget_Q_A_ROUGE": 0.2546322267170506,
+    "forget_quality": 0.006260402267679663,
+    "forget_truth_ratio": 0.5999929145404974,
+    "model_utility": 0.6668024927704534,
+    "privleak": 45.231292860360995
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S250_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.059857601015996645,
+    "forget_Q_A_Prob": 0.02903919263579837,
+    "forget_Q_A_ROUGE": 0.2677144796758452,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.604730762136945,
+    "model_utility": 0.6719769667013431,
+    "privleak": 40.88288380533108
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S250_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05311415365737392,
+    "forget_Q_A_Prob": 0.023845481750397256,
+    "forget_Q_A_ROUGE": 0.25979046302080994,
+    "forget_quality": 0.003828187263300835,
+    "forget_truth_ratio": 0.6022607839021565,
+    "model_utility": 0.6558409483639006,
+    "privleak": 47.568459586807336
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S50_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05427121246229893,
+    "forget_Q_A_Prob": 0.08636740415968233,
+    "forget_Q_A_ROUGE": 0.2274398553602567,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.6762055458173012,
+    "model_utility": 0.5743279972240211,
+    "privleak": 34.84915681958038
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S50_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06386307413118136,
+    "forget_Q_A_Prob": 0.081306307819832,
+    "forget_Q_A_ROUGE": 0.24690173667377596,
+    "forget_quality": 0.15461291961180293,
+    "forget_truth_ratio": 0.6575790946461644,
+    "model_utility": 0.6129006020131752,
+    "privleak": 21.813212311391787
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_NPO_scratch_S50_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05385112126555832,
+    "forget_Q_A_Prob": 0.09108240344787191,
+    "forget_Q_A_ROUGE": 0.23751399705543558,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6780482685105218,
+    "model_utility": 0.5811798411624822,
+    "privleak": 32.905987308271925
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S100_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19038868683547533,
+    "forget_Q_A_Prob": 0.45592836117371915,
+    "forget_Q_A_ROUGE": 0.46496594727061136,
+    "forget_quality": 1.7928838057651826e-13,
+    "forget_truth_ratio": 0.5321622910481988,
+    "model_utility": 0.6583609033967129,
+    "privleak": -93.22984888358847
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S100_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1968311209551876,
+    "forget_Q_A_Prob": 0.4488196629472077,
+    "forget_Q_A_ROUGE": 0.4646489291821051,
+    "forget_quality": 3.1252666340221845e-13,
+    "forget_truth_ratio": 0.5265005489490876,
+    "model_utility": 0.6537741853265189,
+    "privleak": -92.97818574093495
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S100_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.18615064078658064,
+    "forget_Q_A_Prob": 0.4603340118005872,
+    "forget_Q_A_ROUGE": 0.4715982725738392,
+    "forget_quality": 3.1508505165833036e-15,
+    "forget_truth_ratio": 0.5333192649504017,
+    "model_utility": 0.6517390584916727,
+    "privleak": -93.66303953897574
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S250_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14476464593616195,
+    "forget_Q_A_Prob": 0.3187980211339891,
+    "forget_Q_A_ROUGE": 0.4264884147918472,
+    "forget_quality": 1.3150137716657251e-11,
+    "forget_truth_ratio": 0.5432518560256451,
+    "model_utility": 0.6710542328047296,
+    "privleak": -86.14408744904021
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S250_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14151077771716153,
+    "forget_Q_A_Prob": 0.3091893867962062,
+    "forget_Q_A_ROUGE": 0.4376355924233299,
+    "forget_quality": 1.6196210141854015e-10,
+    "forget_truth_ratio": 0.5524616557390575,
+    "model_utility": 0.6676801752951093,
+    "privleak": -85.33649629863974
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S250_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1404909219357669,
+    "forget_Q_A_Prob": 0.3153893876448274,
+    "forget_Q_A_ROUGE": 0.4215644734720725,
+    "forget_quality": 4.360395687512671e-09,
+    "forget_truth_ratio": 0.5486236124163142,
+    "model_utility": 0.6579333697424473,
+    "privleak": -88.3286060397787
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S50_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.25677767513727123,
+    "forget_Q_A_Prob": 0.5871581149473787,
+    "forget_Q_A_ROUGE": 0.527256863845141,
+    "forget_quality": 1.730834713171486e-15,
+    "forget_truth_ratio": 0.5220299982203762,
+    "model_utility": 0.6533855998110462,
+    "privleak": -95.70212983826275
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S50_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.26913975755918296,
+    "forget_Q_A_Prob": 0.5796648455783725,
+    "forget_Q_A_ROUGE": 0.5106807327204222,
+    "forget_quality": 1.4921665744660114e-16,
+    "forget_truth_ratio": 0.519575961598286,
+    "model_utility": 0.6478200943243129,
+    "privleak": -96.14254033790645
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_kforge_s045_S50_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2647560020586942,
+    "forget_Q_A_Prob": 0.5817526586540044,
+    "forget_Q_A_ROUGE": 0.5186323694452913,
+    "forget_quality": 2.241003819205479e-17,
+    "forget_truth_ratio": 0.5210895281585047,
+    "model_utility": 0.666209947454433,
+    "privleak": -95.80320765785314
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S100_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.21713482783460172,
+    "forget_Q_A_Prob": 0.5113757324032485,
+    "forget_Q_A_ROUGE": 0.4869695023536895,
+    "forget_quality": 7.975373070421785e-17,
+    "forget_truth_ratio": 0.5078435707935817,
+    "model_utility": 0.6429362479611312,
+    "privleak": -95.53607342036433
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S100_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.22650568371336122,
+    "forget_Q_A_Prob": 0.5151114579662681,
+    "forget_Q_A_ROUGE": 0.4898371047034189,
+    "forget_quality": 8.513756583610105e-19,
+    "forget_truth_ratio": 0.5041594575803785,
+    "model_utility": 0.6566737886510075,
+    "privleak": -95.09978854601006
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S100_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.22619321986143312,
+    "forget_Q_A_Prob": 0.5237944525666535,
+    "forget_Q_A_ROUGE": 0.48238038461177496,
+    "forget_quality": 2.241003819205479e-17,
+    "forget_truth_ratio": 0.5153877515523151,
+    "model_utility": 0.6400473464860006,
+    "privleak": -95.89809703950935
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S250_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.15245974769617235,
+    "forget_Q_A_Prob": 0.33189586279913785,
+    "forget_Q_A_ROUGE": 0.43707139165101366,
+    "forget_quality": 5.418551024174982e-13,
+    "forget_truth_ratio": 0.5318356044267786,
+    "model_utility": 0.6604711464877249,
+    "privleak": -88.45650042375016
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S250_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14994201223431175,
+    "forget_Q_A_Prob": 0.3341217511892319,
+    "forget_Q_A_ROUGE": 0.4418573471163241,
+    "forget_quality": 1.7928838057651826e-13,
+    "forget_truth_ratio": 0.5343018519702832,
+    "model_utility": 0.6671742345795787,
+    "privleak": -89.17126500513906
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S250_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14996661099015043,
+    "forget_Q_A_Prob": 0.33662060467526317,
+    "forget_Q_A_ROUGE": 0.4239934070082757,
+    "forget_quality": 1.0229984068189572e-13,
+    "forget_truth_ratio": 0.5322677687889482,
+    "model_utility": 0.6575451417258138,
+    "privleak": -89.27956266898588
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S50_seed0_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.34667563440230337,
+    "forget_Q_A_Prob": 0.6815659744665027,
+    "forget_Q_A_ROUGE": 0.5857206001854347,
+    "forget_quality": 6.916893189690245e-21,
+    "forget_truth_ratio": 0.4958021224812721,
+    "model_utility": 0.6312489737579196,
+    "privleak": -97.89077405429063
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S50_seed1_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.3587250997548962,
+    "forget_Q_A_Prob": 0.6966080573573709,
+    "forget_Q_A_ROUGE": 0.593337552169002,
+    "forget_quality": 1.876936326891253e-22,
+    "forget_truth_ratio": 0.491962820586565,
+    "model_utility": 0.6421969998209847,
+    "privleak": -98.65710895179708
+  },
+  "saves/eval/tofu_Llama-3.2-3B-Instruct_forget10_SimNPO_scratch_S50_seed2_3b_minimal_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.34722708894006943,
+    "forget_Q_A_Prob": 0.6950508370250463,
+    "forget_Q_A_ROUGE": 0.5817653761502568,
+    "forget_quality": 1.6623182901932567e-21,
+    "forget_truth_ratio": 0.49090597245378775,
+    "model_utility": 0.635950520939156,
+    "privleak": -98.37140940050598
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_kforge_S100_seed0_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11996419923758278,
+    "forget_Q_A_Prob": 0.2617673390172422,
+    "forget_Q_A_ROUGE": 0.36026670509191083,
+    "forget_quality": 0.18096072488295206,
+    "forget_truth_ratio": 0.7374325382634797,
+    "model_utility": 0.34466741152205266,
+    "privleak": -12.668667849865468
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_kforge_S100_seed1_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12195356686452033,
+    "forget_Q_A_Prob": 0.26159741515293716,
+    "forget_Q_A_ROUGE": 0.35653766417936283,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7361311288839241,
+    "model_utility": 0.34477581424620135,
+    "privleak": -12.627866987225007
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_kforge_S100_seed2_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12061214836989452,
+    "forget_Q_A_Prob": 0.26190942235291004,
+    "forget_Q_A_ROUGE": 0.3646233560972182,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7372614293498135,
+    "model_utility": 0.344678937024762,
+    "privleak": -12.507407297524564
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_kforge_S50_seed0_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1222200064118832,
+    "forget_Q_A_Prob": 0.2617232743650675,
+    "forget_Q_A_ROUGE": 0.3568160654085146,
+    "forget_quality": 0.21070561249668102,
+    "forget_truth_ratio": 0.7388435874483619,
+    "model_utility": 0.34316195260851484,
+    "privleak": -12.701697119622047
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_kforge_S50_seed1_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12078065451187506,
+    "forget_Q_A_Prob": 0.2613522253371775,
+    "forget_Q_A_ROUGE": 0.3579288838509141,
+    "forget_quality": 0.28118158736530297,
+    "forget_truth_ratio": 0.7371319221095101,
+    "model_utility": 0.3464945025513504,
+    "privleak": -12.079969688910145
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_kforge_S50_seed2_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12142145892936354,
+    "forget_Q_A_Prob": 0.26143510662019254,
+    "forget_Q_A_ROUGE": 0.3531241982367927,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7365411549204957,
+    "model_utility": 0.3443381505909482,
+    "privleak": -12.771641455577127
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_scratch_S100_seed0_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11874545866217374,
+    "forget_Q_A_Prob": 0.2618310980312526,
+    "forget_Q_A_ROUGE": 0.36143806187728633,
+    "forget_quality": 0.21070561249668102,
+    "forget_truth_ratio": 0.7374139622974485,
+    "model_utility": 0.344679461837976,
+    "privleak": -12.55889410038041
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_scratch_S100_seed1_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12145797521134456,
+    "forget_Q_A_Prob": 0.2617249702848494,
+    "forget_Q_A_ROUGE": 0.3571485335690721,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7360454896019567,
+    "model_utility": 0.3447298873332109,
+    "privleak": -12.57055148970625
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_scratch_S100_seed2_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1209637531143564,
+    "forget_Q_A_Prob": 0.2619726705178618,
+    "forget_Q_A_ROUGE": 0.36506143502721045,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7371741499758889,
+    "model_utility": 0.34468594253055246,
+    "privleak": -12.460777740221193
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_scratch_S50_seed0_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12163677327545855,
+    "forget_Q_A_Prob": 0.2618233370222151,
+    "forget_Q_A_ROUGE": 0.3614817855466604,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7386580809592664,
+    "model_utility": 0.34319492143012703,
+    "privleak": -12.605523657683799
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_scratch_S50_seed1_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12070712510011035,
+    "forget_Q_A_Prob": 0.26149961806833744,
+    "forget_Q_A_ROUGE": 0.36170195645196374,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.7369181650826357,
+    "model_utility": 0.3469612692985231,
+    "privleak": -11.956595651878246
+  },
+  "saves/eval/tofu_Qwen2.5-1.5B-Instruct_forget10_SimNPO_scratch_S50_seed2_rebuttal_qwen15_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1213148829656447,
+    "forget_Q_A_Prob": 0.2615832146257162,
+    "forget_Q_A_ROUGE": 0.3548638492103217,
+    "forget_quality": 0.21070561249668102,
+    "forget_truth_ratio": 0.7362414285817749,
+    "model_utility": 0.34460080326557374,
+    "privleak": -12.726954796494711
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_diagonal_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.056456540806481416,
+    "forget_Q_A_Prob": 0.06498349286732263,
+    "forget_Q_A_ROUGE": 0.33337546718727185,
+    "forget_quality": 0.11114884622967085,
+    "forget_truth_ratio": 0.6576666876783875,
+    "model_utility": 0.39850096893815445,
+    "privleak": 31.206332090676497
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_diagonal_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0737021361940362,
+    "forget_Q_A_Prob": 0.06325222888612188,
+    "forget_Q_A_ROUGE": 0.3153963537655168,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.646828467723433,
+    "model_utility": 0.3968617008213728,
+    "privleak": 31.510759766597076
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_diagonal_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05614609923583394,
+    "forget_Q_A_Prob": 0.06304414909216575,
+    "forget_Q_A_ROUGE": 0.32305512809366727,
+    "forget_quality": 0.054052912731737235,
+    "forget_truth_ratio": 0.6549668983183338,
+    "model_utility": 0.3947999499109255,
+    "privleak": 31.14844092607522
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_diagonal_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05895134847271462,
+    "forget_Q_A_Prob": 0.06367659341194667,
+    "forget_Q_A_ROUGE": 0.3256453341199857,
+    "forget_quality": 0.07829787069468755,
+    "forget_truth_ratio": 0.6551679173904003,
+    "model_utility": 0.39542320753723464,
+    "privleak": 36.92258553328979
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_forget_only_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03960884012432201,
+    "forget_Q_A_Prob": 0.060884026270359756,
+    "forget_Q_A_ROUGE": 0.36005308772169115,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6451267428920517,
+    "model_utility": 0.3991775169141567,
+    "privleak": 27.98937996119465
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_forget_only_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03215909222305518,
+    "forget_Q_A_Prob": 0.05151979753340129,
+    "forget_Q_A_ROUGE": 0.3754120863387984,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6569743988973894,
+    "model_utility": 0.39417999485547606,
+    "privleak": 46.19215873418896
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_forget_only_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.033186518646214046,
+    "forget_Q_A_Prob": 0.060303143565543,
+    "forget_Q_A_ROUGE": 0.37270149532549396,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.6569942506497313,
+    "model_utility": 0.37979460558086153,
+    "privleak": 38.58346308323016
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_forget_only_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.036242408500904,
+    "forget_Q_A_Prob": 0.06128096706350334,
+    "forget_Q_A_ROUGE": 0.34909069307456675,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.6514283451557097,
+    "model_utility": 0.39222397841627316,
+    "privleak": 32.14157383604558
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed0_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.06526592254638672,
+    "forget_Q_A_ROUGE": 0.39719960002496246,
+    "forget_quality": 0.09352461409425458,
+    "forget_truth_ratio": 0.6771825777533321,
+    "model_utility": 0.2976841334402872,
+    "privleak": 12.377729865871723
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed0_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03290683375213599,
+    "forget_Q_A_Prob": 0.0667513656616211,
+    "forget_Q_A_ROUGE": 0.35894280739446927,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6520449560348921,
+    "model_utility": 0.3729060967581998,
+    "privleak": 36.38260070485365
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed0_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.032017472110252604,
+    "forget_Q_A_Prob": 0.05333663978672121,
+    "forget_Q_A_ROUGE": 0.3571726387356789,
+    "forget_quality": 0.18096072488295206,
+    "forget_truth_ratio": 0.680425626292701,
+    "model_utility": 0.3861789477766397,
+    "privleak": 43.97732262642595
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed1_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.05766059875488281,
+    "forget_Q_A_ROUGE": 0.39391131214936725,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6656000299550019,
+    "model_utility": 0.29568091322466467,
+    "privleak": 11.879666225595125
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed1_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03316206908006239,
+    "forget_Q_A_Prob": 0.06335842132568359,
+    "forget_Q_A_ROUGE": 0.3730756687762276,
+    "forget_quality": 0.004907932356726081,
+    "forget_truth_ratio": 0.6416910122800555,
+    "model_utility": 0.40033457247591836,
+    "privleak": 37.4815347087505
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed1_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03166299897807117,
+    "forget_Q_A_Prob": 0.051702263286570085,
+    "forget_Q_A_ROUGE": 0.3773469212847691,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6527514438981182,
+    "model_utility": 0.41496575271876823,
+    "privleak": 43.23970933952332
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed2_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.061256103515625,
+    "forget_Q_A_ROUGE": 0.4037248367080529,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6621112940213523,
+    "model_utility": 0.29448780845799427,
+    "privleak": 9.583483050332005
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed2_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.032969377198499725,
+    "forget_Q_A_Prob": 0.07271076202392578,
+    "forget_Q_A_ROUGE": 0.3761042757369647,
+    "forget_quality": 0.006260402267679663,
+    "forget_truth_ratio": 0.6408174470502077,
+    "model_utility": 0.4005678887510001,
+    "privleak": 35.99333252908638
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed2_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03223521980962419,
+    "forget_Q_A_Prob": 0.050466150181891864,
+    "forget_Q_A_ROUGE": 0.36363781809396173,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6585882041946359,
+    "model_utility": 0.4090646821918474,
+    "privleak": 45.350740600415094
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed3_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.060200958251953124,
+    "forget_Q_A_ROUGE": 0.4028662065020822,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.6677568363481524,
+    "model_utility": 0.2933556463335298,
+    "privleak": 13.441230484538474
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed3_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0375997520927478,
+    "forget_Q_A_Prob": 0.07587646484375,
+    "forget_Q_A_ROUGE": 0.36347263655787926,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.6501211499717792,
+    "model_utility": 0.3861088299192968,
+    "privleak": 30.76316524441837
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_kforge_S100_seed3_rebuttal_gemma3_confirm_seed3_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.036018246334092,
+    "forget_Q_A_Prob": 0.05761787329451181,
+    "forget_Q_A_ROUGE": 0.3606711672098924,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.649605658438866,
+    "model_utility": 0.39466113101096295,
+    "privleak": 38.90386073559245
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_random_rank2_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.041260773721926686,
+    "forget_Q_A_Prob": 0.06827054087829311,
+    "forget_Q_A_ROUGE": 0.3549898904778446,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.6562377862179284,
+    "model_utility": 0.40045606362548086,
+    "privleak": 19.748872117259733
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_random_rank2_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.04033167462187504,
+    "forget_Q_A_Prob": 0.06592201423598454,
+    "forget_Q_A_ROUGE": 0.35045052858345194,
+    "forget_quality": 0.0029708770428139948,
+    "forget_truth_ratio": 0.6321658035260515,
+    "model_utility": 0.39976883617161374,
+    "privleak": 29.28095180591992
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_random_rank2_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05159792295996515,
+    "forget_Q_A_Prob": 0.06671614603721537,
+    "forget_Q_A_ROUGE": 0.35938205453231686,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6480829905155646,
+    "model_utility": 0.3921886383025733,
+    "privleak": 27.20086237438401
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_random_rank2_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06049373911383654,
+    "forget_Q_A_Prob": 0.062238154012593444,
+    "forget_Q_A_ROUGE": 0.30632076912557377,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.6420843568176342,
+    "model_utility": 0.39628427281218853,
+    "privleak": 30.15131552199443
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed0_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.05337387084960937,
+    "forget_Q_A_ROUGE": 0.35791522752000576,
+    "forget_quality": 0.01260422744087484,
+    "forget_truth_ratio": 0.643472538149729,
+    "model_utility": 0.31247120397052014,
+    "privleak": 16.385694890983242
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed0_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.04795277223387805,
+    "forget_Q_A_Prob": 0.07066978454589844,
+    "forget_Q_A_ROUGE": 0.3168097873457521,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.6559110566190401,
+    "model_utility": 0.3838696260938357,
+    "privleak": 23.223340116864545
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed0_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05309182357921108,
+    "forget_Q_A_Prob": 0.06718380177975632,
+    "forget_Q_A_ROUGE": 0.3152512843995613,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.6509454412057974,
+    "model_utility": 0.39718586523465715,
+    "privleak": 24.95508443726512
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed1_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.05434249877929687,
+    "forget_Q_A_ROUGE": 0.33531058159496213,
+    "forget_quality": 0.006260402267679663,
+    "forget_truth_ratio": 0.629451927629611,
+    "model_utility": 0.3189391832469069,
+    "privleak": 10.91248452734259
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed1_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0556416394791213,
+    "forget_Q_A_Prob": 0.06856704711914062,
+    "forget_Q_A_ROUGE": 0.3045813337489569,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.6383360441209888,
+    "model_utility": 0.3832670919389694,
+    "privleak": 20.128159057750924
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed1_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05821005740376794,
+    "forget_Q_A_Prob": 0.06402784500271082,
+    "forget_Q_A_ROUGE": 0.2963546306035694,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.6414724196320468,
+    "model_utility": 0.4022713950240688,
+    "privleak": 24.040803285975834
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed2_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.04442610679190515,
+    "forget_Q_A_Prob": 0.06143730163574219,
+    "forget_Q_A_ROUGE": 0.3310612446538319,
+    "forget_quality": 0.01260422744087484,
+    "forget_truth_ratio": 0.637981679563914,
+    "model_utility": 0.3444724064555199,
+    "privleak": 12.66219507124011
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed2_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05675363136351323,
+    "forget_Q_A_Prob": 0.07008247375488282,
+    "forget_Q_A_ROUGE": 0.30363575649666097,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.6496714744102314,
+    "model_utility": 0.39329151394037276,
+    "privleak": 20.406635521953657
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed2_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05900109819764945,
+    "forget_Q_A_Prob": 0.06721437222091481,
+    "forget_Q_A_ROUGE": 0.2967158173398421,
+    "forget_quality": 0.07829787069468755,
+    "forget_truth_ratio": 0.6518533714093784,
+    "model_utility": 0.4019028794033969,
+    "privleak": 23.076615958306117
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed3_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.035036011114837284,
+    "forget_Q_A_Prob": 0.06294761657714844,
+    "forget_Q_A_ROUGE": 0.2941284857526297,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6508467037366543,
+    "model_utility": 0.33159141541196796,
+    "privleak": 10.525711660394352
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed3_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05246927986969677,
+    "forget_Q_A_Prob": 0.07022834777832031,
+    "forget_Q_A_ROUGE": 0.2849785606027939,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.6570483228585562,
+    "model_utility": 0.39007454999825075,
+    "privleak": 21.236076173396235
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S100_seed3_rebuttal_gemma3_confirm_seed3_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0495423614260085,
+    "forget_Q_A_Prob": 0.0638605226087384,
+    "forget_Q_A_ROUGE": 0.28371002390466843,
+    "forget_quality": 0.07829787069468755,
+    "forget_truth_ratio": 0.6580824444246819,
+    "model_utility": 0.40111044315172173,
+    "privleak": 24.933125719657735
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S103_seed0_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.053011994115013776,
+    "forget_Q_A_Prob": 0.06628565860213712,
+    "forget_Q_A_ROUGE": 0.32557024663253614,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.647002557602152,
+    "model_utility": 0.3983570942091661,
+    "privleak": 27.4723519738935
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S103_seed1_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05331224934930132,
+    "forget_Q_A_Prob": 0.060488993875915185,
+    "forget_Q_A_ROUGE": 0.3174839083024107,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.643125987069574,
+    "model_utility": 0.3965743217212775,
+    "privleak": 27.154948692114022
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S103_seed2_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05267139256942956,
+    "forget_Q_A_Prob": 0.06372925121395383,
+    "forget_Q_A_ROUGE": 0.316988007591157,
+    "forget_quality": 0.13142600454226117,
+    "forget_truth_ratio": 0.6569692618508987,
+    "model_utility": 0.4067245663006841,
+    "privleak": 26.703796857635037
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_scratch_S103_seed3_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05213790253883129,
+    "forget_Q_A_Prob": 0.06537579802796245,
+    "forget_Q_A_ROUGE": 0.30447302067284093,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6556911179350192,
+    "model_utility": 0.4006673895026452,
+    "privleak": 26.557072699076606
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_weight_svd_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03435542954169355,
+    "forget_Q_A_Prob": 0.05124836655188119,
+    "forget_Q_A_ROUGE": 0.3477989070410837,
+    "forget_quality": 0.415788823500893,
+    "forget_truth_ratio": 0.6966175278660952,
+    "model_utility": 0.317642550225122,
+    "privleak": 37.74503932003911
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_weight_svd_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03469376578203863,
+    "forget_Q_A_Prob": 0.04924727797566447,
+    "forget_Q_A_ROUGE": 0.3991010416201209,
+    "forget_quality": 0.24405687970418488,
+    "forget_truth_ratio": 0.6809937475916115,
+    "model_utility": 0.33527474838565746,
+    "privleak": 42.80752185206891
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_weight_svd_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03774551153513649,
+    "forget_Q_A_Prob": 0.05627951478410978,
+    "forget_Q_A_ROUGE": 0.3770560822103498,
+    "forget_quality": 0.32218506015364723,
+    "forget_truth_ratio": 0.688519218349156,
+    "model_utility": 0.32824474398325887,
+    "privleak": 32.33720604745683
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_NPO_weight_svd_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.039946143626518785,
+    "forget_Q_A_Prob": 0.05510682832391467,
+    "forget_Q_A_ROUGE": 0.38285251894447797,
+    "forget_quality": 0.3670864569817871,
+    "forget_truth_ratio": 0.682227156973469,
+    "model_utility": 0.32691149665596747,
+    "privleak": 34.699764437305895
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_diagonal_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12320501458065143,
+    "forget_Q_A_Prob": 0.26935967691242696,
+    "forget_Q_A_ROUGE": 0.4083607875395927,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7092485367208536,
+    "model_utility": 0.4084726421664663,
+    "privleak": -27.005230162972776
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_diagonal_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1256180900462472,
+    "forget_Q_A_Prob": 0.2689058736898005,
+    "forget_Q_A_ROUGE": 0.40196871343090707,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7089715644412639,
+    "model_utility": 0.41327073166499456,
+    "privleak": -26.40535792288013
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_diagonal_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12275492135969161,
+    "forget_Q_A_Prob": 0.2696904132328928,
+    "forget_Q_A_ROUGE": 0.4095273776309988,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7094267863064073,
+    "model_utility": 0.4110840607841867,
+    "privleak": -27.215834227298153
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_diagonal_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1252257051891394,
+    "forget_Q_A_Prob": 0.26899031475186347,
+    "forget_Q_A_ROUGE": 0.40938363994277965,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7094171450871333,
+    "model_utility": 0.4135076354722327,
+    "privleak": -26.574040799045946
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_forget_only_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12438336290741538,
+    "forget_Q_A_Prob": 0.2700558173470199,
+    "forget_Q_A_ROUGE": 0.4068778528112157,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7110732275503657,
+    "model_utility": 0.4015772298136434,
+    "privleak": -27.12201061570295
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_forget_only_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1267080088141188,
+    "forget_Q_A_Prob": 0.26974929271265863,
+    "forget_Q_A_ROUGE": 0.40254704326795493,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7104655306038695,
+    "model_utility": 0.4055066801631648,
+    "privleak": -26.598993887236166
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_forget_only_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12493046881373812,
+    "forget_Q_A_Prob": 0.27041181199252606,
+    "forget_Q_A_ROUGE": 0.4060648695637002,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.7108169967667979,
+    "model_utility": 0.40314005072229114,
+    "privleak": -27.16992054502817
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_forget_only_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12484982221293406,
+    "forget_Q_A_Prob": 0.2697630576044321,
+    "forget_Q_A_ROUGE": 0.4068404258851848,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7116956445112652,
+    "model_utility": 0.404043876577907,
+    "privleak": -26.699804363524592
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed0_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10266751178372811,
+    "forget_Q_A_Prob": 0.21429931640625,
+    "forget_Q_A_ROUGE": 0.41697017539206355,
+    "forget_quality": 0.18096072488295206,
+    "forget_truth_ratio": 0.7021357198456228,
+    "model_utility": 0.38704531310194623,
+    "privleak": -14.0855192216097
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed0_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11977559939610675,
+    "forget_Q_A_Prob": 0.26575439453125,
+    "forget_Q_A_ROUGE": 0.40259474440363163,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.7110221363242621,
+    "model_utility": 0.4025939930345552,
+    "privleak": -27.28869724481356
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed0_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1212342984554749,
+    "forget_Q_A_Prob": 0.2693897816352546,
+    "forget_Q_A_ROUGE": 0.39724731794219226,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7105333834063592,
+    "model_utility": 0.40723925035083586,
+    "privleak": -27.547211238464147
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed1_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10087023272760014,
+    "forget_Q_A_Prob": 0.21427490234375,
+    "forget_Q_A_ROUGE": 0.4129345111693192,
+    "forget_quality": 0.09352461409425458,
+    "forget_truth_ratio": 0.6966887797432321,
+    "model_utility": 0.3941190259208438,
+    "privleak": -13.949275360091152
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed1_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12004299358943182,
+    "forget_Q_A_Prob": 0.26629638671875,
+    "forget_Q_A_ROUGE": 0.4027431448504582,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7108657985296919,
+    "model_utility": 0.40604129104777975,
+    "privleak": -26.742224613447956
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed1_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12053302322274977,
+    "forget_Q_A_Prob": 0.26914131311699746,
+    "forget_Q_A_ROUGE": 0.3979476600708323,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.709477618762274,
+    "model_utility": 0.4120313185197911,
+    "privleak": -27.097057527512746
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed2_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.09946744822154358,
+    "forget_Q_A_Prob": 0.213955078125,
+    "forget_Q_A_ROUGE": 0.4198643091243991,
+    "forget_quality": 0.07829787069468755,
+    "forget_truth_ratio": 0.6977306068138092,
+    "model_utility": 0.3887851181273236,
+    "privleak": -14.475785520904576
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed2_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12309767167974787,
+    "forget_Q_A_Prob": 0.265789794921875,
+    "forget_Q_A_ROUGE": 0.39971637065234544,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7115673110394561,
+    "model_utility": 0.39942984392344655,
+    "privleak": -26.89693376022727
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed2_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12234174498106455,
+    "forget_Q_A_Prob": 0.26958778431639074,
+    "forget_Q_A_ROUGE": 0.39700536932049146,
+    "forget_quality": 0.01260422744087484,
+    "forget_truth_ratio": 0.7103958536875965,
+    "model_utility": 0.4091564680553229,
+    "privleak": -27.53223938555002
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed3_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.09977678527974122,
+    "forget_Q_A_Prob": 0.2138897705078125,
+    "forget_Q_A_ROUGE": 0.41868885824473634,
+    "forget_quality": 0.09352461409425458,
+    "forget_truth_ratio": 0.6990264727463105,
+    "model_utility": 0.38851731559804237,
+    "privleak": -13.351898428817519
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed3_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12053055908160848,
+    "forget_Q_A_Prob": 0.26491943359375,
+    "forget_Q_A_ROUGE": 0.4032311495814552,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7102114450959474,
+    "model_utility": 0.4018040723240927,
+    "privleak": -26.181778252695835
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_S100_seed3_rebuttal_gemma3_confirm_seed3_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12352759216142749,
+    "forget_Q_A_Prob": 0.269072478748858,
+    "forget_Q_A_ROUGE": 0.3869892743972929,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7104028255739795,
+    "model_utility": 0.40739958169797047,
+    "privleak": -27.048149474659944
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_random_rank2_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12665063670613447,
+    "forget_Q_A_Prob": 0.27171551048755643,
+    "forget_Q_A_ROUGE": 0.40988080918492853,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.7124516018615621,
+    "model_utility": 0.40952243897659035,
+    "privleak": -27.04116260996667
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_random_rank2_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12583339086076345,
+    "forget_Q_A_Prob": 0.2715597987920046,
+    "forget_Q_A_ROUGE": 0.4026616231208199,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7107033640095198,
+    "model_utility": 0.4125863962755175,
+    "privleak": -26.371421722941434
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_random_rank2_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12475738289556577,
+    "forget_Q_A_Prob": 0.27169253531843424,
+    "forget_Q_A_ROUGE": 0.41148930547964424,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7107527042663461,
+    "model_utility": 0.4054010926035538,
+    "privleak": -27.07210443932254
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_random_rank2_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1274066043116714,
+    "forget_Q_A_Prob": 0.27141894660890103,
+    "forget_Q_A_ROUGE": 0.41203967660307955,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7122526619672649,
+    "model_utility": 0.40639089823371505,
+    "privleak": -26.44528286398446
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed0_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10744112816080645,
+    "forget_Q_A_Prob": 0.221893310546875,
+    "forget_Q_A_ROUGE": 0.4166628655817689,
+    "forget_quality": 0.15461291961180293,
+    "forget_truth_ratio": 0.7048901375414036,
+    "model_utility": 0.3852365139783428,
+    "privleak": -13.979219065919404
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed0_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12197318384815542,
+    "forget_Q_A_Prob": 0.2684130859375,
+    "forget_Q_A_ROUGE": 0.4086125962567669,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7118508024951749,
+    "model_utility": 0.401800933781635,
+    "privleak": -26.01858505593187
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed0_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12805730853378056,
+    "forget_Q_A_Prob": 0.2725089683756232,
+    "forget_Q_A_ROUGE": 0.3992932580347383,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7120621920606754,
+    "model_utility": 0.4085704606331362,
+    "privleak": -27.146963703893174
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed1_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10236292858308207,
+    "forget_Q_A_Prob": 0.2184912109375,
+    "forget_Q_A_ROUGE": 0.41550648617302444,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.6974448778260023,
+    "model_utility": 0.3929827634349069,
+    "privleak": -13.283526967176343
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed1_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12496700175485245,
+    "forget_Q_A_Prob": 0.26852294921875,
+    "forget_Q_A_ROUGE": 0.3930718283005446,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7106535543471173,
+    "model_utility": 0.4085914874399641,
+    "privleak": -26.22968818202105
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed1_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12726918389015843,
+    "forget_Q_A_Prob": 0.2722315030358732,
+    "forget_Q_A_ROUGE": 0.39388477129359756,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7105682286661313,
+    "model_utility": 0.4132511094161362,
+    "privleak": -26.595001393125724
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed2_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10118214949310422,
+    "forget_Q_A_Prob": 0.2176593017578125,
+    "forget_Q_A_ROUGE": 0.4227075068383243,
+    "forget_quality": 0.09352461409425458,
+    "forget_truth_ratio": 0.700087769089505,
+    "model_utility": 0.3877333386862827,
+    "privleak": -13.769613125121632
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed2_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12379994431634256,
+    "forget_Q_A_Prob": 0.268643798828125,
+    "forget_Q_A_ROUGE": 0.40191897911916685,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7127678836849662,
+    "model_utility": 0.3988766626139214,
+    "privleak": -26.25164689962844
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed2_rebuttal_gemma3_tuned080_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12276113045846737,
+    "forget_Q_A_Prob": 0.2727390395104885,
+    "forget_Q_A_ROUGE": 0.3999197681258686,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7116091270511472,
+    "model_utility": 0.4096577023186175,
+    "privleak": -27.04016448643906
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed3_quant4_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.09837300979352452,
+    "forget_Q_A_Prob": 0.2165460205078125,
+    "forget_Q_A_ROUGE": 0.4194486690533581,
+    "forget_quality": 0.07829787069468755,
+    "forget_truth_ratio": 0.701017727705689,
+    "model_utility": 0.38613257657092304,
+    "privleak": -12.90823252079559
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed3_quant8_rebuttal_gemma_quant_v1/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12286810307376925,
+    "forget_Q_A_Prob": 0.26875244140625,
+    "forget_Q_A_ROUGE": 0.4050511394936752,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7108836927596143,
+    "model_utility": 0.40390848082323094,
+    "privleak": -26.063999676438073
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S100_seed3_rebuttal_gemma3_confirm_seed3_v1_EVAL/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1279511099172126,
+    "forget_Q_A_Prob": 0.27211622312664985,
+    "forget_Q_A_ROUGE": 0.40411613073188213,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7120595318302668,
+    "model_utility": 0.4105199640055358,
+    "privleak": -26.517147757972275
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S105_seed0_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12575713199463345,
+    "forget_Q_A_Prob": 0.2722130123153329,
+    "forget_Q_A_ROUGE": 0.4116480111231575,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7119272905881157,
+    "model_utility": 0.4086093019566434,
+    "privleak": -27.03417574527341
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S105_seed1_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12803908239443193,
+    "forget_Q_A_Prob": 0.2720238903351128,
+    "forget_Q_A_ROUGE": 0.40098483973368204,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7105511647785592,
+    "model_utility": 0.41268405935165986,
+    "privleak": -26.45226972867772
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S105_seed2_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12388274303427167,
+    "forget_Q_A_Prob": 0.272613843139261,
+    "forget_Q_A_ROUGE": 0.40758280789902557,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7113666367914948,
+    "model_utility": 0.4087404857614013,
+    "privleak": -27.097057527512764
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_S105_seed3_rebuttal_gemma3_compute_matched_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12762665239517443,
+    "forget_Q_A_Prob": 0.2720676250942051,
+    "forget_Q_A_ROUGE": 0.4143446793813419,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7117711151224693,
+    "model_utility": 0.40937329543419937,
+    "privleak": -26.531121487358796
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_weight_svd_S100_seed0_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12591223278029717,
+    "forget_Q_A_Prob": 0.26326048947870734,
+    "forget_Q_A_ROUGE": 0.40329419355316,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7140552181837444,
+    "model_utility": 0.38852561787480594,
+    "privleak": -26.587016404904855
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_weight_svd_S100_seed1_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12678617752728955,
+    "forget_Q_A_Prob": 0.2630375792644918,
+    "forget_Q_A_ROUGE": 0.3923414940938306,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7125027020171082,
+    "model_utility": 0.3932848937805404,
+    "privleak": -26.329500534781893
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_weight_svd_S100_seed2_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1256351484472848,
+    "forget_Q_A_Prob": 0.26370668329298497,
+    "forget_Q_A_ROUGE": 0.4046787297433895,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.7137727103693355,
+    "model_utility": 0.38965050206082685,
+    "privleak": -26.723759328187207
+  },
+  "saves/eval/tofu_gemma-3-1b-it_forget10_SimNPO_weight_svd_S100_seed3_rebuttal_gemma3_controls_v2_EVAL_FP32/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12659060032357844,
+    "forget_Q_A_Prob": 0.262882239241153,
+    "forget_Q_A_ROUGE": 0.4048733272922259,
+    "forget_quality": 0.04457247091405896,
+    "forget_truth_ratio": 0.7145551467027329,
+    "model_utility": 0.3889070818865717,
+    "privleak": -26.161815782143677
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07342192535349777,
+    "forget_Q_A_Prob": 0.052572139079238696,
+    "forget_Q_A_ROUGE": 0.269126659462555,
+    "forget_quality": 0.8635251702254226,
+    "forget_truth_ratio": 0.6372190510731577,
+    "model_utility": 0.5782145962782604,
+    "privleak": 37.58579497680376
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.21636234952438027,
+    "forget_Q_A_Prob": 0.5595712541416288,
+    "forget_Q_A_ROUGE": 0.4917672542075058,
+    "forget_quality": 1.7473118094396964e-09,
+    "forget_truth_ratio": 0.6022065913118033,
+    "model_utility": 0.5017986845368494,
+    "privleak": -93.11311775941155
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07332764430774615,
+    "forget_Q_A_Prob": 0.05252042723674094,
+    "forget_Q_A_ROUGE": 0.2712372298930756,
+    "forget_quality": 0.9067578225553679,
+    "forget_truth_ratio": 0.637744554668624,
+    "model_utility": 0.5771341655986157,
+    "privleak": 37.619201872791535
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.8181657060590903,
+    "forget_Q_A_Prob": 0.9180724654346705,
+    "forget_Q_A_ROUGE": 0.885502819349874,
+    "forget_quality": 5.627715395305929e-20,
+    "forget_truth_ratio": 0.5081011464575275,
+    "model_utility": 0.515755534624118,
+    "privleak": -99.39260187493389
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07255831197811996,
+    "forget_Q_A_Prob": 0.054725866807020795,
+    "forget_Q_A_ROUGE": 0.2717180036525955,
+    "forget_quality": 0.7000433606572674,
+    "forget_truth_ratio": 0.6363586172431197,
+    "model_utility": 0.5713644717715665,
+    "privleak": 33.577979788450854
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.18917258556556873,
+    "forget_Q_A_Prob": 0.5341940476000309,
+    "forget_Q_A_ROUGE": 0.4578264051187321,
+    "forget_quality": 1.0655053900451827e-08,
+    "forget_truth_ratio": 0.6169940035114309,
+    "model_utility": 0.48816102585836824,
+    "privleak": -91.55412927998151
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07236262745431045,
+    "forget_Q_A_Prob": 0.05467786226347016,
+    "forget_Q_A_ROUGE": 0.273447916522497,
+    "forget_quality": 0.5812138636684575,
+    "forget_truth_ratio": 0.635804433443575,
+    "model_utility": 0.5711550720201368,
+    "privleak": 33.611386684438635
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.8174246094890705,
+    "forget_Q_A_Prob": 0.9062491138279438,
+    "forget_Q_A_ROUGE": 0.8879652521999788,
+    "forget_quality": 4.353260441808186e-19,
+    "forget_truth_ratio": 0.5159726569096535,
+    "model_utility": 0.5120826226839886,
+    "privleak": -99.40677449747415
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07244618362964038,
+    "forget_Q_A_Prob": 0.04844697622420426,
+    "forget_Q_A_ROUGE": 0.27622282831052103,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6448540047109126,
+    "model_utility": 0.5766292608928315,
+    "privleak": 39.84835293234018
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19509344124064754,
+    "forget_Q_A_Prob": 0.5454013445600867,
+    "forget_Q_A_ROUGE": 0.4725638902612475,
+    "forget_quality": 1.7473118094396964e-09,
+    "forget_truth_ratio": 0.6121641123668572,
+    "model_utility": 0.48772576662321326,
+    "privleak": -92.42270857566395
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.0724945795086814,
+    "forget_Q_A_Prob": 0.04843075186478018,
+    "forget_Q_A_ROUGE": 0.279267239489408,
+    "forget_quality": 0.9843558982396782,
+    "forget_truth_ratio": 0.6447601443949541,
+    "model_utility": 0.5791953639712086,
+    "privleak": 39.87568584723927
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.8012221239744045,
+    "forget_Q_A_Prob": 0.9087153772264719,
+    "forget_Q_A_ROUGE": 0.8790157369500179,
+    "forget_quality": 6.159412995752159e-18,
+    "forget_truth_ratio": 0.5176017071082323,
+    "model_utility": 0.5011855181742019,
+    "privleak": -99.44726770473208
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06815549380102144,
+    "forget_Q_A_Prob": 0.0470802551372617,
+    "forget_Q_A_ROUGE": 0.2763967886654006,
+    "forget_quality": 0.7582774273046589,
+    "forget_truth_ratio": 0.6275597239499988,
+    "model_utility": 0.5604226656838578,
+    "privleak": 34.4192261692342
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11598228845170407,
+    "forget_Q_A_Prob": 0.38125263061374426,
+    "forget_Q_A_ROUGE": 0.359887536069778,
+    "forget_quality": 9.9886659393885e-07,
+    "forget_truth_ratio": 0.623048136346526,
+    "model_utility": 0.4339763590486273,
+    "privleak": -80.32435057717812
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06808731375122375,
+    "forget_Q_A_Prob": 0.04710362962723593,
+    "forget_Q_A_ROUGE": 0.2783076012553043,
+    "forget_quality": 0.7582774273046589,
+    "forget_truth_ratio": 0.6279281248650698,
+    "model_utility": 0.5616684885555179,
+    "privleak": 34.500212583750056
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.4219685139772821,
+    "forget_Q_A_Prob": 0.7398007528483868,
+    "forget_Q_A_ROUGE": 0.6295530013819253,
+    "forget_quality": 7.975373070421785e-17,
+    "forget_truth_ratio": 0.5392428626937725,
+    "model_utility": 0.49282265678254694,
+    "privleak": -98.3316798447763
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06717019834960561,
+    "forget_Q_A_Prob": 0.049215700926770294,
+    "forget_Q_A_ROUGE": 0.2635608180274961,
+    "forget_quality": 0.9938843539519258,
+    "forget_truth_ratio": 0.6300117383866213,
+    "model_utility": 0.5671665526835179,
+    "privleak": 36.58561275753306
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11028211708178805,
+    "forget_Q_A_Prob": 0.3680959095992148,
+    "forget_Q_A_ROUGE": 0.366510978947468,
+    "forget_quality": 1.4629553806612078e-06,
+    "forget_truth_ratio": 0.629030525233959,
+    "model_utility": 0.46728160111646433,
+    "privleak": -76.00372536275779
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06707833291458959,
+    "forget_Q_A_Prob": 0.049192315999243875,
+    "forget_Q_A_ROUGE": 0.2632749470866028,
+    "forget_quality": 0.9938843539519258,
+    "forget_truth_ratio": 0.6300255704937113,
+    "model_utility": 0.5669589631490269,
+    "privleak": 36.61497033279506
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.39347523656876887,
+    "forget_Q_A_Prob": 0.721524497307837,
+    "forget_Q_A_ROUGE": 0.6243200248451675,
+    "forget_quality": 5.805666105234786e-14,
+    "forget_truth_ratio": 0.5463878140795378,
+    "model_utility": 0.497767187580401,
+    "privleak": -97.81741611260071
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06422010579542997,
+    "forget_Q_A_Prob": 0.045336238985255475,
+    "forget_Q_A_ROUGE": 0.2634337481671698,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6278262714657119,
+    "model_utility": 0.5774600186677865,
+    "privleak": 38.624445742969456
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11027941876569676,
+    "forget_Q_A_Prob": 0.37780868805944917,
+    "forget_Q_A_ROUGE": 0.40013234032558104,
+    "forget_quality": 9.074891594369707e-08,
+    "forget_truth_ratio": 0.6391155593671993,
+    "model_utility": 0.46453660523789886,
+    "privleak": -78.24502438448377
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06456924481642853,
+    "forget_Q_A_Prob": 0.04544772404766263,
+    "forget_Q_A_ROUGE": 0.267055538743543,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6286945702677765,
+    "model_utility": 0.5794240777487545,
+    "privleak": 38.73883905347309
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.40459729524903537,
+    "forget_Q_A_Prob": 0.7279813949018716,
+    "forget_Q_A_ROUGE": 0.6118831757833483,
+    "forget_quality": 1.8397341057158477e-14,
+    "forget_truth_ratio": 0.5500943261248288,
+    "model_utility": 0.4891285264200849,
+    "privleak": -98.00469719616858
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20131285923215372,
+    "forget_Q_A_Prob": 0.5676682570204139,
+    "forget_Q_A_ROUGE": 0.4639327958985517,
+    "forget_quality": 1.7928838057651826e-13,
+    "forget_truth_ratio": 0.5329408791409547,
+    "model_utility": 0.5781814011695161,
+    "privleak": -96.57326231960101
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.6968202933138096,
+    "forget_Q_A_Prob": 0.8777892120182514,
+    "forget_Q_A_ROUGE": 0.8284437457364874,
+    "forget_quality": 1.3990395281788573e-20,
+    "forget_truth_ratio": 0.4932525094954988,
+    "model_utility": 0.5669865660400585,
+    "privleak": -99.34198536586149
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20131285923215372,
+    "forget_Q_A_Prob": 0.5676682570204139,
+    "forget_Q_A_ROUGE": 0.4639327958985517,
+    "forget_quality": 1.7928838057651826e-13,
+    "forget_truth_ratio": 0.5329408791409547,
+    "model_utility": 0.5781814011695161,
+    "privleak": -96.57326231960101
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.9730547919507976,
+    "forget_Q_A_Prob": 0.980794313699007,
+    "forget_Q_A_ROUGE": 0.9818462853341822,
+    "forget_quality": 5.627715395305929e-20,
+    "forget_truth_ratio": 0.4808004836492802,
+    "model_utility": 0.5525029185234623,
+    "privleak": -99.68820228791671
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19762188586793997,
+    "forget_Q_A_Prob": 0.5666080645471812,
+    "forget_Q_A_ROUGE": 0.46179882298824354,
+    "forget_quality": 1.6027740307205098e-12,
+    "forget_truth_ratio": 0.538329118781482,
+    "model_utility": 0.57310415279402,
+    "privleak": -96.8506407893178
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.6914830788224228,
+    "forget_Q_A_Prob": 0.8733275796473027,
+    "forget_Q_A_ROUGE": 0.8050057262875966,
+    "forget_quality": 5.627715395305929e-20,
+    "forget_truth_ratio": 0.5003505270531797,
+    "model_utility": 0.5646247574566698,
+    "privleak": -99.40272517674835
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19762188586793997,
+    "forget_Q_A_Prob": 0.5666080645471812,
+    "forget_Q_A_ROUGE": 0.46179882298824354,
+    "forget_quality": 1.6027740307205098e-12,
+    "forget_truth_ratio": 0.538329118781482,
+    "model_utility": 0.57310415279402,
+    "privleak": -96.8506407893178
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.9775679209547588,
+    "forget_Q_A_Prob": 0.9817844098806381,
+    "forget_Q_A_ROUGE": 0.9923047807172947,
+    "forget_quality": 2.213522258546535e-19,
+    "forget_truth_ratio": 0.4779054403286462,
+    "model_utility": 0.5524600272969167,
+    "privleak": -99.65985704283615
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20680627959556305,
+    "forget_Q_A_Prob": 0.5711651379242539,
+    "forget_Q_A_ROUGE": 0.4734139292670274,
+    "forget_quality": 1.8397341057158477e-14,
+    "forget_truth_ratio": 0.537650831259564,
+    "model_utility": 0.5727524625715332,
+    "privleak": -96.87898603439837
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.6942680564228724,
+    "forget_Q_A_Prob": 0.8719517912715673,
+    "forget_Q_A_ROUGE": 0.8125818662045858,
+    "forget_quality": 6.916893189690245e-21,
+    "forget_truth_ratio": 0.495243270252612,
+    "model_utility": 0.5602176870754333,
+    "privleak": -99.28833186624473
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20680627959556305,
+    "forget_Q_A_Prob": 0.5711651379242539,
+    "forget_Q_A_ROUGE": 0.4734139292670274,
+    "forget_quality": 1.8397341057158477e-14,
+    "forget_truth_ratio": 0.537650831259564,
+    "model_utility": 0.5727524625715332,
+    "privleak": -96.87898603439837
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.9815375158872385,
+    "forget_Q_A_Prob": 0.9830810786783695,
+    "forget_Q_A_ROUGE": 0.9867520089833169,
+    "forget_quality": 8.080285566431044e-22,
+    "forget_truth_ratio": 0.46758021316739096,
+    "model_utility": 0.5553845592487857,
+    "privleak": -99.67605432573934
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.17877395983079875,
+    "forget_Q_A_Prob": 0.540434455089271,
+    "forget_Q_A_ROUGE": 0.4778056425091428,
+    "forget_quality": 1.730834713171486e-15,
+    "forget_truth_ratio": 0.5179127684491366,
+    "model_utility": 0.5830665518207568,
+    "privleak": -96.55099105560916
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed0_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.5367078830709221,
+    "forget_Q_A_Prob": 0.8058586193621159,
+    "forget_Q_A_ROUGE": 0.7140086876280685,
+    "forget_quality": 2.8138576976529647e-20,
+    "forget_truth_ratio": 0.5156389108296952,
+    "model_utility": 0.5570946968670613,
+    "privleak": -99.26302361170852
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.17877395983079875,
+    "forget_Q_A_Prob": 0.540434455089271,
+    "forget_Q_A_ROUGE": 0.4779780563022462,
+    "forget_quality": 1.730834713171486e-15,
+    "forget_truth_ratio": 0.5179127684491366,
+    "model_utility": 0.5830665518207568,
+    "privleak": -96.55099105560916
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed0_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.9654968385054616,
+    "forget_Q_A_Prob": 0.9760758216679096,
+    "forget_Q_A_ROUGE": 0.9805622362140081,
+    "forget_quality": 1.3990395281788573e-20,
+    "forget_truth_ratio": 0.4772579252838151,
+    "model_utility": 0.5558348484486078,
+    "privleak": -99.72667083481174
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19822862190277596,
+    "forget_Q_A_Prob": 0.5567862504720688,
+    "forget_Q_A_ROUGE": 0.4834570202249045,
+    "forget_quality": 3.1508505165833036e-15,
+    "forget_truth_ratio": 0.5074302315308966,
+    "model_utility": 0.5854660441276087,
+    "privleak": -96.86177642131369
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed1_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.5347162084959831,
+    "forget_Q_A_Prob": 0.8011390934884548,
+    "forget_Q_A_ROUGE": 0.6966698449548545,
+    "forget_quality": 3.4004838027527454e-21,
+    "forget_truth_ratio": 0.5105566383881528,
+    "model_utility": 0.5600556013770517,
+    "privleak": -99.37336760148636
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19822862190277596,
+    "forget_Q_A_Prob": 0.5567862504720688,
+    "forget_Q_A_ROUGE": 0.4834570202249045,
+    "forget_quality": 3.1508505165833036e-15,
+    "forget_truth_ratio": 0.5074302315308966,
+    "model_utility": 0.5854660441276087,
+    "privleak": -96.86177642131369
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed1_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.9675911801400872,
+    "forget_Q_A_Prob": 0.9784515750408173,
+    "forget_Q_A_ROUGE": 0.9858743337624515,
+    "forget_quality": 3.9054713571083378e-22,
+    "forget_truth_ratio": 0.4670069547597226,
+    "model_utility": 0.5686671830213624,
+    "privleak": -99.75704074025519
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1747430142122114,
+    "forget_Q_A_Prob": 0.5383943651150912,
+    "forget_Q_A_ROUGE": 0.47909436113723575,
+    "forget_quality": 4.2392996435511593e-17,
+    "forget_truth_ratio": 0.5085978992341381,
+    "model_utility": 0.5851488190718794,
+    "privleak": -95.51234028944347
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed2_relearn_e1_rebuttal_matched_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.5463639168072311,
+    "forget_Q_A_Prob": 0.8010421489179135,
+    "forget_Q_A_ROUGE": 0.7130139841170337,
+    "forget_quality": 2.213522258546535e-19,
+    "forget_truth_ratio": 0.5173598703456622,
+    "model_utility": 0.5622818807688537,
+    "privleak": -99.20937011209176
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1747430142122114,
+    "forget_Q_A_Prob": 0.5383943651150912,
+    "forget_Q_A_ROUGE": 0.47909436113723575,
+    "forget_quality": 4.2392996435511593e-17,
+    "forget_truth_ratio": 0.5085978992341381,
+    "model_utility": 0.5851488190718794,
+    "privleak": -95.51234028944347
+  },
+  "saves/finetune/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_matched_seed2_relearn_e3_rebuttal_matched_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.9697190847517525,
+    "forget_Q_A_Prob": 0.9789834669232369,
+    "forget_Q_A_ROUGE": 0.9859067627013293,
+    "forget_quality": 1.876936326891253e-22,
+    "forget_truth_ratio": 0.46469159282432104,
+    "model_utility": 0.5716573343313859,
+    "privleak": -99.70541190100133
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07570339350146242,
+    "forget_Q_A_ROUGE": 0.37706272544939023,
+    "forget_quality": 0.15461291961180293,
+    "forget_truth_ratio": 0.6893673922241469,
+    "model_utility": 0.3556140433063477,
+    "privleak": 7.074699563688315
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13021835668545534,
+    "forget_Q_A_Prob": 0.29516478201374413,
+    "forget_Q_A_ROUGE": 0.4230908060128604,
+    "forget_quality": 0.00017795251634334,
+    "forget_truth_ratio": 0.7163585960945085,
+    "model_utility": 0.36948467807392904,
+    "privleak": -41.13666306685246
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07570339350146242,
+    "forget_Q_A_ROUGE": 0.37706272544939023,
+    "forget_quality": 0.15461291961180293,
+    "forget_truth_ratio": 0.6893673922241469,
+    "model_utility": 0.3556140433063477,
+    "privleak": 7.074699563688315
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.22422010243724416,
+    "forget_Q_A_Prob": 0.5525496511533856,
+    "forget_Q_A_ROUGE": 0.520319491519205,
+    "forget_quality": 4.416671697087842e-24,
+    "forget_truth_ratio": 0.5900111246063005,
+    "model_utility": 0.3894949071195649,
+    "privleak": -92.84744678518825
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.0713332268758677,
+    "forget_Q_A_ROUGE": 0.3925127481523019,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.6743280181728847,
+    "model_utility": 0.35651791013631295,
+    "privleak": 7.888170238689159
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1364371552980654,
+    "forget_Q_A_Prob": 0.294653504230082,
+    "forget_Q_A_ROUGE": 0.41652280113780066,
+    "forget_quality": 0.00017795251634334,
+    "forget_truth_ratio": 0.7243954837290586,
+    "model_utility": 0.3784982495131542,
+    "privleak": -42.096857900411734
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.0713332268758677,
+    "forget_Q_A_ROUGE": 0.3925127481523019,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.6743280181728847,
+    "model_utility": 0.35651791013631295,
+    "privleak": 7.888170238689159
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2274137023771946,
+    "forget_Q_A_Prob": 0.5467155247926712,
+    "forget_Q_A_ROUGE": 0.5209978350137793,
+    "forget_quality": 9.456873516117497e-24,
+    "forget_truth_ratio": 0.5890696145619979,
+    "model_utility": 0.3919975064443415,
+    "privleak": -92.28949573325515
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07564516328275203,
+    "forget_Q_A_ROUGE": 0.37853975999373274,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6778696141103768,
+    "model_utility": 0.3601418257289421,
+    "privleak": 2.888569488898687
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13740566910728585,
+    "forget_Q_A_Prob": 0.2941663148999214,
+    "forget_Q_A_ROUGE": 0.40629344320356836,
+    "forget_quality": 0.0004368337391825136,
+    "forget_truth_ratio": 0.7211131702715385,
+    "model_utility": 0.37523696665302586,
+    "privleak": -41.685631007037074
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07564516328275203,
+    "forget_Q_A_ROUGE": 0.37853975999373274,
+    "forget_quality": 0.02424717195471133,
+    "forget_truth_ratio": 0.6778696141103768,
+    "model_utility": 0.3601418257289421,
+    "privleak": 2.888569488898687
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_kforge_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2235875810394087,
+    "forget_Q_A_Prob": 0.5570624108612537,
+    "forget_Q_A_ROUGE": 0.5198335615705247,
+    "forget_quality": 2.0508859434374988e-24,
+    "forget_truth_ratio": 0.5911383700982893,
+    "model_utility": 0.3988829739753906,
+    "privleak": -92.55100409748856
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07150522904586978,
+    "forget_Q_A_ROUGE": 0.3351452940622064,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.6588798040215508,
+    "model_utility": 0.3387057917113729,
+    "privleak": 7.407074698381898
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11850050745274832,
+    "forget_Q_A_Prob": 0.25607705989852547,
+    "forget_Q_A_ROUGE": 0.4192780833057565,
+    "forget_quality": 0.00794521285574355,
+    "forget_truth_ratio": 0.7440487956089881,
+    "model_utility": 0.35588380313098666,
+    "privleak": -30.262107233558954
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07150522904586978,
+    "forget_Q_A_ROUGE": 0.3351452940622064,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.6588798040215508,
+    "model_utility": 0.3387057917113729,
+    "privleak": 7.407074698381898
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19961034823296722,
+    "forget_Q_A_Prob": 0.49850071899592874,
+    "forget_Q_A_ROUGE": 0.4880057034531783,
+    "forget_quality": 5.627715395305929e-20,
+    "forget_truth_ratio": 0.6102985933990078,
+    "model_utility": 0.39606581174643074,
+    "privleak": -89.02962429208611
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07715765799861402,
+    "forget_Q_A_ROUGE": 0.30946056687009277,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.6681737868438159,
+    "model_utility": 0.34997302615110903,
+    "privleak": 5.52261747825724
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11834703404454441,
+    "forget_Q_A_Prob": 0.2648185853101313,
+    "forget_Q_A_ROUGE": 0.4156919460038271,
+    "forget_quality": 0.006260402267679663,
+    "forget_truth_ratio": 0.7385305549874077,
+    "model_utility": 0.35071287624368686,
+    "privleak": -31.144448431964776
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03045895986834915,
+    "forget_Q_A_Prob": 0.07715765799861402,
+    "forget_Q_A_ROUGE": 0.30946056687009277,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.6681737868438159,
+    "model_utility": 0.34997302615110903,
+    "privleak": 5.52261747825724
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20330730445738837,
+    "forget_Q_A_Prob": 0.5045375556871295,
+    "forget_Q_A_ROUGE": 0.4977557138965292,
+    "forget_quality": 4.353260441808186e-19,
+    "forget_truth_ratio": 0.6141216923099786,
+    "model_utility": 0.3935175855133525,
+    "privleak": -89.46979676776145
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03212311097129013,
+    "forget_Q_A_Prob": 0.07463462503626943,
+    "forget_Q_A_ROUGE": 0.30811497280082356,
+    "forget_quality": 0.00794521285574355,
+    "forget_truth_ratio": 0.6388058332051738,
+    "model_utility": 0.3610557213816386,
+    "privleak": 6.316125682705928
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12131390361895943,
+    "forget_Q_A_Prob": 0.26251017617061734,
+    "forget_Q_A_ROUGE": 0.4070229633804842,
+    "forget_quality": 0.02985302150862578,
+    "forget_truth_ratio": 0.7360318709828166,
+    "model_utility": 0.35087828541839305,
+    "privleak": -29.99960074579797
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.03212311097129013,
+    "forget_Q_A_Prob": 0.07463462503626943,
+    "forget_Q_A_ROUGE": 0.30811497280082356,
+    "forget_quality": 0.00794521285574355,
+    "forget_truth_ratio": 0.6388058332051738,
+    "model_utility": 0.3610557213816386,
+    "privleak": 6.316125682705928
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_NPO_scratch_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1887881298391404,
+    "forget_Q_A_Prob": 0.5005626297742128,
+    "forget_Q_A_ROUGE": 0.48567568863115207,
+    "forget_quality": 8.513756583610105e-19,
+    "forget_truth_ratio": 0.6158555327441436,
+    "model_utility": 0.3966844873412955,
+    "privleak": -88.56449872822063
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11957650714203838,
+    "forget_Q_A_Prob": 0.27006057677790524,
+    "forget_Q_A_ROUGE": 0.4031014260686171,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7136236484055835,
+    "model_utility": 0.39988687017950336,
+    "privleak": -27.971413737697702
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.13935858204990118,
+    "forget_Q_A_Prob": 0.3516522080823779,
+    "forget_Q_A_ROUGE": 0.44437961164796613,
+    "forget_quality": 4.5846770167841434e-07,
+    "forget_truth_ratio": 0.6898074828836644,
+    "model_utility": 0.38881433272097665,
+    "privleak": -61.81678443537082
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.11957650714203838,
+    "forget_Q_A_Prob": 0.27006057677790524,
+    "forget_Q_A_ROUGE": 0.4031014260686171,
+    "forget_quality": 0.036569856408414286,
+    "forget_truth_ratio": 0.7136236484055835,
+    "model_utility": 0.39988687017950336,
+    "privleak": -27.971413737697702
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.28852894645482047,
+    "forget_Q_A_Prob": 0.6675573975592851,
+    "forget_Q_A_ROUGE": 0.5951460278353607,
+    "forget_quality": 8.834292934328535e-33,
+    "forget_truth_ratio": 0.5264094732801613,
+    "model_utility": 0.3869441840570123,
+    "privleak": -97.95983549359845
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12295223469576395,
+    "forget_Q_A_Prob": 0.2694233405776322,
+    "forget_Q_A_ROUGE": 0.4023711946735724,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7114512477948378,
+    "model_utility": 0.4053840694094898,
+    "privleak": -27.313650333003782
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14608828544164384,
+    "forget_Q_A_Prob": 0.35513422748073936,
+    "forget_Q_A_ROUGE": 0.43651834852214466,
+    "forget_quality": 2.1316067663008397e-06,
+    "forget_truth_ratio": 0.6921890459206506,
+    "model_utility": 0.38247079952488977,
+    "privleak": -61.19096098356034
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12295223469576395,
+    "forget_Q_A_Prob": 0.2694233405776322,
+    "forget_Q_A_ROUGE": 0.4023711946735724,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7114512477948378,
+    "model_utility": 0.4053840694094898,
+    "privleak": -27.313650333003782
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2923799521297992,
+    "forget_Q_A_Prob": 0.6598434189707041,
+    "forget_Q_A_ROUGE": 0.5998584018244804,
+    "forget_quality": 5.34636928532388e-32,
+    "forget_truth_ratio": 0.5382984883310581,
+    "model_utility": 0.39491307713986623,
+    "privleak": -98.08360281102189
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12391360871074539,
+    "forget_Q_A_Prob": 0.27037685906514525,
+    "forget_Q_A_ROUGE": 0.4008861227537007,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.7114184198961552,
+    "model_utility": 0.40332172611111516,
+    "privleak": -27.66299356766672
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14967394370032663,
+    "forget_Q_A_Prob": 0.35213010262697936,
+    "forget_Q_A_ROUGE": 0.41828471145406965,
+    "forget_quality": 4.5846770167841434e-07,
+    "forget_truth_ratio": 0.6882766887521309,
+    "model_utility": 0.38315137530345317,
+    "privleak": -61.37461571264028
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12391360871074539,
+    "forget_Q_A_Prob": 0.27037685906514525,
+    "forget_Q_A_ROUGE": 0.4008861227537007,
+    "forget_quality": 0.015755280926407406,
+    "forget_truth_ratio": 0.7114184198961552,
+    "model_utility": 0.40332172611111516,
+    "privleak": -27.66299356766672
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_kforge_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.30711464927988885,
+    "forget_Q_A_Prob": 0.667819499000907,
+    "forget_Q_A_ROUGE": 0.5998292982300082,
+    "forget_quality": 8.834292934328535e-33,
+    "forget_truth_ratio": 0.5361349856314455,
+    "model_utility": 0.39805956278219473,
+    "privleak": -97.81410945856766
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1249369675282402,
+    "forget_Q_A_Prob": 0.27328969979658724,
+    "forget_Q_A_ROUGE": 0.4083165147171758,
+    "forget_quality": 0.054052912731737235,
+    "forget_truth_ratio": 0.7148600736545467,
+    "model_utility": 0.4011688793051917,
+    "privleak": -27.24977042723683
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed0_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1379639818101014,
+    "forget_Q_A_Prob": 0.3510963900387287,
+    "forget_Q_A_ROUGE": 0.44222983383814435,
+    "forget_quality": 4.5846770167841434e-07,
+    "forget_truth_ratio": 0.6945042423799325,
+    "model_utility": 0.3879112677682425,
+    "privleak": -61.268814618713805
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1249369675282402,
+    "forget_Q_A_Prob": 0.27328969979658724,
+    "forget_Q_A_ROUGE": 0.4083165147171758,
+    "forget_quality": 0.054052912731737235,
+    "forget_truth_ratio": 0.7148600736545467,
+    "model_utility": 0.4011688793051917,
+    "privleak": -27.24977042723683
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed0_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2857312497386203,
+    "forget_Q_A_Prob": 0.6573636897653341,
+    "forget_Q_A_ROUGE": 0.5932395896292487,
+    "forget_quality": 3.5584717598871504e-33,
+    "forget_truth_ratio": 0.532672779532184,
+    "model_utility": 0.39036425173912215,
+    "privleak": -97.7053139940583
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12851610424596127,
+    "forget_Q_A_Prob": 0.27274731155484916,
+    "forget_Q_A_ROUGE": 0.4023408847871239,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7121681493916836,
+    "model_utility": 0.4076815636211433,
+    "privleak": -26.728749945825257
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed1_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.14594854761883483,
+    "forget_Q_A_Prob": 0.3545969092659652,
+    "forget_Q_A_ROUGE": 0.4374796737642272,
+    "forget_quality": 9.9886659393885e-07,
+    "forget_truth_ratio": 0.6948960513818,
+    "model_utility": 0.3832746674133622,
+    "privleak": -60.363516579172995
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.12851610424596127,
+    "forget_Q_A_Prob": 0.27274731155484916,
+    "forget_Q_A_ROUGE": 0.4023408847871239,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7121681493916836,
+    "model_utility": 0.4076815636211433,
+    "privleak": -26.728749945825257
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed1_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2801391888681393,
+    "forget_Q_A_Prob": 0.6564768431335688,
+    "forget_Q_A_ROUGE": 0.5981577150841721,
+    "forget_quality": 8.834292934328535e-33,
+    "forget_truth_ratio": 0.533627964643038,
+    "model_utility": 0.39934202762401155,
+    "privleak": -98.10955402273972
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1266524167810417,
+    "forget_Q_A_Prob": 0.27379929350689053,
+    "forget_Q_A_ROUGE": 0.4079436221748206,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7116966819375634,
+    "model_utility": 0.4044274730507691,
+    "privleak": -27.11801812159253
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed2_relearn_e1_rebuttal_gemma_relearn_v1/checkpoint-13/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.15125522036960345,
+    "forget_Q_A_Prob": 0.35227080957964063,
+    "forget_Q_A_ROUGE": 0.42745362810467763,
+    "forget_quality": 2.1316067663008397e-06,
+    "forget_truth_ratio": 0.6929105641036445,
+    "model_utility": 0.3826652542002379,
+    "privleak": -60.934443236964995
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-0/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.1266524167810417,
+    "forget_Q_A_Prob": 0.27379929350689053,
+    "forget_Q_A_ROUGE": 0.4079436221748206,
+    "forget_quality": 0.019594795142993927,
+    "forget_truth_ratio": 0.7116966819375634,
+    "model_utility": 0.4044274730507691,
+    "privleak": -27.11801812159253
+  },
+  "saves/finetune/tofu_gemma-3-1b-it_forget10_SimNPO_scratch_matched_S50_seed2_relearn_e3_rebuttal_gemma_relearn_v1/checkpoint-39/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.2844306788446583,
+    "forget_Q_A_Prob": 0.6615677015483379,
+    "forget_Q_A_ROUGE": 0.6002366034446672,
+    "forget_quality": 3.5584717598871504e-33,
+    "forget_truth_ratio": 0.5333152011480559,
+    "model_utility": 0.3988462275782193,
+    "privleak": -97.69034214114419
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p65_S50_seed0_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.062196672986846425,
+    "forget_Q_A_Prob": 0.10232322477328125,
+    "forget_Q_A_ROUGE": 0.3307299401720426,
+    "forget_quality": 0.32218506015364723,
+    "forget_truth_ratio": 0.646085175990044,
+    "model_utility": 0.5443386777672266,
+    "privleak": -0.7339393815498447
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p65_S50_seed1_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.060907032173707513,
+    "forget_Q_A_Prob": 0.10009391110565048,
+    "forget_Q_A_ROUGE": 0.33526225244087693,
+    "forget_quality": 0.415788823500893,
+    "forget_truth_ratio": 0.6433743242065626,
+    "model_utility": 0.5285377028521,
+    "privleak": 1.0528233887059972
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_layer15_down_s0p65_S50_seed2_review_reps/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.05916873192726312,
+    "forget_Q_A_Prob": 0.09160934792482295,
+    "forget_Q_A_ROUGE": 0.32755742126392007,
+    "forget_quality": 0.6405071979325999,
+    "forget_truth_ratio": 0.645344940290779,
+    "model_utility": 0.5431959459227693,
+    "privleak": 8.453969345272794
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed0_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07342192535349777,
+    "forget_Q_A_Prob": 0.052572139079238696,
+    "forget_Q_A_ROUGE": 0.269126659462555,
+    "forget_quality": 0.8635251702254226,
+    "forget_truth_ratio": 0.6372190510731577,
+    "model_utility": 0.5782145962782604,
+    "privleak": 37.58579497680376
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed1_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07255831197811996,
+    "forget_Q_A_Prob": 0.054725866807020795,
+    "forget_Q_A_ROUGE": 0.2717180036525955,
+    "forget_quality": 0.7000433606572674,
+    "forget_truth_ratio": 0.6363586172431197,
+    "model_utility": 0.5713644717715665,
+    "privleak": 33.577979788450854
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed2_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.07244618362964038,
+    "forget_Q_A_Prob": 0.04844697622420426,
+    "forget_Q_A_ROUGE": 0.27622282831052103,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6448540047109126,
+    "model_utility": 0.5766292608928315,
+    "privleak": 39.84835293234018
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S100_seed0_v2lam0p01_corr/checkpoint-100/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06815549380102144,
+    "forget_Q_A_Prob": 0.0470802551372617,
+    "forget_Q_A_ROUGE": 0.2763967886654006,
+    "forget_quality": 0.7582774273046589,
+    "forget_truth_ratio": 0.6275597239499988,
+    "model_utility": 0.5604226656838578,
+    "privleak": 34.4192261692342
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S100_seed1_v2lam0p01_corr/checkpoint-100/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06717019834960561,
+    "forget_Q_A_Prob": 0.049215700926770294,
+    "forget_Q_A_ROUGE": 0.2635608180274961,
+    "forget_quality": 0.9938843539519258,
+    "forget_truth_ratio": 0.6300117383866213,
+    "model_utility": 0.5671665526835179,
+    "privleak": 36.58561275753306
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S100_seed2_v2lam0p01_corr/checkpoint-100/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.06422010579542997,
+    "forget_Q_A_Prob": 0.045336238985255475,
+    "forget_Q_A_ROUGE": 0.2634337481671698,
+    "forget_quality": 0.9674055629008819,
+    "forget_truth_ratio": 0.6278262714657119,
+    "model_utility": 0.5774600186677865,
+    "privleak": 38.624445742969456
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed0_week2/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.09253723198434681,
+    "forget_Q_A_Prob": 0.27567800087854266,
+    "forget_Q_A_ROUGE": 0.2929209353044323,
+    "forget_quality": 9.906736183347326e-11,
+    "forget_truth_ratio": 0.6419520539986041,
+    "model_utility": 0.38871185028418676,
+    "privleak": -81.74667448211265
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed1_week2/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.10418798447280066,
+    "forget_Q_A_Prob": 0.30543775208294394,
+    "forget_Q_A_ROUGE": 0.3084956902829742,
+    "forget_quality": 6.027592497096867e-11,
+    "forget_truth_ratio": 0.6303409713623045,
+    "model_utility": 0.42265152904022457,
+    "privleak": -83.8837034951495
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S50_seed2_week2/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.08452845396803395,
+    "forget_Q_A_Prob": 0.25733246160671114,
+    "forget_Q_A_ROUGE": 0.2821393283695964,
+    "forget_quality": 2.6338754853638006e-10,
+    "forget_truth_ratio": 0.647818416217205,
+    "model_utility": 0.37285303490647675,
+    "privleak": -81.03298170419183
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S50_seed0_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20133939744437554,
+    "forget_Q_A_Prob": 0.5679045183584094,
+    "forget_Q_A_ROUGE": 0.46187188459082634,
+    "forget_quality": 3.1252666340221845e-13,
+    "forget_truth_ratio": 0.5334221847199111,
+    "model_utility": 0.5798252337481449,
+    "privleak": -96.61173086649605
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S50_seed1_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.19572057321396794,
+    "forget_Q_A_Prob": 0.5665961255505682,
+    "forget_Q_A_ROUGE": 0.4628339258611082,
+    "forget_quality": 4.640299916950861e-12,
+    "forget_truth_ratio": 0.5384324625285408,
+    "model_utility": 0.5734896709386335,
+    "privleak": -96.84355447804764
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_kforge_s06_S50_seed2_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.20740787198535876,
+    "forget_Q_A_Prob": 0.5707199487090111,
+    "forget_Q_A_ROUGE": 0.4748798519699276,
+    "forget_quality": 5.7046977773929285e-15,
+    "forget_truth_ratio": 0.537685210778864,
+    "model_utility": 0.5739517566117801,
+    "privleak": -96.88809700603137
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed0_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.29458031871543516,
+    "forget_Q_A_Prob": 0.7009783485531806,
+    "forget_Q_A_ROUGE": 0.5596988035220021,
+    "forget_quality": 8.513756583610105e-19,
+    "forget_truth_ratio": 0.49945100502416495,
+    "model_utility": 0.5881116648064733,
+    "privleak": -98.62221860685187
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed1_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.31307133766297673,
+    "forget_Q_A_Prob": 0.7014804947376251,
+    "forget_Q_A_ROUGE": 0.5515779805497185,
+    "forget_quality": 6.159412995752159e-18,
+    "forget_truth_ratio": 0.4954637443768391,
+    "model_utility": 0.5819635672956035,
+    "privleak": -98.79026541697228
+  },
+  "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_scratch_S50_seed2_v2lam0p01_corr/checkpoint-50/evals/TOFU_SUMMARY.json": {
+    "extraction_strength": 0.30454827191869216,
+    "forget_Q_A_Prob": 0.7050993088632822,
+    "forget_Q_A_ROUGE": 0.5653251943041053,
+    "forget_quality": 1.3990395281788573e-20,
+    "forget_truth_ratio": 0.49232520581654654,
+    "model_utility": 0.575919808269434,
+    "privleak": -98.73661191735552
+  }
+}

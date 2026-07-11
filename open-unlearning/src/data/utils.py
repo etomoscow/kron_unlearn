@@ -9,6 +9,18 @@ IGNORE_INDEX = -100  # TODO put in common constants
 logger = logging.getLogger("data")
 
 
+def _as_token_id_list(tokenized):
+    if isinstance(tokenized, dict):
+        tokenized = tokenized["input_ids"]
+    elif hasattr(tokenized, "input_ids"):
+        tokenized = tokenized.input_ids
+    if isinstance(tokenized, torch.Tensor):
+        tokenized = tokenized.tolist()
+    if tokenized and isinstance(tokenized[0], list):
+        tokenized = tokenized[0]
+    return list(tokenized)
+
+
 def load_hf_dataset(path, **kwargs):
     dataset = datasets.load_dataset(path, **kwargs)
     return dataset
@@ -58,15 +70,19 @@ def preprocess_chat_instance(
             chat += [{"role": "assistant", "content": response}]
         date_str = template_config.get("date_string", None)
         date_info = {"date_string": date_str} if date_str is not None else {}
-        chat_ids = tokenizer.apply_chat_template(
-            chat, tokenize=True, add_generation_prompt=False, **date_info
+        chat_ids = _as_token_id_list(
+            tokenizer.apply_chat_template(
+                chat, tokenize=True, add_generation_prompt=False, **date_info
+            )
         )
         # all except last response are in-context examples
         wrapped_prompt = tokenizer.apply_chat_template(
             chat[:-1], tokenize=False, add_generation_prompt=True, **date_info
         )
-        prompt_ids = tokenizer.apply_chat_template(
-            chat[:-1], tokenize=True, add_generation_prompt=True, **date_info
+        prompt_ids = _as_token_id_list(
+            tokenizer.apply_chat_template(
+                chat[:-1], tokenize=True, add_generation_prompt=True, **date_info
+            )
         )
     else:
         wrapped_prompt = ""
@@ -96,19 +112,23 @@ def preprocess_chat_instance(
             + template_config["user_end_tag"]
             + template_config["asst_start_tag"]
         )
-        chat_ids = tokenizer(
-            wrapped_prompt + final_response,
-            add_special_tokens=True,
-            max_length=max_length,
-            truncation=True,
-        )["input_ids"]
+        chat_ids = _as_token_id_list(
+            tokenizer(
+                wrapped_prompt + final_response,
+                add_special_tokens=True,
+                max_length=max_length,
+                truncation=True,
+            )
+        )
 
-        prompt_ids = tokenizer(
-            wrapped_prompt,
-            add_special_tokens=True,
-            max_length=max_length,
-            truncation=True,
-        )["input_ids"]
+        prompt_ids = _as_token_id_list(
+            tokenizer(
+                wrapped_prompt,
+                add_special_tokens=True,
+                max_length=max_length,
+                truncation=True,
+            )
+        )
 
     if chat_ids[-1] != tokenizer.eos_token_id:
         chat_ids += [tokenizer.eos_token_id]

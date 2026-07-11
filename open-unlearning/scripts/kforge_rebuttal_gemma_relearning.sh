@@ -6,12 +6,9 @@ cd "${ROOT}"
 
 GPU_ID="${GPU_ID:?set GPU_ID}"
 EPOCHS="${EPOCHS:?set EPOCHS}"
-METHOD="${METHOD:-NPO}"
-RUN_TAG="${RUN_TAG:-rebuttal_matched_relearn_v1}"
-LOG_DIR="logs/review_matched_relearning"
-MANIFEST="${LOG_DIR}/${RUN_TAG}$([[ "${METHOD}" == NPO ]] || printf '_%s' "${METHOD}")_e${EPOCHS}.tsv"
-
-[[ "${METHOD}" == NPO || "${METHOD}" == SimNPO ]]
+RUN_TAG="${RUN_TAG:-rebuttal_gemma_relearn_v1}"
+LOG_DIR="logs/review_gemma_relearning"
+MANIFEST="${LOG_DIR}/${RUN_TAG}_e${EPOCHS}.tsv"
 
 mkdir -p "${LOG_DIR}" .cache/triton
 export CUDA_VISIBLE_DEVICES="${GPU_ID}"
@@ -34,19 +31,10 @@ for key in ("forget_Q_A_Prob", "model_utility", "extraction_strength", "forget_Q
 PY
 }
 
-source_checkpoint() {
-  local arm="$1" seed="$2"
-  if [[ "${arm}" == scratch ]]; then
-    echo "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_${METHOD}_scratch_S100_seed${seed}_v2lam0p01_corr"
-  else
-    echo "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_${METHOD}_kforge_s06_S50_seed${seed}_v2lam0p01_corr"
-  fi
-}
-
 for seed in 0 1 2; do
   for arm in scratch kforge; do
-    ckpt="$(source_checkpoint "${arm}" "${seed}")"
-    task="tofu_Llama-3.2-1B-Instruct_forget10_${METHOD}_${arm}_matched_seed${seed}_relearn_e${EPOCHS}_${RUN_TAG}"
+    ckpt="saves/unlearn/tofu_gemma-3-1b-it_forget10_NPO_${arm}_S50_seed${seed}_rebuttal_gemma3_tuned080_v1"
+    task="tofu_gemma-3-1b-it_forget10_NPO_${arm}_matched_S50_seed${seed}_relearn_e${EPOCHS}_${RUN_TAG}"
     out="saves/finetune/${task}"
     summary="${out}/checkpoint-$((13 * EPOCHS))/evals/TOFU_SUMMARY.json"
     if [[ -s "${summary}" ]] && valid_summary "${summary}"; then
@@ -59,7 +47,7 @@ for seed in 0 1 2; do
     python src/train.py \
       experiment=finetune/tofu/default.yaml \
       task_name="${task}" \
-      model=Llama-3.2-1B-Instruct \
+      model=gemma-3-1b-it \
       model.model_args.pretrained_model_name_or_path="${ckpt}" \
       model.tokenizer_args.pretrained_model_name_or_path="${ckpt}" \
       model.model_args.attn_implementation=sdpa \
@@ -68,7 +56,7 @@ for seed in 0 1 2; do
       data.train.TOFU_QA_forget.args.hf_args.name=forget10 \
       forget_split=forget10 \
       holdout_split=holdout10 \
-      retain_logs_path=saves/eval/tofu_Llama-3.2-1B-Instruct_retain90/TOFU_EVAL.json \
+      retain_logs_path=saves/eval/tofu_gemma-3-1b-it_retain90_rebuttal_gemma3_1b_v1/TOFU_EVAL.json \
       trainer.args.report_to=none \
       trainer.args.per_device_train_batch_size=4 \
       trainer.args.gradient_accumulation_steps=8 \
@@ -85,4 +73,4 @@ for seed in 0 1 2; do
   done
 done
 
-echo "[$(date -Is)] matched ${METHOD} relearning e${EPOCHS} complete"
+echo "[$(date -Is)] Gemma matched NPO relearning e${EPOCHS} complete"

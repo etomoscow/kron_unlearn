@@ -5,8 +5,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT}"
 
 GPU_ID="${GPU_ID:?set GPU_ID}"
-RUN_TAG="${RUN_TAG:-rebuttal_matched_quant_v1}"
-LOG_DIR="logs/review_matched_quantization"
+RUN_TAG="${RUN_TAG:-rebuttal_simnpo_quant_v1}"
+LOG_DIR="logs/review_simnpo_quantization"
 MANIFEST="${LOG_DIR}/${RUN_TAG}.tsv"
 
 mkdir -p "${LOG_DIR}" .cache/triton
@@ -30,20 +30,13 @@ for key in ("forget_Q_A_Prob", "model_utility", "extraction_strength", "forget_Q
 PY
 }
 
-source_checkpoint() {
-  local arm="$1" seed="$2"
-  if [[ "${arm}" == scratch ]]; then
-    echo "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_scratch_S100_seed${seed}_v2lam0p01_corr"
-  else
-    echo "saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_NPO_kforge_s06_S50_seed${seed}_v2lam0p01_corr"
-  fi
-}
-
 for bits in 8 4; do
   for seed in 0 1 2; do
     for arm in scratch kforge; do
-      ckpt="$(source_checkpoint "${arm}" "${seed}")"
-      task="tofu_Llama-3.2-1B-Instruct_forget10_NPO_${arm}_matched_seed${seed}_quant${bits}_${RUN_TAG}"
+      ckpt="saves/unlearn/tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_${arm}"
+      [[ "${arm}" == scratch ]] && ckpt+="_S50_seed${seed}_v2lam0p01_corr"
+      [[ "${arm}" == kforge ]] && ckpt+="_s06_S50_seed${seed}_v2lam0p01_corr"
+      task="tofu_Llama-3.2-1B-Instruct_forget10_SimNPO_${arm}_S50_seed${seed}_quant${bits}_${RUN_TAG}"
       summary="saves/eval/${task}/TOFU_SUMMARY.json"
       if [[ -s "${summary}" ]] && valid_summary "${summary}"; then
         printf '%s\t%s\t%s\tskipped\t%s\n' "${bits}" "${arm}" "${seed}" "${summary}" >> "${MANIFEST}"
@@ -83,4 +76,4 @@ for bits in 8 4; do
   done
 done
 
-echo "[$(date -Is)] matched quantization complete"
+echo "[$(date -Is)] SimNPO quantization complete"

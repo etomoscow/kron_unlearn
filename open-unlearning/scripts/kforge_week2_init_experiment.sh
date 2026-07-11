@@ -26,6 +26,18 @@ mkdir -p .cache/triton .cache/torch_extensions .cache/hf .cache/xdg logs
 MANIFEST="logs/kforge_week2_init_experiment_${TS}.tsv"
 printf "timestamp\ttrainer\tinit\tsteps\tseed\tstatus\n" > "${MANIFEST}"
 
+valid_summary() {
+  python - "$1" <<'PY'
+import json, math, numbers, sys
+with open(sys.argv[1]) as handle:
+    data = json.load(handle)
+for key in ("forget_Q_A_Prob", "model_utility", "extraction_strength", "forget_Q_A_ROUGE"):
+    value = data[key]
+    if not isinstance(value, numbers.Real) or not math.isfinite(value):
+        raise ValueError(f"invalid {key}: {value!r}")
+PY
+}
+
 run_one() {
   local TRAINER="$1"
   local INIT_TAG="$2"
@@ -35,7 +47,7 @@ run_one() {
   local TASK_NAME="tofu_${MODEL_ID}_${FORGET_SPLIT}_${TRAINER}_${INIT_TAG}_S${STEPS}_seed${SEED}_${RUN_TAG}"
   local SUMMARY_PATH="saves/eval/${TASK_NAME}_EVAL_FP32/TOFU_SUMMARY.json"
 
-  if [[ "${SKIP_COMPLETED}" == "true" && -s "${SUMMARY_PATH}" ]]; then
+  if [[ "${SKIP_COMPLETED}" == "true" && -s "${SUMMARY_PATH}" ]] && valid_summary "${SUMMARY_PATH}"; then
     printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${TRAINER}" "${INIT_TAG}" "${STEPS}" "${SEED}" skipped_existing >> "${MANIFEST}"
     return
   fi
@@ -65,6 +77,9 @@ run_one() {
     retain_logs_path="${RETAIN_LOGS}" \
     trainer.method_args.ref_model_path="${BASE_MODEL}" \
     trainer.args.report_to=none \
+    trainer.args.do_eval=false \
+    trainer.args.eval_on_start=false \
+    trainer.args.eval_strategy=no \
     trainer.args.per_device_train_batch_size="${PER_DEVICE_TRAIN_BATCH_SIZE}" \
     trainer.args.gradient_accumulation_steps="${GRADIENT_ACCUMULATION_STEPS}" \
     +trainer.args.max_steps="${STEPS}" \
@@ -96,6 +111,7 @@ run_one() {
     hydra.run.dir="outputs/${TASK_NAME}_EVAL_FP32" \
     2>&1 | tee "logs/${TASK_NAME}_EVAL_FP32.log"
 
+  valid_summary "${SUMMARY_PATH}"
   printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${TRAINER}" "${INIT_TAG}" "${STEPS}" "${SEED}" ok >> "${MANIFEST}"
 }
 

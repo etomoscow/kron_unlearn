@@ -1,5 +1,5 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from omegaconf import DictConfig, open_dict
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from omegaconf import DictConfig, OmegaConf, open_dict
 from typing import Dict, Any
 import os
 import torch
@@ -49,10 +49,17 @@ def get_model(model_cfg: DictConfig):
     model_cls = MODEL_REGISTRY[model_handler]
     with open_dict(model_args):
         model_path = model_args.pop("pretrained_model_name_or_path", None)
+        quantization_args = model_args.pop("quantization_config", None)
+    quantization_config = (
+        BitsAndBytesConfig(**OmegaConf.to_container(quantization_args, resolve=True))
+        if quantization_args is not None
+        else None
+    )
     try:
         model = model_cls.from_pretrained(
             pretrained_model_name_or_path=model_path,
             torch_dtype=torch_dtype,
+            quantization_config=quantization_config,
             **model_args,
             cache_dir=hf_home,
         )

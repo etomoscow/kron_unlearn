@@ -116,28 +116,26 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-% Preference-based LLM unlearning methods such as NPO and SimNPO can reach useful \texttt{forget--retain} trade-offs, but they often spend their early optimization budget discovering a direction that separates forget-specific behavior from retained capability. We study whether a second-order initializer can supply that direction before iterative unlearning begins. K-FORGE estimates Kronecker-factored empirical Fishers on forget and retain data, simultaneously diagonalizes the two Fisher pairs, and applies a retain-aware Wiener edit in the resulting generalized-eigenvector basis. The unconstrained edit has an exact closed form; for low-rank edits with positive retain penalty, the exact weighted low-rank problem is not closed form, so we use a separable relaxation that is exact in the full-rank limit and at zero retain penalty. On TOFU \texttt{forget10} with Llama 3.2 1B, corrected one-shot K-FORGE traces a controllable Pareto frontier but does not dominate iterative baselines. Its main value is as initialization: at matched budgets of 50, 100, and 250 steps, K-FORGE-initialized NPO and SimNPO consistently lower forget probability relative to scratch training while preserving or improving utility. Corrected ablations show that retain awareness is necessary, while a diagonal control recovers part, but not all, of the effect. These results support K-FORGE as a curvature-aware initializer for preference-based unlearning rather than as a one-shot replacement for iterative methods.
-
-Preference-based LLM unlearning methods such as NPO and SimNPO can reach useful \texttt{forget--retain} trade-offs, but early optimization must discover directions that suppress forget-set behavior without damaging retained capability. We ask whether this direction can be supplied by a closed-form second-order initializer. K-FORGE uses forget- and retain-set Fisher information to construct a closed-form low-rank edit, then uses the edited model as the starting point for NPO or SimNPO. On TOFU with Llama 3.2 models, one-shot K-FORGE produces a controllable forget--utility frontier. Using K-FORGE as an initializer improves matched-budget NPO and SimNPO runs, reducing forget probability with comparable utility preservation. Matched initialization controls show that the gain is not explained by an arbitrary low-rank perturbation, and experiments across different model sizes show that K-FORGE is a better curvature-aware starting point for a different preference-based LLM unlearning methods.
+Preference-based LLM unlearning methods such as NPO and SimNPO must discover directions that suppress forget-set behavior without damaging retained capability. We ask whether a second-order initializer can supply such a direction before iterative optimization begins. K-FORGE uses forget- and retain-set Fisher information to construct a retain-aware low-rank edit, then starts NPO or SimNPO from the edited checkpoint. On TOFU with Llama-3.2-1B, the one-shot edit gives a controllable forget--utility frontier. After charging its full setup cost in both wall-clock time and FLOPs, K-FORGE reduces Forget Q/A Probability by 19--42\% for NPO and 17--19\% for SimNPO across three budgets, with mean utility changes within a $-0.01$ margin. Four-seed Gemma-3-1B experiments preserve the primary direction, while matched controls show that an arbitrary low-rank displacement does not generally reproduce the result. MUSE transfer is metric-dependent, and matched relearning shows no recovery defense. These results delimit K-FORGE as a curvature-aware optimization initializer rather than a standalone unlearning or robustness guarantee.
 \end{abstract}
 
 \section{Introduction}
 
-LLM unlearning is a task of selectively removing the influence of specific training data without retraining the given model from scratch~\citep{tofu,rmu,muse}. Current LLM unlearning methods cluster into two regimes: (i) iterative preference-based methods such as Negative Preference Optimization~\citep{npo} and its simplified variant SimNPO~\citep{simnpo} frame unlearning as a one-sided preference-optimization problem and require hundreds to thousands of fine-tuning steps to reach a reasonable forget–retain trade-off; (ii) representation-misdirection methods such as RMU~\citep{rmu} perturb intermediate activations and are highly effective but task-specific. In contrast, one-shot or closed-form methods — including selective synaptic dampening~\citep{foster24}, FILA~\citep{fila}, and Gauss–Newton style edits~\citep{kfade} — are cheap but tend to either under-forget or sharply damage retained capabilities.
+LLM unlearning seeks to remove behavior attributable to specified training data without retraining from scratch~\citep{tofu,rmu,muse}. Iterative preference-based methods such as NPO~\citep{npo} and SimNPO~\citep{simnpo} repeatedly optimize a one-sided preference objective. Representation methods such as RMU~\citep{rmu} instead redirect intermediate activations. One-shot or closed-form methods, including selective synaptic dampening~\citep{foster24}, FILA~\citep{fila}, and Gauss--Newton edits~\citep{kfade}, avoid iterative optimization but often face a direct trade-off between forgetting strength and retained capability.
 
-This bimodality is not incidental. Iterative methods can course-correct: every gradient step re-linearizes the loss landscape around the current weights, so destructive directions can be discovered and avoided. One-shot methods solve a single quadratic surrogate and must commit to a magnitude before observing its consequences. As a result, scaling a one-shot edit usually produces a strength cliff: forget metrics improve monotonically with edit magnitude until utility collapses abruptly. We try to make one-shot methods useful without sacrificing their controllability.
+The central difference is adaptivity. An iterative method can revise its direction after each update, whereas a one-shot method commits to one local surrogate before observing the resulting model behavior. Increasing one-shot strength can improve forgetting only by progressively spending utility. We therefore ask whether a closed-form edit is more useful as the starting direction for iterative unlearning than as the final unlearned model.
 
-We address this gap by treating Kronecker-Fisher edits as initializers rather than finished unlearning procedures. Our starting point is matrix-free Fisher factorization (MFF)~\cite{chekalina_2026_gfwsvd}, which provides GPU-tractable Kronecker factors for layerwise empirical Fishers. We estimate one Fisher on forget data and one on retain data, simultaneously diagonalize the two Fisher pairs, and derive a retain-aware Wiener edit in that basis. We call the resulting construction \textbf{K-FORGE} (\textbf{K}ronecker-\textbf{F}isher \textbf{O}ne-shot \textbf{R}ank-r \textbf{G}eneralized \textbf{E}rasure).
+We answer this question by treating Kronecker-Fisher edits as initializers rather than finished unlearning procedures. Our starting point is matrix-free Fisher factorization (MFF)~\cite{chekalina_2026_gfwsvd}, which provides GPU-tractable Kronecker factors for layerwise empirical Fishers. We estimate one Fisher on forget data and one on retain data, simultaneously diagonalize the two Fisher pairs, and derive a retain-aware Wiener edit in that basis. We call the resulting construction \textbf{K-FORGE} (\textbf{K}ronecker-\textbf{F}isher \textbf{O}ne-shot \textbf{R}ank-r \textbf{G}eneralized \textbf{E}rasure).
 
-Our experiments support this initializer view. On TOFU \texttt{forget10} with Llama-3.2-1B-Instruct, one-shot K-FORGE traces a controllable forget--utility frontier, but does not by itself dominate iterative unlearning. When used as initialization, however, K-FORGE improves matched-budget NPO and SimNPO runs, reducing forget probability while preserving comparable utility. Matched initialization controls suggest that the gain is not explained by arbitrary low-rank perturbations alone. Additional TOFU splits and a Llama-3.2-3B sanity check provide early evidence that the effect is not limited to a single 1B setting, though broader benchmark and scaling evidence remains future work.
+Our experiments support this initializer view. On TOFU \texttt{forget10} with Llama-3.2-1B-Instruct, one-shot K-FORGE traces a controllable forget--utility frontier but does not replace iterative unlearning. As an initializer, it improves the early Forget Q/A Probability trajectory of NPO and SimNPO even after the full setup cost is charged in wall-clock time and FLOPs. Matched initialization controls show that the effect is not generally reproduced by arbitrary low-rank displacement. A held-out Gemma-3-1B seed preserves the primary direction, whereas Qwen and MUSE results are weaker or metric-dependent. These outcomes motivate a specific claim---better initialization in the tested regimes---rather than universal improvement across models, benchmarks, or forgetting metrics.
 
 Our contributions are three-fold:
 \begin{enumerate}
     \item We introduce \textbf{K-FORGE}, a closed-form Fisher-guided initializer for preference-based LLM unlearning. K-FORGE uses separate forget and retain curvature estimates to construct a low-rank edit that gives NPO and SimNPO a more informative starting point than the original checkpoint.
 
-    \item We derive a two-Fisher Wiener formulation that makes the role of retain awareness explicit. The full-rank solution is exact, and the practical low-rank case is handled by a stated relaxation rather than by  assuming an unavailable closed-form optimum.
+    \item We derive a two-Fisher Wiener formulation that makes the role of retain awareness explicit. The full-rank solution is exact, and the practical low-rank case is handled by a stated relaxation rather than by assuming an unavailable closed-form optimum.
 
-    \item Our extensive experimentgs show that \textbf{K-FORGE} improves early preference-based unlearning on TOFU. At matched optimization budgets, initialized with \textbf{K-FORGE} NPO and SimNPO reduce forget probability while preserving comparable utility.
+    \item We show that K-FORGE improves the early Forget Q/A Probability trajectory of fixed NPO and SimNPO optimizers on TOFU \texttt{forget10}, including after matching FLOPs and wall-clock time. Model-family, benchmark-transfer, and recovery audits identify both reproducible gains and the boundaries of the claim.
   \end{enumerate}
   
 K-FORGE is complementary to existing unlearning methods: it changes the starting point, not the downstream preference objective. Code is released openly online\footnote{ \url{https://anonymous.4open.science/r/kforge-C710/}}.
@@ -149,10 +147,10 @@ K-FORGE is complementary to existing unlearning methods: it changes the starting
 LLM unlearning methods differ in how they induce forgetting and how they preserve retained capabilities. Preference-based methods adapt DPO-style objectives to unlearning: NPO~\citep{npo} uses a reference-model preference term, SimNPO~\citep{simnpo} removes the reference model. RMU~\citep{rmu} modifies intermediate activations. Gradient-ascent, gradient-difference, task-vector, and inverse-DPO variants provide additional baselines. TOFU~\citep{tofu}, MUSE~\citep{muse}, WMDP~\citep{rmu}, and OpenUnlearning~\citep{openunlearning} define much of the current empirical landscape. Our work does not introduce a new preference loss; instead, it studies whether a closed-form curvature edit can improve the initialization of existing preference-based methods.
 
 \paragraph{Fisher-based and second-order unlearning.}
-Fisher information~\citep{fisher1922} by definition estimates the parameters which are important to forgetting and retention. Methods such as Selective Synaptic Dampening~\citep{foster24} use only the main diagonal of the Fisher Information matrix and scale parameters using per-weight forget-vs-retain importance. FILA~\citep{fila} and VILA~\citep{vila} use the Fisher information to improve unlearning. SOUL~\citep{soul} uses Sophia-style second-order (and thus providing richer information) optimizer~\citep{sophia}, K-FADE~\citep{kfade} applies Kronecker-factored Gauss--Newton updates, and WIN-U~\citep{winu} uses Woodbury-scaled Newton updates without retain-set access. Ours \textbf{K-FORGE} is different. We use two Fisher estimates to construct a closed-form low-rank edit and use this edit as an initializer for preference optimization rather than as the full unlearning procedure.
+Fisher information~\citep{fisher1922} estimates parameter sensitivity under a data distribution. Methods such as Selective Synaptic Dampening~\citep{foster24} use its diagonal to scale parameters by forget-versus-retain importance. FILA~\citep{fila} and VILA~\citep{vila} use Fisher information for unlearning, SOUL~\citep{soul} uses the Sophia second-order optimizer~\citep{sophia}, K-FADE~\citep{kfade} applies Kronecker-factored Gauss--Newton updates, and WIN-U~\citep{winu} uses Woodbury-scaled Newton updates without retain-set access. K-FORGE instead uses separate forget and retain Fishers to construct a low-rank edit and treats that edit as an initializer for preference optimization rather than as the complete unlearning procedure.
 
-\paragraph{Fisher Information approximations.}
-K-FAC~\citep{martens2015optimizing} and EK-FAC~\citep{exfac} approximate layer-wise Fisher information with Kronecker factors and thus make the estimation of almost-exact Fisher Information matrix feasible. Kronecker-Fisher approximations have also been used for
+\paragraph{Fisher information approximations.}
+K-FAC~\citep{martens2015optimizing} and EK-FAC~\citep{exfac} approximate layer-wise Fisher information with Kronecker factors, making structured curvature computations tractable. Kronecker-Fisher approximations have also been used for
 influence functions at LLM scale~\citep{DBLP:journals/corr/abs-2308-03296} and for compression via matrix-free Fisher factorization and GFWSVD~\citep{chekalina_2026_gfwsvd}. K-FORGE builds on this line by estimating separate forget and retain Fishers and using their contrast to choose unlearning directions.
 
 % \paragraph{Closed-form editing and initialization.}
@@ -172,9 +170,9 @@ influence functions at LLM scale~\citep{DBLP:journals/corr/abs-2308-03296} and f
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\linewidth, trim=1cm .5cm 0.5cm 2cm]{latex/figures/fig2_improved.pdf}
-    \caption{Matched-budget forget-probability trajectories on TOFU. K-FORGE initialization lowers forget Q/A probability relative to scratch training at all matched step budgets. Additional initialization options are reported in Tables~\ref{tab:init_controls_forget10} and~\ref{tab:transfer_controls}.}
-    \label{fig:placeholder}
+    \includegraphics[width=\linewidth, trim=1cm .5cm 0.5cm 2cm]{open-unlearning/saves/figures/kforge_corrected/fig2_improved.pdf}
+    \caption{Matched-budget forget-probability trajectories on TOFU. Gains are clearest on \texttt{forget10}/\texttt{forget05} and for SimNPO; NPO on \texttt{forget01} is near the noise floor and reverses slightly at 250 steps. Additional initialization controls are reported in Tables~\ref{tab:init_controls_forget10} and~\ref{tab:transfer_controls}.}
+    \label{fig:transfer_trajectories}
 \end{figure*}
 
 
@@ -293,13 +291,10 @@ followed by $\mathbf{Y}_r\!=\!\operatorname{SVD}_r(\mathbf{Y}^\star),\mathbf{H}_
 \end{equation}
 (The sign is absorbed into $\mathbf{Y}^\star$.)
 
-Moreover, the relaxation is exact for $r = \min (m,n)$ and $\lambda_{\text{ret}}=0$, we prove that in Proposition~\ref{prop:limit_consistency}.
-
-% \paragraph{Interpretation.}
-% The products $\sigma_{A,i}\sigma_{B,j}$ measure how strongly forget curvature dominates retain curvature along the $(j,i)$ axis of the diagonalized basis. The Wiener gain $G_{ji}=\sigma_{A,i}\sigma_{B,j}/(\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}})$ is bell-shaped in this product, peaking near $\sqrt{\lambda_{\mathrm{ret}}}$ and decaying at both spectral extremes: directions where retain dominates ($\sigma_{A,i}\sigma_{B,j}\to 0$) receive vanishing edit energy because the forget signal is weak, while directions where forget dominates by a large margin ($\sigma_{A,i}\sigma_{B,j}\to\infty$) are also damped because the underlying target $M_{ji}=R_{ji}/(\sigma_{A,i}\sigma_{B,j})$ shrinks as $1/(\sigma_{A,i}\sigma_{B,j})$. The relaxation keeps the dominant filtered structure in the retain-whitened basis without overstating a closed-form optimum for the general weighted-rank-$r$ problem.
+The relaxation is exact either at full rank for any $\lambda_{\text{ret}}\ge0$, or at $\lambda_{\text{ret}}=0$ for any $r$ (Proposition~\ref{prop:limit_consistency}).
 
 \paragraph{Interpretation.}
-The product $\sigma_{A,i}\sigma_{B,j}$ is the forget-to-retain curvature ratio along coordinate $(j,i)$ of the diagonalized basis. The Wiener gain suppresses coordinates with weak forget signal and also regularizes very large ratios through $\lambda_{\mathrm{ret}}$. Thus the edit concentrates on directions where forget curvature is visible while retain movement remains controlled. The low-rank truncation keeps only the dominant filtered components, producing a compact initialization edit.
+Let $s_{ji}=\sigma_{A,i}\sigma_{B,j}$. Then $s_{ji}^2$ is the forget-to-retain curvature ratio along coordinate $(j,i)$ of the diagonalized basis. In $\mathbf{H}$ coordinates, the exact solution scales the cancellation target by $s_{ji}^2/(s_{ji}^2+\lambda_{\mathrm{ret}})$: directions dominated by retain curvature are suppressed, while forget-dominant directions approach full cancellation. The low-rank relaxation truncates the resulting filtered target, yielding a compact initialization edit.
 
 
 \paragraph{Recovering prior work.}
@@ -314,37 +309,25 @@ When all four Fisher factors are restricted to be diagonal, $\mathbf{U}_A$ and $
 \Require Weight matrix $\mathbf{W}$, forget/retain sets $\mathcal{D}_f,\mathcal{D}_r$, rank $r$, factor damping $\varepsilon$, retain penalty $\lambda_{\mathrm{ret}}$, strength $\alpha$
 \State $(\mathbf{A}_f,\mathbf{B}_f)\leftarrow \operatorname{MFF}(\mathbf{W},\mathcal{D}_f)$;\quad $(\mathbf{A}_r,\mathbf{B}_r)\leftarrow \operatorname{MFF}(\mathbf{W},\mathcal{D}_r)$
 \State Damp factors by $\varepsilon\mathbf{I}$ and compute $\mathbf{L}_{A_\bullet},\mathbf{L}_{B_\bullet}$
-\State $\mathbf{K}_A\!\leftarrow\!\mathbf{L}_{A_r}^{-1}\mathbf{L}_{A_f};\mathbf{K}_B\!\leftarrow\!\mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f}$
-\State $\operatorname{SVD}(\mathbf{K}_A)\!=\!\mathbf{U}_A\mathbf{\Sigma}_A\mathbf{V}_A^\top;\operatorname{SVD}(\mathbf{K}_B)\!=\!\mathbf{U}_B\mathbf{\Sigma}_B\mathbf{V}_B^\top$
+\State $\mathbf{K}_A\leftarrow\mathbf{L}_{A_r}^{-1}\mathbf{L}_{A_f}$
+\State $\mathbf{K}_B\leftarrow\mathbf{L}_{B_r}^{-1}\mathbf{L}_{B_f}$
+\State $\operatorname{SVD}(\mathbf{K}_A)=\mathbf{U}_A\mathbf{\Sigma}_A\mathbf{V}_A^\top$
+\State $\operatorname{SVD}(\mathbf{K}_B)=\mathbf{U}_B\mathbf{\Sigma}_B\mathbf{V}_B^\top$
 \State $\mathbf{R}\leftarrow \mathbf{V}_B^\top\mathbf{L}_{B_f}^\top\mathbf{W}\mathbf{L}_{A_f}\mathbf{V}_A$
 \State $\widetilde{G}_{ji}\leftarrow \sigma_{A,i}^2\sigma_{B,j}^2/(\sigma_{A,i}^2\sigma_{B,j}^2+\lambda_{\mathrm{ret}})$
-\State $\mathbf{Y}^\star\leftarrow -(\widetilde{\mathbf{G}}\odot \mathbf{R})$;\quad $\mathbf{Y}_r\leftarrow \operatorname{SVD}_r(\mathbf{Y}^\star)$
+\State $\mathbf{Y}^\star\leftarrow -(\widetilde{\mathbf{G}}\odot \mathbf{R})$
+\State $\mathbf{Y}_r\leftarrow \operatorname{SVD}_r(\mathbf{Y}^\star)$
 \State $\mathbf{H}_r\leftarrow \mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$
 \State $\mathbf{\Delta}^{(r)}\leftarrow \mathbf{L}_{B_r}^{-\top}\mathbf{U}_B\mathbf{H}_r\mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}$
 \State \Return $\mathbf{W} + \alpha\,\mathbf{\Delta}^{(r)}$
 \end{algorithmic}
 \end{algorithm}
 
-Factor damping and retain penalty play distinct roles. The factor damping $\varepsilon$ only makes the empirical Fisher factors numerically symmetric positive definite~(SPD) before Cholesky factorization; $\lambda_{\mathrm{ret}}$ controls the retain budget in Eq.~\ref{eq:kforge_objective}, entering only through the Wiener gain $\widetilde{\mathbf{G}}$. The post-hoc strength $\alpha$ remains a safety scalar for the downstream initializer. When $r=\min(m,n)$ or $\lambda_{\mathrm{ret}}=0$, Algorithm~\ref{alg:kforge} returns the exact minimizer of Eq.~\ref{eq:kforge_objective} by Theorem~\ref{thm:two_fisher_gsvd} and Proposition~\ref{prop:rankr_lam0}; otherwise it returns the separable relaxation $\mathbf{\Delta}^{(r)}$. The procedure is training-free: it requires only calibration forward/backward passes to estimate Fisher factors.
-
-% \subsection{K-FORGE as Initialization}
-% \label{sec:kforge_initialization}
-
-% The one-shot edit $\widehat{\mathbf{W}} = \mathbf{W} + \alpha\,\mathbf{\Delta}^{(r)}$ identifies a forget-specific direction in the retain-whitened generalized-eigenvector basis. We use $\widehat{\mathbf{W}}$ as initialization for an iterative unlearning method:
-% \begin{equation}
-% \begin{cases}
-%     \theta_{t+1}
-%     =
-%     \theta_t - \eta_t \nabla_\theta \mathcal{L}_{\mathrm{unlearn}}(\theta_t), \\
-%     \qquad
-%     \theta_0 \text{ seeded from K-FORGE}.
-% \end{cases}
-% \end{equation}
-% We instantiate $\mathcal{L}_{\mathrm{unlearn}}$ as NPO~\citep{npo}, SimNPO~\cite{simnpo}, or RMU~\cite{rmu}. We do not modify the iterative method; the only intervention is the choice of $\theta_0$. The Fisher factors computed during K-FORGE could in principle be reused for second-order optimization, but in this work we keep the downstream optimizer unchanged to isolate the effect of initialization.
+Factor damping and retain penalty play distinct roles. The factor damping $\varepsilon$ only makes the empirical Fisher factors numerically symmetric positive definite~(SPD) before Cholesky factorization; $\lambda_{\mathrm{ret}}$ controls the retain budget in Eq.~\ref{eq:kforge_objective}, entering only through the Wiener gain $\widetilde{\mathbf{G}}$. Before strength scaling, $\mathbf{\Delta}^{(r)}$ is the exact minimizer when $r=\min(m,n)$ or $\lambda_{\mathrm{ret}}=0$, by Theorem~\ref{thm:two_fisher_gsvd} and Proposition~\ref{prop:rankr_lam0}; otherwise it is the separable relaxation. The strength $\alpha$ is an external safety scalar: for $\alpha\ne1$, the returned checkpoint follows the same edit direction but is not claimed to minimize Eq.~\ref{eq:kforge_objective}. The procedure is training-free: it requires only calibration forward/backward passes to estimate Fisher factors.
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\linewidth, trim=0cm .3cm 0cm 2cm]{latex/figures/fig_matched_init_arrows.pdf}
+    \includegraphics[width=\linewidth, trim=0cm .3cm 0cm 2cm]{open-unlearning/saves/figures/kforge_corrected/fig_matched_init_arrows.pdf}
     \caption{Matched-budget shifts on TOFU \texttt{forget10}. Arrows connect scratch runs to K-FORGE-initialized runs at the same step budget; warmer background regions indicate higher utility and lower forget probability. Points show three-seed means with forget-probability standard deviations.}
     \label{fig:matched_init_arrows}
 \end{figure*}
@@ -356,7 +339,7 @@ After computing the low-rank edit, we form an initialized checkpoint
 \begin{equation}
   \widehat{\theta}=\theta^\star + \alpha \mathbf{\Delta}^{(r)},
 \end{equation}
-where $\alpha$ is a post-hoc strength parameter. We then run an unchanged preference-based unlearning method from $\widehat{\theta}$:
+where $\alpha$ controls edit strength. We then run an unchanged preference-based unlearning method from $\widehat{\theta}$:
 \begin{equation}
   \theta_{t+1}
   =
@@ -365,38 +348,32 @@ where $\alpha$ is a post-hoc strength parameter. We then run an unchanged prefer
   \qquad
   \theta_0=\widehat{\theta}.
 \end{equation}
-In our experiments, $\mathcal{L}_{\mathrm{unlearn}}$ is either NPO~\citep{npo} or SimNPO~\citep{simnpo}. \textbf{K-FORGE }does not change the loss, optimizer, data order, or training budget; it changes only the initial checkpoint. We therefore compare the \textbf{K-FORGE} initialized training against a scratch training.  
+In our experiments, $\mathcal{L}_{\mathrm{unlearn}}$ is either NPO~\citep{npo} or SimNPO~\citep{simnpo}. K-FORGE changes only the initial checkpoint; the loss, optimizer, data order, and training budget remain fixed. We compare each initialized run with the same method started from the pretrained checkpoint.
 
 \section{Experimental Setup}
 \label{sec:experiments}
 
-Our main experiments use Llama-3.2-1B-Instruct. We additionally report a limited Llama-3.2-3B-Instruct sanity check on TOFU \texttt{forget10}. All checkpoints are obtained from the OpenUnlearning reference releases~\citep{openunlearning}.
+Our primary experiments use Llama-3.2-1B-Instruct. We test model-family transfer on Gemma-3-1B-IT over four seeds and report limited Llama-3.2-3B-Instruct and Qwen2.5-1.5B-Instruct checks. The MUSE experiments use Llama-2-7B. We use the OpenUnlearning training and evaluation harness~\citep{openunlearning} throughout.
 
 \subsection{Benchmarks.}
 
-We evaluate on TOFU~\cite{tofu}, using the \texttt{forget10}, \texttt{forget05}, and \texttt{forget01} splits. Lower forget metrics and higher utility indicate stronger unlearning. We report means and standard deviations over three random seeds.
+We evaluate on TOFU~\citep{tofu}, using the \texttt{forget10}, \texttt{forget05}, and \texttt{forget01} splits, and on the News and Books domains of MUSE~\citep{muse}. Unless stated otherwise, comparisons use three paired random seeds; the Gemma transfer result additionally includes a held-out fourth seed.
 
 \subsection{Metrics.}
 
-We report several metrics from OpenUnlearning.  \textbf{Model Utility} is a harmonic mean over retained-question answering performance, real-author, and world-fact metrics. If utility metric is high, that means model did not lose its original performance. \textbf{Forget Q/A Probability} is the mean normalized probability assigned to the gold forget-set answers; lower values indicate that the model is less likely to reproduce the forgotten answers. \textbf{Forget Q/A ROUGE} measures ROUGE-L recall between generated answers and the forget-set ground-truth answers, the lower values indicate less lexical recovery of the forgotten content. \textbf{Forget Quality} and \textbf{Forget Truth Ratio} are OpenUnlearning aggregate forgetting diagnostics; higher values indicate better forgetting under the benchmark's calibrated scoring. \textbf{PrivLeak} measures privacy leakage; lower values indicate weaker recoverability under the benchmark attack. \textbf{Extraction Strength} measures exact token-level extractability of forget-set answers; lower values indicate weaker memorized continuation.
+Our primary endpoint is \textbf{Forget Q/A Probability}: for each gold answer, we exponentiate its token-mean log likelihood and then average across forget examples; lower is better. We require a mean utility change of at least $-0.01$ relative to scratch, where \textbf{Model Utility} is OpenUnlearning's harmonic mean over retained QA, real-author, and world-fact performance. This endpoint and margin were fixed before the reviewer-requested confirmations. \textbf{Extraction Strength} is the mean fraction of a gold-answer suffix reproduced exactly by greedy token predictions after conditioning on the preceding gold prefix. \textbf{Forget Q/A ROUGE} is ROUGE-L recall between generated and gold forget answers; lower is better for both metrics. \textbf{Forget Quality}, \textbf{Forget Truth Ratio}, and \textbf{PrivLeak} are additional OpenUnlearning diagnostics. Because these metrics capture different failure modes, we report disagreements rather than combining them into one dominance claim. Runs are paired by seed; reported $p$-values use two-sided paired $t$-tests, with $p<.001$ required for exploratory inferential claims. Other comparisons are descriptive effect estimates.
 
 
 \subsection{Baselines.}
 
-\textbf{K-FORGE} is an initializer, so in our comparison in this work we fix the unlearning method and change only the starting checkpoint. We compare against initialized from scratch NPO/SimNPO runs, matched-norm low-rank initialization controls, and diagonal-only Fisher initialization.
+Because K-FORGE is an initializer, the primary baseline is the same NPO~\citep{npo} or SimNPO~\citep{simnpo} run from the pretrained checkpoint, with loss, optimizer, data order, and budget fixed. This isolates the effect of changing only the starting checkpoint.
 
-The base unlearning methods used are NPO~\citep{npo} and SimNPO~\citep{simnpo} initialized from the same pretrained checkpoint and trained for the same number of steps as \textbf{K-FORGE}-initialized runs. That way we show that \textbf{K-FORGE} changes the early optimization trajectory of an otherwise unchanged preference-based unlearning method.
-
-We also investigate whether \textbf{K-FORGE} works simply because it moves the model before fine-tuning, or because it chooses a better unlearning direction. So we compare \textbf{K-FORGE} against two low-rank edits with the same edited modules, rank, and Frobenius norm as K-FORGE: a random rank-$2$ edit and a rank-$2$ edit along the leading singular directions of the weight matrix of the LLM. Each edited checkpoint is then used to initialize the same NPO or SimNPO training run.
-
-Next, we include a diagonal Fisher and a forget-only variant. The diagonal-only baseline keeps only the main diagonals for all Kronecker factors. That is conceptually close to methods like Selective Synaptic Dampening~\citep{foster24}. The forget-only baseline removes retain-Fisher whitening to check whether it is sufficient by itself. We ablate both baselines as one-shot edits and as downstream initializers.
-
-Concretely, our initializer competitors answer four separate failure modes. \textbf{Random matched} asks whether the downstream optimizer simply benefits from being displaced away from the pretrained point. \textbf{Weight-SVD matched} asks whether a generic spectral low-rank direction, independent of the forget/retain split, is enough. \textbf{Diagonal Fisher} asks whether per-parameter Fisher ratios already contain the useful signal, as in SSD-style methods. \textbf{Forget-only Fisher} asks whether the retain Fisher is unnecessary and forget curvature alone can define a good erasure direction. The empirical answer is different for each: random and weight-SVD are generally weaker; diagonal and forget-only recover part of the gain; the full Kronecker two-Fisher initializer is the most reliable early-step Pareto improvement, especially on \texttt{forget10} and SimNPO.
+We test whether any matched perturbation would suffice using random rank-$2$ and weight-SVD edits with the same modules, rank, and Frobenius norm as K-FORGE. A diagonal-Fisher variant, conceptually related to Selective Synaptic Dampening~\citep{foster24}, tests whether per-parameter Fisher structure is enough; a forget-only variant removes retain-Fisher whitening. Every control initializes the same downstream optimizer, and Section~\ref{sec:ablations} reports metric-specific outcomes.
 
 In this work, we focus on NPO and SimNPO because these preference-based unlearning methods are sensitive to initialization. RMU~\citep{rmu}, GradDiff~\citep{tofu}, and other full unlearning methods are important for the field, but including them would answer a different question: which unlearning method performs best, rather than whether K-FORGE improves a fixed downstream optimizer. We therefore treat these comparisons as outside the scope of the initializer ablation.
 
 \subsection{K-FORGE configuration.}
-Unless stated otherwise, we use rank $r=2$, factor damping $10^{-4}$, retain penalty $\lambda_{\mathrm{ret}}=10^{-2}$, and target the \texttt{mlp.down\_proj} module of the selected layer. We use $B_{\mathrm{cal}}=32$ calibration batches for both forget and retain Fishers. The corrected initializer is the Wiener variant from Section~\ref{sec:method}; the main initialization experiments use strengths $\alpha \in \{0.45, 0.60\}$ and step budgets $N \in \{50,100,250\}$. For the post-hoc placement and strength audit in Section~\ref{sec:layer_strength_audit}, we keep the downstream optimizer fixed to NPO at $N=50$ and sweep only the edited layer or scalar strength.
+Unless stated otherwise, we use rank $r=2$, factor damping $10^{-4}$, retain penalty $\lambda_{\mathrm{ret}}=10^{-2}$, and target the \texttt{mlp.down\_proj} module of the selected layer. We use $B_{\mathrm{cal}}=32$ calibration batches for both forget and retain Fishers. The corrected initializer is the Wiener variant from Section~\ref{sec:method}; the main initialization experiments use strengths $\alpha \in \{0.45, 0.60\}$ and step budgets $N \in \{50,100,250\}$. For Gemma, we select $\alpha$ from a one-shot grid by minimizing forget probability subject to a utility drop of at most .01, then run downstream training and a held-out seed only at the selected value. The MUSE follow-up uses the analogous one-shot feasibility rule. For the explicitly post-hoc placement and strength audit in Section~\ref{sec:layer_strength_audit}, we keep the downstream optimizer fixed to NPO at $N=50$ and sweep only the edited layer or scalar strength.
 
 \subsection{One-Shot K-FORGE: A Meaningful but Insufficient Forget Direction}
 \label{sec:oneshot_kforge}
@@ -405,7 +382,7 @@ Table~\ref{tab:oneshot_forget10} shows the corrected one-shot frontier on TOFU \
 
 \begin{table}[htbp!]
 \centering
-\small
+\scriptsize
 \setlength{\tabcolsep}{2pt}
 \begin{tabular}{lcccc}
 \toprule
@@ -481,9 +458,12 @@ The corrected frontier is smooth and interpretable: stronger edits monotonically
 \label{tab:init_forget10}
 \end{table*}
 
-K-FORGE improves every matched NPO budget (see Table~\ref{tab:init_forget10}). The strongest effect is early: at 50 steps, the $\alpha=.60$ initializer halves forget probability relative to scratch while improving utility by more than six points. At 250 steps, the gap is more narrow but still in favor of \textbf{K-FORGE}.
+K-FORGE improves Forget Q/A Probability at every matched NPO budget (Table~\ref{tab:init_forget10}). The strongest effect is early: at 50 steps, the $\alpha=.60$ initializer halves forget probability relative to scratch while improving utility by more than six points. At 250 steps, the gap narrows but remains favorable. NPO extraction, however, moves slightly in the opposite direction, so this result supports the primary probability endpoint rather than metric-wide dominance.
 
-Same yet slightly more uniform effect is observed for SimNPO. \textbf{K-FORGE} reduces forget probability at 50, 100, and 250 steps, while utility remains essentially unchanged. Our initializer is not tied to a specific preference loss: for NPO it gives a large early improvement, and for SimNPO it gives a steadier reduction in forget probability at negligible utility cost.
+SimNPO shows a smaller but more uniform effect. K-FORGE reduces forget probability at 50, 100, and 250 steps while utility remains essentially unchanged; extraction also improves at all three budgets. Thus the initializer is not tied to one preference loss: it gives NPO a large early probability gain and SimNPO a steadier gain at negligible utility cost.
+
+\long\def\kforgeSensitivityAudits{%
+\subsection{Additional sensitivity audits}
 
 As a budget-sensitivity audit, we also repeated NPO with the conservative layer-15 $\alpha=0.62$ initializer at $S\in\{25,100,250\}$ (Table~\ref{tab:budget_sensitivity_review}). This setting is not uniformly better than scratch: at the smallest budget both methods fail to achieve useful Forget Quality, and at later budgets scratch has higher Forget Quality. However, the initialized runs preserve the main privacy-side benefit of the K-FORGE operating region, with lower extraction strength than scratch at $S100$ and $S250$ and comparable utility. We therefore treat $\alpha=0.62$ as a conservative privacy-side audit point rather than the headline NPO initializer.
 
@@ -621,84 +601,103 @@ Finally, we audited whether the late-layer effect is specific to the down-projec
 \caption{Three-seed target-module audit for layer-15 K-FORGE-initialized NPO on TOFU \texttt{forget10}. All rows use $S50$, rank $2$, $B_{\mathrm{cal}}=32$, $\lambda_{\mathrm{ret}}=10^{-2}$, and strength $\alpha=0.62$. Entries are mean $\pm$ sample standard deviation over seeds $0,1,2$. The down-projection reference reuses the corresponding layer-15 strength-sweep runs.}
 \label{tab:module_audit_review}
 \end{table}
+}
+
+Additional budget, split, layer, strength, and module audits are reported in Appendix Tables~\ref{tab:budget_sensitivity_review}--\ref{tab:module_audit_review}. They delimit the operating regime rather than strengthen the headline claim: the conservative $\alpha=.62$ setting lowers extraction at larger budgets but does not dominate scratch on Forget Quality, while it improves Forget Quality and extraction on \texttt{forget05} and \texttt{forget01}. Layer and module scans further show that the trade-off depends on edit placement, with the late \texttt{mlp.down\_proj} providing the safest combined utility and privacy profile.
 
 \subsection{Llama-3.2-3B sanity check.}
-We also check that the initializer effect is not specific to one model. We therefore repeat the \texttt{forget10} initialization experiments on Llama 3.2 3B Instruct. We report results in Table~\ref{tab:init_3b_sanity}. Across different random seeds on \texttt{forget10}, \textbf{K-FORGE} improves SimNPO at both 50 and 100 steps. The strongest benefit for NPO is at 50 steps. 
+We repeat all three budgets on Llama-3.2-3B-Instruct over three seeds (Appendix Table~\ref{tab:init_3b_sanity}). SimNPO improves in utility, forget probability, extraction, and ROUGE at 50, 100, and 250 steps. NPO improves utility and forget probability strongly at 50 steps, but its forgetting metrics are worse at 100 and 250 steps. The larger-checkpoint evidence therefore supports optimizer-specific transfer rather than a general 3B claim.
+
+\subsection{Model-family transfer.}
+Reviewer-motivated experiments on Gemma-3-1B-IT use a held-out fourth seed and charge K-FORGE's measured 35-second setup to scratch training. This yields scratch budgets of 103 NPO steps and 105 SimNPO steps for a 100-step initialized run. K-FORGE lowers NPO forget probability by 16.7\% and extraction by 37.5\%, with slightly higher mean utility (Appendix Table~\ref{tab:gemma_compute_matched}). SimNPO gives a smaller but consistent probability reduction ($p=9.4\times10^{-6}$) with a utility change of $-0.0009$. NPO Forget ROUGE worsens, which again prevents a metric-uniform claim.
+
+\long\def\kforgeGemmaComputeTable{%
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Method} & \textbf{Init./steps} & \textbf{Utility}$\uparrow$ & \textbf{Forget Pr.}$\downarrow$ & \textbf{Extr.}$\downarrow$ & \textbf{ROUGE}$\downarrow$ \\
+\midrule
+\multirow{2}{*}{NPO} & scratch/103 & .4006 & .0640 & .0528 & \textbf{.3161} \\
+ & K-FORGE/100 & \textbf{.4012} & \textbf{.0533} & \textbf{.0330} & .3647 \\
+\midrule
+\multirow{2}{*}{SimNPO} & scratch/105 & \textbf{.4099} & .2722 & .1263 & .4086 \\
+ & K-FORGE/100 & .4090 & \textbf{.2693} & \textbf{.1219} & \textbf{.3948} \\
+\bottomrule
+\end{tabular}
+\caption{Compute-matched Gemma-3-1B results over four paired seeds, including one held-out seed.}
+\label{tab:gemma_compute_matched}
+\end{table}
+}
+
+A three-seed Qwen2.5-1.5B SimNPO pilot is near-neutral: at 50 steps, scratch/K-FORGE forget probability is 0.26164/0.26150 and utility is 0.34492/0.34467; the 100-step differences are similarly negligible. We retain this null result as evidence that the initializer effect is not universal across model families.
+
+\subsection{Transfer beyond TOFU.}
+We additionally evaluate SimNPO on the News and Books domains of MUSE with Llama-2-7B (Appendix Table~\ref{tab:muse_transfer}). News provides partial transfer: at 50 steps, K-FORGE lowers both KnowMem and VerbMem forgetting scores, while extraction worsens and retain quality is nearly unchanged. A 100-step follow-up, with its selection rule fixed before downstream training, improves extraction from .3034 to .3012 and VerbMem from .5727 to .5507, but not KnowMem or retain quality. Books is less favorable, with an isolated KnowMem improvement at 100 steps and adverse changes on the other metrics. MUSE therefore shows that individual forgetting gains can transfer beyond TOFU, but not a uniform benchmark-level advantage.
 
 
 \subsection{Ablations}
 \label{sec:ablations}
-Our ablations  show that the gain is not explained by simply moving the model in any low-rank direction (see Table~\ref{tab:init_controls_forget10}). Matched random and weight-SVD initializers perform weaker in general than \textbf{K-FORGE}, especially in the early-budget \texttt{forget10} runs. The one-shot controls tell the same story from another angle: forget-only editing barely moves the base model, and the diagonal Fisher control helps but does not match the full Kronecker two-Fisher edit. In Table~\ref{tab:transfer_controls} in Appendix we report the corresponding initialization results on the additional TOFU splits.
+The matched controls show that the result is not explained by inserting an arbitrary low-rank perturbation (Appendix Table~\ref{tab:init_controls_forget10}). On Llama \texttt{forget10}, K-FORGE gives the lowest forget probability among the tested initializers at the early NPO and SimNPO budgets. The Gemma NPO result is similar: random, diagonal, and forget-only controls are weaker, while weight-SVD attains comparable probability only with a large utility loss. Gemma SimNPO is more nuanced because diagonal Fisher has nearly identical probability and slightly better utility, although K-FORGE has lower extraction and ROUGE. Thus the controls establish that data-dependent Fisher structure matters, but not that full Kronecker structure is necessary for every optimizer and metric. Appendix Table~\ref{tab:transfer_controls} reports the corresponding controls on the smaller TOFU splits.
 
 
 \subsection{Robustness Audits}
 \label{sec:robustness_audits}
 
-We additionally audit whether the unlearned checkpoints are easily reversed by direct supervised exposure to the forget set. Starting from the \texttt{forget10} NPO $S50$ checkpoints, we fine-tune for one epoch on the forget-set QA data and re-evaluate TOFU. Table~\ref{tab:relearn_audit} reports paired post-minus-pre changes over three seeds. Both scratch and K-FORGE checkpoints are vulnerable to direct relearning, but K-FORGE recovers substantially less answer probability, lexical overlap, and extraction strength than scratch NPO. This audit should be read as a stress test rather than a deployment guarantee: it measures one epoch of direct supervised relearning, not arbitrary adversarial recovery. Quantization-revert robustness remains future work.
+We test active recovery through relearning and passive changes from quantized loading. For relearning, we match scratch NPO at 100 steps to K-FORGE-initialized NPO at 50 steps ($\alpha=.60$): their pre-attack forget probabilities are .0472/.0519 and utilities are .5683/.5754. Both receive the same 400-example \texttt{forget10} QA set with AdamW at $10^{-5}$ for 13 and 39 steps.
 
+\long\def\kforgeRelearningTable{%
 \begin{table}[t]
 \centering
-\small
-\caption{Relearning robustness audit on \texttt{forget10}. Values are paired post-relearning minus pre-relearning changes after one epoch of supervised fine-tuning on the forget-set QA data, averaged over three seeds. Lower recovery in forget probability, ROUGE, and extraction strength indicates less direct recoverability.}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Matched-start relearning over three paired seeds; cells are scratch/K-FORGE.}
 \label{tab:relearn_audit}
 \begin{tabular}{lccc}
 \toprule
-Method & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROUGE $\downarrow$ & $\Delta$ Extraction $\downarrow$ \\
+\textbf{Metric} & \textbf{Pre S/KF} & \textbf{Post 13 S/KF} & \textbf{Post 39 S/KF} \\
 \midrule
-Scratch NPO $S50$ & $+0.434\,\pm\,0.042$ & $+0.343\,\pm\,0.012$ & $+0.203\,\pm\,0.056$ \\
-K-FORGE $+$ NPO $S50$ & $+0.317\,\pm\,0.006$ & $+0.076\,\pm\,0.010$ & $+0.067\,\pm\,0.004$ \\
+Forget Prob. $\downarrow$ & \textbf{.0472}/.0519 & \textbf{.3757}/.5464 & \textbf{.7298}/.9110 \\
+Extraction $\downarrow$ & \textbf{.0665}/.0728 & \textbf{.1122}/.2002 & \textbf{.4067}/.8123 \\
+Forget ROUGE $\downarrow$ & \textbf{.2678}/.2724 & \textbf{.3755}/.4741 & \textbf{.6219}/.8842 \\
+Utility $\uparrow$ & .5683/\textbf{.5754} & .4553/\textbf{.4926} & .4932/\textbf{.5097} \\
 \bottomrule
 \end{tabular}
 \end{table}
+}
 
-We also ran the same relearning audit across the completed layer-7 frontier. Table~\ref{tab:layer7_relearn_frontier} reports paired post-minus-pre changes. The layer-7 settings remain directly recoverable, but their extraction recovery is consistently smaller than the layer-15 $\alpha=0.65$ setting in Table~\ref{tab:relearn_audit}. This reinforces the interpretation from Table~\ref{tab:layer7_frontier_review}: layer 7 is an extraction-focused variant, while layer 15 is the more balanced default because of its lower privacy leakage before the relearning attack.
+This does not support recovery resistance (Appendix Table~\ref{tab:relearn_audit}). After 13 steps, forget probability recovers by .4945 from K-FORGE versus .3285 from scratch ($p=4.7\times10^{-4}$); the gap grows after 39 steps. Matched SimNPO and Gemma audits reach the same boundary. K-FORGE improves the pre-attack trajectory but does not prevent direct relearning.
 
+\long\def\kforgeQuantizationTable{%
 \begin{table}[t]
 \centering
-\small
-\setlength{\tabcolsep}{3pt}
-\caption{Layer-7 relearning audit on \texttt{forget10}. Values are paired post-relearning minus pre-relearning changes after one epoch of supervised fine-tuning on the forget-set QA data, averaged over three seeds. Lower values indicate less direct recovery.}
-\label{tab:layer7_relearn_frontier}
-\begin{tabular}{cccc}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcccc}
 \toprule
-$\boldsymbol{\alpha}$ & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROUGE $\downarrow$ & $\Delta$ Extraction $\downarrow$ \\
+\textbf{Pair} & \textbf{Load} & \textbf{Forget Prob.}$\downarrow$ & \textbf{Utility}$\uparrow$ & \textbf{Extraction}$\downarrow$ & \textbf{ROUGE}$\downarrow$ \\
 \midrule
-0.30 & $+0.284\,\pm\,0.008$ & $+0.075\,\pm\,0.002$ & $+0.0547\,\pm\,0.0038$ \\
-0.35 & $+0.291\,\pm\,0.004$ & $+0.065\,\pm\,0.006$ & $+0.0542\,\pm\,0.0039$ \\
-0.40 & $+0.304\,\pm\,0.002$ & $+0.080\,\pm\,0.013$ & $+0.0565\,\pm\,0.0014$ \\
-0.50 & $+0.313\,\pm\,0.001$ & $+0.087\,\pm\,0.006$ & $+0.0561\,\pm\,0.0040$ \\
-0.55 & $+0.321\,\pm\,0.004$ & $+0.099\,\pm\,0.005$ & $+0.0579\,\pm\,0.0006$ \\
+Matched NPO & 8-bit & \textbf{.0490}/.0536 & .5644/\textbf{.5692} & \textbf{.0661}/.0715 & \textbf{.2702}/.2747 \\
+Matched NPO & 4-bit & \textbf{.0556}/.0636 & \textbf{.5306}/.5256 & \textbf{.0624}/.0652 & \textbf{.2649}/.2675 \\
+SimNPO S50 & 8-bit & .6936/\textbf{.5610} & \textbf{.5747}/.5727 & .2844/\textbf{.1924} & .5475/\textbf{.4646} \\
+SimNPO S50 & 4-bit & .5629/\textbf{.4725} & \textbf{.5320}/.5280 & .1777/\textbf{.1373} & .4680/\textbf{.4271} \\
 \bottomrule
 \end{tabular}
+}
+\caption{Post-quantization scratch/K-FORGE results over three paired seeds.}
+\label{tab:quantization_audit}
 \end{table}
+}
 
-We further repeated the direct-relearning audit over the conservative layer-15 $\alpha=0.62$ budget sweep. Table~\ref{tab:budget_relearn_review} shows that the weakest $S25$ checkpoint is the easiest to recover in extraction strength, whereas the $S100$ and $S250$ checkpoints have nearly identical post-relearning extraction recovery. Longer downstream NPO therefore does not remove direct relearning vulnerability, but it does reduce the extraction-strength recovery relative to the undertrained $S25$ case. This reinforces our framing of relearning as an attack-side stress test rather than a static TOFU metric.
-
-\begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{3pt}
-\caption{Budget-dependent relearning audit for layer-15 $\alpha=0.62$ K-FORGE-initialized NPO. Values are paired post-minus-pre changes after one epoch of supervised forget-set fine-tuning, averaged over seeds $0,1,2$. Lower recovery is better.}
-\label{tab:budget_relearn_review}
-\begin{tabular}{cccc}
-\toprule
-\textbf{NPO steps} & $\Delta$ Forget Prob. $\downarrow$ & $\Delta$ Forget ROUGE $\downarrow$ & $\Delta$ Extraction $\downarrow$ \\
-\midrule
-25  & $+0.381\,\pm\,0.008$ & $-0.082\,\pm\,0.010$ & $+0.119\,\pm\,0.008$ \\
-100 & $+0.320\,\pm\,0.001$ & $+0.038\,\pm\,0.015$ & $+0.051\,\pm\,0.005$ \\
-250 & $+0.337\,\pm\,0.003$ & $+0.032\,\pm\,0.008$ & $+0.051\,\pm\,0.006$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+Quantized loading is milder (Appendix Table~\ref{tab:quantization_audit}). On matched NPO, 8-bit loading changes forget probability by only $+.0018/+.0016$ from full precision and 4-bit by $+.0084/+.0117$. The SimNPO advantage persists at both precisions, but Gemma quantization erases or reverses it for NPO while preserving a small SimNPO gain. Quantization persistence is therefore optimizer-dependent and distinct from recovery resistance.
 
 \subsection{K-FORGE compute overhead.}
-The proposed method poses additional computation overhead due to the need for gradient collection on the calibration data, which we study and discuss in this section. 
+K-FORGE adds a reusable one-time setup: calibration gradients, two Fisher pairs, Cholesky/SVD components, and the low-rank edit. It does not change the cost of later NPO or SimNPO steps.
 
-First, the proposed method is a one-time overhead before downstream unlearning. We estimate forget and retain Fisher factors on calibration batches (32 in this work). Then we compute the Cholesky/SVD components of the edit, and apply the resulting low-rank update. This computational overhead is done only once per run and does not change the per-step cost of the subsequent NPO or SimNPO runs. 
-
-We report measured wall-clock time from saved the method runs together with FLOPs estimates for the same unlearning configurations in Table~\ref{tab:kforge_compute}. For the 1B and 3B settings used in this work, the full initialization pass is about 9--11\% of a representative 50-step scratch unlearning run. 
-
-To sum up, the proposed method is not free in terms of compute, but its overhead is relatively small compared even to the shortest downstream budgets we evaluate.
+Table~\ref{tab:kforge_compute} reports end-to-end time and analytical FLOPs for one edited \texttt{mlp.down\_proj}. Setup is 9--11\% of a 50-step run. Although dense MFF scales as $\mathcal{O}(mn^2+m^2n)$, calibration passes contribute 96.2\%/98.3\% of estimated setup FLOPs at 1B/3B; multi-layer scaling remains a limitation.
 
 \begin{table}[t]
 \centering
@@ -715,33 +714,60 @@ To sum up, the proposed method is not free in terms of compute, but its overhead
 \bottomrule
 \end{tabular}
 }
-\caption{Approximate one-time K-FORGE estimation overhead for one edited \texttt{mlp.down\_proj} layer with $B_{\mathrm{cal}}=32$ forget and retain batches. Wall-clock total includes calibration, factor accumulation, Cholesky/SVD computations, and applying the edit. The final column divides total K-FORGE time by representative 50-step scratch NPO/SimNPO wall-clock runs on the same setup.}
+\caption{One-time K-FORGE setup cost for one edited layer with 32 forget and retain calibration batches.}
 \label{tab:kforge_compute}
 \end{table}
 
+We charge setup rather than treating it as free. Given setup costs $(t_{\mathrm{KF}},F_{\mathrm{KF}})$ and scratch per-step costs $(\bar t_{\mathrm{step}},F_{\mathrm{step}})$, a $T$-step K-FORGE run is compared to scratch at
+\begin{equation}
+T_{\mathrm{cm}}
+=T+\max\!\left(
+\left\lceil\frac{t_{\mathrm{KF}}}{\bar t_{\mathrm{step}}}\right\rceil,
+\left\lceil\frac{F_{\mathrm{KF}}}{F_{\mathrm{step}}}\right\rceil
+\right).
+\label{eq:compute_matched_budget}
+\end{equation}
+For Llama-3.2-1B, FLOP matching adds three NPO or four SimNPO steps. Measured 50-step times are 691.5/629.1 s, so a conservative five-step charge (69.2/62.9 s) also covers the 61.2 s setup. Against scratch at 55, 105, and 255 steps, K-FORGE remains better on Forget Q/A Probability in every paired seed, and all mean utility changes satisfy the $-.01$ margin (Appendix Table~\ref{tab:kforge_compute_matched}).
 
-% \section{Why K-FORGE Initialization Helps}
-% \label{sec:analysis}
+\long\def\kforgeComputeMatchedTable{%
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+& \multicolumn{2}{c}{\textbf{Steps}} & \multicolumn{2}{c}{\textbf{Forget Prob.}$\downarrow$} & \textbf{Rel. red.} & \multicolumn{2}{c}{\textbf{Utility}$\uparrow$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){7-8}
+\textbf{Method} & \textbf{KF} & \textbf{Scratch} & \textbf{Scratch} & \textbf{KF} & & \textbf{Scratch} & \textbf{KF} \\
+\midrule
+NPO & 50 & 55 & 0.0783 & \textbf{0.0454} & 42.0\% & 0.5224 & \textbf{0.5738} \\
+NPO & 100 & 105 & 0.0411 & \textbf{0.0308} & 25.2\% & 0.5712 & \textbf{0.5932} \\
+NPO & 250 & 255 & 0.0276 & \textbf{0.0223} & 19.1\% & 0.5925 & \textbf{0.6034} \\
+SimNPO & 50 & 55 & 0.6462 & \textbf{0.5341} & 17.3\% & \textbf{0.5795} & 0.5712 \\
+SimNPO & 100 & 105 & 0.5030 & \textbf{0.4066} & 19.2\% & \textbf{0.5872} & 0.5817 \\
+SimNPO & 250 & 255 & 0.3290 & \textbf{0.2719} & 17.4\% & \textbf{0.5957} & 0.5917 \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Compute-matched TOFU \texttt{forget10} results over three paired seeds. The full K-FORGE setup is charged to every row.}
+\label{tab:kforge_compute_matched}
+\end{table}
+}
 
-% The corrected results currently support a narrower diagnosis than the earlier heuristic story. The Wiener edit provides a smooth retain-aware frontier, so the central phenomenon is not a pathological one-shot cliff but the separation between direction selection and subsequent iterative refinement. We will extend this section once the corrected transfer runs and spectrum analyses finish.
+Secondary metrics are not uniform: NPO extraction worsens, while SimNPO extraction and Forget ROUGE generally improve. This is a compute-matched probability result, not metric-wide dominance.
 
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this work we proposed \textbf{K-FORGE}, a Fisher information-based initializer for iterative unlearning methods. We prove that our method yields an exact full-rank solution and low-rank relaxation. Through extensive experiments we show that the proposed approach is an effective one-shot initialization method for NPO and SimNPO unlearning methods for different on TOFU subsets.
+We introduced \textbf{K-FORGE}, a Fisher-guided initializer with an exact full-rank Wiener solution and a stated low-rank relaxation. It improves the early Forget Q/A Probability trajectory of NPO and SimNPO on TOFU after charging setup in FLOPs and time. Gemma provides cross-family evidence, while Qwen and MUSE show that transfer is not universal. K-FORGE is a curvature-aware starting point whose value depends on the optimizer and evaluation regime.
 
 
 \section{Limitations}
 \label{sec:limitations}
 
-Our work has several limitations which we acknowledge below. 
-
-First, \textbf{K-FORGE} is not a standalone unlearning method. It is complementary to existing iterative unlearning methods like NPO, SimNPO, but not a replacement for them.  
-
-Next, while our experiments are extensive, we still test only two models of relatively moderate size of 1B and 3B parameters across different (\texttt{forget10}, \texttt{forget05}, \texttt{forget01}) subsets of one benchmark TOFU. We therefore do not claim transfer to MUSE or other benchmarks, robustness against quantization revert, or broad large-model scaling. Our relearning audit is also limited to one epoch of direct supervised fine-tuning on \texttt{forget10}; stronger or longer recovery attacks may behave differently. 
-
-The method also uses the collection of gradients using calibration data and several dense factorizations, which are affordable at 1B--3B scale but might become challenging and pose an additional computational cost relative to scratch fine-tuning.
+K-FORGE addresses initialization, not certified erasure: it requires downstream training and direct relearning recovers the forgotten behavior. Evidence is strongest for Forget Q/A Probability on TOFU; NPO extraction, Forget ROUGE, and MUSE can disagree, and transfer is uneven across model families. Finally, calibration and dense factorizations cost 9--11\% of a 50-step run for one layer, but multi-layer and broader large-model scaling remain open.
 
 % Bibliography entries for the entire Anthology, followed by custom entries
 %\bibliography{anthology,custom}
@@ -789,33 +815,41 @@ The method also uses the collection of gradients using calibration data and seve
 
 \begin{table}[htbp!]
 \centering
-\begin{tabular}{l l l ccc}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{rllcccc}
 \toprule
-\textbf{Steps} & \textbf{Method} & \textbf{Init}
-  & \textbf{Util.}$\uparrow$
-  & \textbf{Forget Pr.}$\downarrow$
-  & \textbf{Extr.}$\downarrow$ \\
+\textbf{Steps} & \textbf{Method} & \textbf{Init.} & \textbf{Util.}$\uparrow$ & \textbf{Forget Pr.}$\downarrow$ & \textbf{Extr.}$\downarrow$ & \textbf{ROUGE}$\downarrow$ \\
 \midrule
 \multirow{4}{*}{50}
   & \multirow{2}{*}{NPO}
-  & scratch         & 0.597\stderr{0.022} & 0.086\stderr{0.007} & \textbf{0.059}\stderr{0.007} \\
-  && K-FORGE $(.45)$ & \textbf{0.644}\stderr{0.019} & \textbf{0.063}\stderr{0.001} & 0.071\stderr{0.001} \\
-\cmidrule(r){2-6}
+  & scratch & .589\stderr{.021} & .086\stderr{.005} & \textbf{.057}\stderr{.006} & \textbf{.237}\stderr{.010} \\
+  && K-FORGE & \textbf{.639}\stderr{.015} & \textbf{.065}\stderr{.004} & .070\stderr{.001} & .293\stderr{.005} \\
+\cmidrule(r){2-7}
   & \multirow{2}{*}{SimNPO}
-  & scratch         & 0.639\stderr{0.004} & 0.696\stderr{0.001} & 0.353\stderr{0.008} \\
-  && K-FORGE $(.45)$ & \textbf{0.657}\stderr{0.013} & \textbf{0.581}\stderr{0.001} & \textbf{0.267}\stderr{0.003} \\
+  & scratch & .636\stderr{.005} & .691\stderr{.008} & .351\stderr{.007} & .587\stderr{.006} \\
+  && K-FORGE & \textbf{.656}\stderr{.009} & \textbf{.583}\stderr{.004} & \textbf{.264}\stderr{.006} & \textbf{.519}\stderr{.008} \\
 \midrule
 \multirow{4}{*}{100}
   & \multirow{2}{*}{NPO}
-  & scratch         & 0.652\stderr{0.032} & \textbf{0.035}\stderr{0.004} & \textbf{0.056}\stderr{0.005} \\
-  && K-FORGE $(.45)$ & \textbf{0.668}\stderr{0.006} & 0.038\stderr{0.002} & 0.077\stderr{0.000} \\
-\cmidrule(r){2-6}
+  & scratch & .648\stderr{.024} & \textbf{.034}\stderr{.003} & \textbf{.055}\stderr{.004} & \textbf{.260}\stderr{.012} \\
+  && K-FORGE & \textbf{.670}\stderr{.006} & .039\stderr{.002} & .077\stderr{.001} & .306\stderr{.010} \\
+\cmidrule(r){2-7}
   & \multirow{2}{*}{SimNPO}
-  & scratch         & 0.648\stderr{0.012} & 0.519\stderr{0.006} & 0.226\stderr{0.000} \\
-  && K-FORGE $(.45)$ & \textbf{0.653}\stderr{0.001} & \textbf{0.455}\stderr{0.008} & \textbf{0.191}\stderr{0.008} \\
+  & scratch & .647\stderr{.009} & .517\stderr{.006} & .223\stderr{.005} & .486\stderr{.004} \\
+  && K-FORGE & \textbf{.655}\stderr{.003} & \textbf{.455}\stderr{.006} & \textbf{.191}\stderr{.005} & \textbf{.467}\stderr{.004} \\
+\midrule
+\multirow{4}{*}{250}
+  & \multirow{2}{*}{NPO}
+  & scratch & \textbf{.665}\stderr{.008} & \textbf{.027}\stderr{.003} & \textbf{.057}\stderr{.003} & \textbf{.261}\stderr{.007} \\
+  && K-FORGE & .662\stderr{.008} & .029\stderr{.001} & .079\stderr{.002} & .302\stderr{.008} \\
+\cmidrule(r){2-7}
+  & \multirow{2}{*}{SimNPO}
+  & scratch & .662\stderr{.005} & .334\stderr{.002} & .151\stderr{.001} & .434\stderr{.009} \\
+  && K-FORGE & \textbf{.666}\stderr{.007} & \textbf{.314}\stderr{.005} & \textbf{.142}\stderr{.002} & \textbf{.429}\stderr{.008} \\
 \bottomrule
 \end{tabular}
-\caption{Two-seed Llama-3.2-3B-Instruct early-budget sanity check on TOFU \texttt{forget10}. We report 50- and 100-step budgets for both downstream optimizers, matching the regime where initialization effects should be most visible. K-FORGE uses $\alpha\!=\!0.45$. Best values are bolded within each method and step-budget block.}
+\caption{Three-seed Llama-3.2-3B-Instruct results on TOFU \texttt{forget10}. K-FORGE uses $\alpha=.45$; best values are bolded within each method and budget.}
 \label{tab:init_3b_sanity}
 \end{table}
 
@@ -864,6 +898,37 @@ The method also uses the collection of gradients using calibration data and seve
 \end{table}
 
 
+
+\begin{table}[htbp!]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lllrlll}
+\toprule
+\textbf{Domain} & \textbf{Steps} & \textbf{Init.} & \textbf{Extr.}$\downarrow$ & \textbf{KnowMem}$\downarrow$ & \textbf{VerbMem}$\downarrow$ & \textbf{Retain}$\uparrow$ \\
+\midrule
+\multirow{4}{*}{News}
+ & 50 & scratch & \textbf{.3075}\stderr{.0021} & .6301\stderr{.0062} & .5741\stderr{.0021} & \textbf{.5338}\stderr{.0069} \\
+ & 50 & K-FORGE & .3149\stderr{.0036} & \textbf{.6235}\stderr{.0099} & \textbf{.5639}\stderr{.0120} & .5321\stderr{.0056} \\
+ & 100 & scratch & \textbf{.3034}\stderr{.0041} & .6286\stderr{.0017} & .5727\stderr{.0031} & \textbf{.5318}\stderr{.0084} \\
+ & 100 & K-FORGE & .3097\stderr{.0011} & \textbf{.6278}\stderr{.0063} & \textbf{.5623}\stderr{.0123} & .5216\stderr{.0063} \\
+\midrule
+\multirow{4}{*}{Books}
+ & 50 & scratch & .9110\stderr{.0002} & \textbf{.4106}\stderr{.0125} & \textbf{.9941}\stderr{.0049} & \textbf{.6488}\stderr{.0014} \\
+ & 50 & K-FORGE & \textbf{.9109}\stderr{.0002} & .4265\stderr{.0047} & .9958\stderr{.0019} & .6451\stderr{.0064} \\
+ & 100 & scratch & \textbf{.8519}\stderr{.0255} & .3655\stderr{.0101} & \textbf{.9554}\stderr{.0197} & \textbf{.6099}\stderr{.0057} \\
+ & 100 & K-FORGE & .8692\stderr{.0203} & \textbf{.3567}\stderr{.0023} & .9632\stderr{.0129} & .5860\stderr{.0166} \\
+\bottomrule
+\end{tabular}
+\caption{Three-seed MUSE transfer with SimNPO and Llama-2-7B. K-FORGE uses the fixed $\alpha=.45$ initializer.}
+\label{tab:muse_transfer}
+\end{table}
+
+\kforgeGemmaComputeTable
+\kforgeComputeMatchedTable
+\kforgeRelearningTable
+\kforgeQuantizationTable
+\kforgeSensitivityAudits
 
 \section{Proofs}
 \label{sec:proofs}

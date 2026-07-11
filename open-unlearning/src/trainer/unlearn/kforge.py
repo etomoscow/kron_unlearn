@@ -105,6 +105,11 @@ class KFORGE(UnlearnTrainer):
         if self.accelerator.num_processes != 1:
             raise RuntimeError("KFORGE currently supports single-process calibration.")
 
+        device = self.args.device
+        first_param = next(self.model.parameters(), None)
+        if first_param is not None and first_param.device != device:
+            self.model.to(device)
+
         start = time.time()
         modules = self._matching_linear_modules()
         if not modules:

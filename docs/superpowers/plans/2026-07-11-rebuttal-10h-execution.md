@@ -28,9 +28,9 @@
 - Consumes: completed TOFU/MUSE `*_SUMMARY.json` files.
 - Produces: terminal Markdown tables plus a nonzero exit on missing or malformed inputs.
 
-- [ ] Implement fixed, structured aggregation for Gemma controls, Gemma compute matching, MUSE follow-up, held-out Gemma seed, and 4/8-bit quantization.
-- [ ] Run `python open-unlearning/scripts/summarize_rebuttal_additions.py --check` and require all expected files to parse.
-- [ ] Record means, sample standard deviations, paired deltas, and paired tests in the audit log.
+- [x] Implement fixed, structured aggregation for Gemma controls, Gemma compute matching, MUSE follow-up, held-out Gemma seed, and 4/8-bit quantization.
+- [x] Run the final `python open-unlearning/scripts/summarize_rebuttal_additions.py --check` after all expanded follow-ups finish and require every expected file to parse.
+- [x] Record means, sample standard deviations, paired deltas, and paired tests in the audit log.
 
 ### Task 2: Add matched-operating-point relearning runner
 
@@ -42,10 +42,10 @@
 - Consumes: Llama-3.2-1B NPO scratch S100 and K-FORGE `alpha=0.60` S50 checkpoints for seeds `0,1,2`.
 - Produces: one-epoch and three-epoch TOFU summaries for both arms without changing attack hyperparameters between arms.
 
-- [ ] Add skip-on-valid-summary logic and a TSV manifest.
-- [ ] Run `bash -n open-unlearning/scripts/kforge_rebuttal_matched_relearning.sh`.
-- [ ] Launch one-epoch and three-epoch queues on separate idle GPUs.
-- [ ] Monitor every ten minutes and retry only transient failures with identical settings.
+- [x] Add skip-on-valid-summary logic and a TSV manifest.
+- [x] Run `bash -n open-unlearning/scripts/kforge_rebuttal_matched_relearning.sh`.
+- [x] Launch one-epoch and three-epoch queues on separate idle GPUs.
+- [x] Monitor every ten minutes and retry only transient failures with identical settings.
 
 ### Task 3: Add matched-operating-point quantization runner
 
@@ -57,9 +57,9 @@
 - Consumes: the same matched scratch S100 and K-FORGE S50 checkpoints.
 - Produces: three-seed 8-bit and 4-bit TOFU summaries for both arms.
 
-- [ ] Reuse the working bitsandbytes configuration from `logs/review_quantization/run_quantization_revert_v1.sh`.
-- [ ] Run `bash -n open-unlearning/scripts/kforge_rebuttal_matched_quantization.sh`.
-- [ ] Launch on an idle GPU and verify every manifest row reaches `ok` or `skipped` with a valid summary.
+- [x] Reuse the working bitsandbytes configuration from `logs/review_quantization/run_quantization_revert_v1.sh`.
+- [x] Run `bash -n open-unlearning/scripts/kforge_rebuttal_matched_quantization.sh`.
+- [x] Launch on an idle GPU and verify every manifest row reaches `ok` or `skipped` with a valid summary.
 
 ### Task 4: Spend remaining capacity on the highest-value confirmation
 
@@ -70,9 +70,9 @@
 - Consumes: results from Tasks 1-3 and current free-GPU state.
 - Produces: one prespecified follow-up selected before launching.
 
-- [ ] If matched robustness is complete with time remaining, select exactly one of: an additional Gemma control seed, a stronger matched relearning duration, or an additional quantized budget.
-- [ ] Record the choice and decision rule before launch.
-- [ ] Run and verify the selected follow-up without suppressing negative results.
+- [x] Following the user's explicit expansion of the remaining scope, prespecify the additional Gemma control seed, stronger matched relearning duration, and optimizer/model-family quantization checks before launch.
+- [x] Record each choice and decision rule before launch.
+- [x] Run and verify all selected follow-ups without suppressing negative results.
 
 ### Task 5: Produce final rebuttal text and audit
 
@@ -84,9 +84,9 @@
 - Consumes: verified aggregate output only.
 - Produces: concise reviewer-specific responses with exact tables, limitations, and artifact paths.
 
-- [ ] Replace stale future-tense or incomplete claims with completed evidence.
-- [ ] State the strongest defensible subclaims and their metric boundaries.
-- [ ] Run number-consistency checks between source JSON and `REBUTTAL.md`.
-- [ ] Run Markdown/math delimiter checks and `git diff --check`.
-- [ ] Verify no required experiment sessions remain running at the deadline and write the final report.
-
+- [x] Replace stale future-tense or incomplete claims with completed evidence.
+- [x] State the strongest defensible subclaims and their metric boundaries.
+- [x] Export and round-trip a compact per-seed metrics snapshot for artifact verification.
+- [x] Run number-consistency checks between source JSON and `REBUTTAL.md`.
+- [x] Run Markdown/math delimiter checks and `git diff --check`.
+- [x] Verify no required experiment sessions remain running and prepare the final report.

@@ -483,7 +483,7 @@ positive result.
 - The audited evidence release is committed as `b99d434`; the final
   text/novelty/format refinements and this audit are recorded in the current
   `dev` HEAD. A proxy-free fetch confirmed that `dev` is zero commits behind
-  and, after the final claim-language cleanup, seven commits ahead of
+  and, after the final SVD-tie proof clarification, eight commits ahead of
   `origin/dev`, so the update is a fast-forward.
   Pushing through the configured proxy failed with `Proxy CONNECT aborted`;
   direct HTTPS push reached GitHub but this non-interactive environment has no
@@ -531,3 +531,15 @@ as independently confirming the result, and weaker controls were described as
 not reproducing it. These now say that the held-out seed *matches the direction*
 and that the controls are *weaker in the Gemma NPO comparison*. The numerical
 claims and portal word counts are unchanged.
+
+### 2026-07-12 00:33 UTC: SVD-tie proof clarification
+
+Visual inspection of the final appendix prompted one last degeneracy check.
+With tied singular values, an arbitrary implementation of
+`SVD_r(-R)` need not return the literal negative of an independently
+computed `SVD_r(R)`, although every such truncation attains the same
+Eckart--Young optimum. The rank-r proof now says that the compatible negative
+truncation *may be chosen* and that any truncation of `-R` is optimal.
+The limit-consistency proof uses optimality rather than an unnecessary literal
+matrix identity. This changes no proposition, algorithm, checkpoint, or
+experiment.

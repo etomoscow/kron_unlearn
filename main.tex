@@ -996,7 +996,7 @@ Since $\mathbf{\Sigma}_A,\mathbf{\Sigma}_B$ are invertible diagonal and $\mathbf
 \[
 \min_{\operatorname{rank}(\mathbf{Y})\le r}\lVert\mathbf{Y} - (-\mathbf{R})\rVert_F^2,
 \]
-whose Eckart--Young (Frobenius) minimizer is $\mathbf{Y}_r = \operatorname{SVD}_r(-\mathbf{R}) = -\operatorname{SVD}_r(\mathbf{R})$ (unique when $\sigma_r(\mathbf{R}) > \sigma_{r+1}(\mathbf{R})$; otherwise any rank-$r$ truncation attains the optimum). Unscaling, $\mathbf{H}_r = \mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1} = -\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}$, and
+whose Eckart--Young (Frobenius) minimizer may be chosen as $\mathbf{Y}_r=-\operatorname{SVD}_r(\mathbf{R})$; equivalently, any rank-$r$ SVD truncation of $-\mathbf{R}$ attains the optimum. The minimizer is unique when $\sigma_r(\mathbf{R}) > \sigma_{r+1}(\mathbf{R})$. Unscaling this choice gives $\mathbf{H}_r = -\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}$, and
 \[
 \mathbf{\Delta}^{(r)}_{\lambda=0} = \mathbf{Q}_B\mathbf{H}_r\mathbf{Q}_A^\top = -\mathbf{L}_{B_r}^{-\top}\mathbf{U}_B\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}\mathbf{U}_A^\top\mathbf{L}_{A_r}^{-1}. \qedhere
 \]
@@ -1018,16 +1018,21 @@ The relaxed edit $\mathbf{\Delta}^{(r)}$ in Eq.~\ref{eq:kforge_relaxed_delta} is
 \]
 which is $\mathbf{H}^\star$ from the proof of Theorem~\ref{thm:two_fisher_gsvd}. Hence $\mathbf{\Delta}^{(r)} = \mathbf{Q}_B\mathbf{H}^\star\mathbf{Q}_A^\top = \mathbf{\Delta}^\star$.
 
-\emph{Case (ii): $\lambda_{\mathrm{ret}} = 0$.} Then 
+\emph{Case (ii): $\lambda_{\mathrm{ret}} = 0$.} Then
 
 
 $$  
 \widetilde{G}_{ji} = \frac{\sigma_{A,i}^2\sigma_{B,j}^2}{ \sigma_{A,i}^2\sigma_{B,j}^2} = 1.
 $$ 
 
-So $\mathbf{Y}^\star = -\mathbf{R}$ and $\mathbf{Y}_r = \operatorname{SVD}_r(-\mathbf{R})$. 
-
-Then $$\mathbf{H}_r = -\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}$$ and $$\mathbf{\Delta}^{(r)} = \mathbf{Q}_B\mathbf{H}_r\mathbf{Q}_A^\top$$ matches $\mathbf{\Delta}^{(r)}_{\lambda=0}$ from Proposition~\ref{prop:rankr_lam0} exactly.
+Thus $\mathbf{Y}^\star = -\mathbf{R}$, and any
+$\mathbf{Y}_r=\operatorname{SVD}_r(-\mathbf{R})$ is an Eckart--Young
+minimizer of the transformed problem. Unscaling
+$\mathbf{H}_r=\mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$
+and mapping back
+$\mathbf{\Delta}^{(r)}=\mathbf{Q}_B\mathbf{H}_r\mathbf{Q}_A^\top$
+therefore yields an exact rank-$r$ minimizer characterized by
+Proposition~\ref{prop:rankr_lam0}.
 \end{proof}
 
 \end{document}

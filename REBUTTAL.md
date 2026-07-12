@@ -4,7 +4,7 @@
 
 We thank the reviewers for identifying three concrete gaps in the submitted version: compute-aligned evaluation, model/benchmark breadth, and completed recovery audits. We ran the requested additions. In a direct Llama-3.2-1B wall- and FLOP-matched S50 comparison, K-FORGE lowers NPO Forget Q/A Probability by 22.3% and raises utility by 0.0280. SimNPO preserves a smaller 2.8% probability gain in every seed, but its utility change is -0.0109 and narrowly misses our prespecified -0.01 margin. A held-out fourth Gemma-3-1B seed independently preserves the primary direction; at 100 steps, NPO probability falls by 18.7% and extraction by 40.0% at unchanged mean utility, while SimNPO gives a smaller but highly consistent probability gain.
 
-The added controls, MUSE experiments, and recovery audits also define where the result stops. Random and forget-only edits do not reproduce the Gemma result, MUSE transfer is metric-dependent, and matched relearning shows that K-FORGE is not a recovery defense. We therefore revise the central claim to:
+The added controls, MUSE experiments, and recovery audits also define where the result stops. Random and forget-only edits are weaker in the Gemma NPO comparison, MUSE transfer is metric-dependent, and matched relearning shows that K-FORGE is not a recovery defense. We therefore revise the central claim to:
 
 > K-FORGE is not a new unlearning loss and not a standalone robustness guarantee. It is a one-time Fisher-guided initialization that improves the early forget-probability trajectory of fixed downstream preference-based optimizers.
 
@@ -125,7 +125,7 @@ More importantly, we completed a non-Llama evaluation on Gemma-3-1B and then add
 | SimNPO | 50 | 3 | 0.27334 | **0.27005** | 1.20% | **0.40401** | 0.40230 | -0.00171 |
 | SimNPO | 100 | 4 | 0.27240 | **0.26930** | 1.14% | **0.41050** | 0.40896 | -0.00154 |
 
-The held-out seed independently confirms the probability direction for both optimizers. For NPO, its Forget Q/A Probability changes from 0.06386 to 0.05762 with a utility change of -0.00645; for SimNPO, it changes from 0.27212 to 0.26907 with a utility change of -0.00312. Both satisfy the prespecified utility margin of -0.01.
+The held-out seed matches the probability direction for both optimizers. For NPO, its Forget Q/A Probability changes from 0.06386 to 0.05762 with a utility change of -0.00645; for SimNPO, it changes from 0.27212 to 0.26907 with a utility change of -0.00312. Both satisfy the prespecified utility margin of -0.01.
 
 The strongest aggregate Gemma result is NPO at 100 steps: over four seeds, K-FORGE lowers Forget Q/A Probability by 18.7% and extraction by 40.0% (0.0550 to 0.0330) while leaving mean utility effectively unchanged. Forget ROUGE moves in the opposite direction (0.2980 to 0.3647), so we do not present this as uniform improvement across all forgetting metrics. SimNPO gives a smaller but highly consistent 1.14% probability reduction, together with lower extraction (0.1265 to 0.1219), lower Forget ROUGE (0.3993 to 0.3948), and a utility change of only -0.00154. Two-sided paired tests on Forget Q/A Probability give $p=0.0115$ for NPO and $p=8.8\times10^{-7}$ for SimNPO at 100 steps. Given the small sample, we treat the NPO test as descriptive; the SimNPO result remains below the $p<0.001$ exploratory threshold after adding the held-out seed.
 
@@ -150,7 +150,7 @@ Thank you for the constructive feedback. We agree that improved Forget Q/A Proba
 | SimNPO | 50 | 3 | 0.27334 / **0.27005** | 1.20% | **0.40401** / 0.40230 | 0.12743 / **0.12278** | 0.39632 / **0.39473** |
 | SimNPO | 100 | 4 | 0.27240 / **0.26930** | 1.14% | **0.41050** / 0.40896 | 0.12651 / **0.12191** | 0.39930 / **0.39480** |
 
-The held-out seed confirms the Forget Q/A Probability direction for both optimizers while satisfying a prespecified utility margin of -0.01. At 100 steps, K-FORGE reduces NPO probability by 18.7% and extraction by 40.0% at unchanged mean utility, but worsens Forget ROUGE. SimNPO shows a smaller but highly consistent probability reduction, lower extraction and ROUGE, and negligible utility cost ($p=8.8\times10^{-7}$ for paired Forget Q/A Probability over four seeds). This is why our revised claim is metric-specific rather than “better unlearning” in general.
+The held-out seed matches the Forget Q/A Probability direction for both optimizers while satisfying a prespecified utility margin of -0.01. At 100 steps, K-FORGE reduces NPO probability by 18.7% and extraction by 40.0% at unchanged mean utility, but worsens Forget ROUGE. SimNPO shows a smaller but highly consistent probability reduction, lower extraction and ROUGE, and negligible utility cost ($p=8.8\times10^{-7}$ for paired Forget Q/A Probability over four seeds). This is why our revised claim is metric-specific rather than “better unlearning” in general.
 
 **Scale.** We expanded the Llama-3.2-3B evaluation to three seeds and 50/100/250-step budgets. The table reports the complete metric set with separate scratch and K-FORGE columns:
 

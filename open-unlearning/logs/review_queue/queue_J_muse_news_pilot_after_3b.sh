@@ -13,6 +13,7 @@ GPU_WAIT_SECONDS="${GPU_WAIT_SECONDS:-300}"
 DEPENDENCY_WAIT_SECONDS="${DEPENDENCY_WAIT_SECONDS:-600}"
 STEPS="${STEPS:-50}"
 MODEL="${MODEL:-Llama-3.2-3B-Instruct}"
+MODEL_PATH="${MODEL_PATH:-open-unlearning/tofu_Llama-3.2-3B-Instruct_full}"
 DATA_SPLIT="${DATA_SPLIT:-News}"
 TRAINERS="${TRAINERS:-NPO SimNPO}"
 RETAIN_LOGS_PATH="${RETAIN_LOGS_PATH:-saves/eval/muse_Llama-2-7b-hf_News_retrain/MUSE_EVAL.json}"
@@ -131,8 +132,8 @@ eval_task() {
     model.template_args.asst_start_tag="Answer: " \
     model.template_args.asst_end_tag="\n\n" \
     +model.tokenizer_args.padding_side=left \
-    model.model_args.pretrained_model_name_or_path="/home/d.moskovskiy/.cache/huggingface/models--open-unlearning--tofu_Llama-3.2-3B-Instruct_full/snapshots/24f31ca19f6966dcb6f6b29abc511cce71222d4a" \
-    model.tokenizer_args.pretrained_model_name_or_path="/home/d.moskovskiy/.cache/huggingface/models--open-unlearning--tofu_Llama-3.2-3B-Instruct_full/snapshots/24f31ca19f6966dcb6f6b29abc511cce71222d4a" \
+    model.model_args.pretrained_model_name_or_path="${MODEL_PATH}" \
+    model.tokenizer_args.pretrained_model_name_or_path="${MODEL_PATH}" \
     retain_logs_path="${RETAIN_LOGS_PATH}" \
     2>&1 | tee "logs/review_muse_pilot/${task}_eval.log"
 }
@@ -157,8 +158,8 @@ for trainer in ${TRAINERS}; do
     model.template_args.asst_start_tag="Answer: " \
     model.template_args.asst_end_tag="\n\n" \
     +model.tokenizer_args.padding_side=left \
-    model.model_args.pretrained_model_name_or_path="/home/d.moskovskiy/.cache/huggingface/models--open-unlearning--tofu_Llama-3.2-3B-Instruct_full/snapshots/24f31ca19f6966dcb6f6b29abc511cce71222d4a" \
-    model.tokenizer_args.pretrained_model_name_or_path="/home/d.moskovskiy/.cache/huggingface/models--open-unlearning--tofu_Llama-3.2-3B-Instruct_full/snapshots/24f31ca19f6966dcb6f6b29abc511cce71222d4a" \
+    model.model_args.pretrained_model_name_or_path="${MODEL_PATH}" \
+    model.tokenizer_args.pretrained_model_name_or_path="${MODEL_PATH}" \
     data_split="${DATA_SPLIT}" \
     trainer="${trainer}" \
     task_name="${task}" \

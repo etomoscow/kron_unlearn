@@ -253,7 +253,7 @@
   Hydra/OmegaConf, Transformers, Datasets, Accelerate, bitsandbytes,
   DeepSpeed, TensorBoard, W&B, and `lm-eval`.
 - Set local cache paths for Triton, Torch extensions, Hugging Face, and XDG
-  cache data to avoid the non-writable `/home/d.moskovskiy/.triton` path.
+  cache data to avoid a non-writable default user cache.
 - Verified that the trainer registry imports and includes `KFORGE`.
 - Fixed `configs/experiment/unlearn/tofu/kforge.yaml` so Hydra resolves the
   sibling TOFU default via `/experiment/unlearn/tofu/default`.

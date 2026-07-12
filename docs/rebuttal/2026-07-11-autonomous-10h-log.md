@@ -483,7 +483,7 @@ positive result.
 - The audited evidence release is committed as `b99d434`; the final
   text/novelty/format refinements and this audit are recorded in the current
   `dev` HEAD. A proxy-free fetch confirmed that `dev` is zero commits behind
-  and, after the final theorem-domain clarification, five commits ahead of
+  and, after the final release-anonymization cleanup, six commits ahead of
   `origin/dev`, so the update is a fast-forward.
   Pushing through the configured proxy failed with `Proxy CONNECT aborted`;
   direct HTTPS push reached GitHub but this non-interactive environment has no
@@ -508,3 +508,15 @@ truncation singular values are tied. Finally, the forget-only description now
 states precisely that identity retain factors remove retain-set curvature
 awareness while leaving the isotropic penalty. No equation, checkpoint, metric,
 or experimental conclusion changed.
+
+### 2026-07-12 00:24 UTC: full-tree anonymity scan
+
+The final source-package audit scanned every tracked text file rather than only
+the metric snapshot and rebuttal. It found one historical changelog sentence
+and one dormant queue script containing an author-specific absolute home path.
+The changelog now uses neutral wording, and the script takes a configurable
+`MODEL_PATH` with a public model identifier as its default. Shell syntax
+validation passes, and a full-tree scan finds no remaining author-specific home
+path or repository-account string. Upstream project links and ordinary
+bibliographic author names remain intact because they are citations, not
+repository identity leaks.

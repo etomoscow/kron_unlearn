@@ -483,7 +483,8 @@ positive result.
 - The audited evidence release is committed as `b99d434`; the final
   text/novelty/format refinements and this audit are recorded in the current
   `dev` HEAD. A proxy-free fetch confirmed that `dev` is zero commits behind
-  and four commits ahead of `origin/dev`, so the update is a fast-forward.
+  and, after the final theorem-domain clarification, five commits ahead of
+  `origin/dev`, so the update is a fast-forward.
   Pushing through the configured proxy failed with `Proxy CONNECT aborted`;
   direct HTTPS push reached GitHub but this non-interactive environment has no
   credential helper, and SSH has no authorized key. No force push or alternate
@@ -493,3 +494,17 @@ positive result.
   `401 not_connected`. Reconnecting it and verifying the logged-out view
   remains the other manual publication action after pushing from an
   authenticated shell.
+
+### 2026-07-12 00:18 UTC: final theorem-domain audit
+
+A final theorem-to-proof consistency pass found one formal omission in the
+statement, not in the implementation or experiments. Strict convexity of the
+quadratic objective requires the retain-penalty domain
+`lambda_ret >= 0`; the proof used that domain implicitly, but the theorem had
+not stated it. The theorem and algorithm discussion now make the condition
+explicit. The zero-penalty rank-r proposition and limit-consistency proposition
+also say *an* exact minimizer rather than implying uniqueness when the
+truncation singular values are tied. Finally, the forget-only description now
+states precisely that identity retain factors remove retain-set curvature
+awareness while leaving the isotropic penalty. No equation, checkpoint, metric,
+or experimental conclusion changed.

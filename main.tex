@@ -223,7 +223,7 @@ Define the simultaneous diagonalizers $\mathbf{Q}_A = \mathbf{L}_{A_r}^{-\top}\m
 
 \begin{theorem}[Unconstrained K-FORGE Wiener edit]
 \label{thm:two_fisher_gsvd}
-The unique minimizer of Eq.~\ref{eq:kforge_objective} over $\mathbf{\Delta}\in\mathbb{R}^{n\times m}$ is
+For $\lambda_{\mathrm{ret}}\geq 0$, the unique minimizer of Eq.~\ref{eq:kforge_objective} over $\mathbf{\Delta}\in\mathbb{R}^{n\times m}$ is
 \begin{equation}
     \mathbf{\Delta}^\star
     =
@@ -246,7 +246,7 @@ For $r=\min(m,n)$ the rank constraint is inactive, so $\mathbf{\Delta}^\star$ is
 
 \begin{proposition}[Exact rank-$r$ solution at zero retain penalty]
 \label{prop:rankr_lam0}
-At $\lambda_{\mathrm{ret}}=0$, the rank-$r$ minimizer of Eq.~\ref{eq:kforge_objective} is obtained by the rescaling $\mathbf{Y}=\mathbf{\Sigma}_B\mathbf{H}\mathbf{\Sigma}_A$, which converts the objective into the unweighted Frobenius problem $\lVert\mathbf{Y}+\mathbf{R}\rVert_F^2$. Solving via Eckart--Young, $\mathbf{Y}_r=\operatorname{SVD}_r(-\mathbf{R})$, unscaling $\mathbf{H}_r=\mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$, and mapping back yields
+At $\lambda_{\mathrm{ret}}=0$, an exact rank-$r$ minimizer of Eq.~\ref{eq:kforge_objective} is obtained by the rescaling $\mathbf{Y}=\mathbf{\Sigma}_B\mathbf{H}\mathbf{\Sigma}_A$, which converts the objective into the unweighted Frobenius problem $\lVert\mathbf{Y}+\mathbf{R}\rVert_F^2$. Solving via Eckart--Young, $\mathbf{Y}_r=\operatorname{SVD}_r(-\mathbf{R})$, unscaling $\mathbf{H}_r=\mathbf{\Sigma}_B^{-1}\mathbf{Y}_r\mathbf{\Sigma}_A^{-1}$, and mapping back yields
 \begin{equation}
     \mathbf{\Delta}^{\!(\!r\!)\!}_{0}\!=\!\!-\!\mathbf{L}_{B_r}^{-\top}\!\mathbf{U}_B\,\mathbf{\Sigma}_B^{-1}\operatorname{SVD}_r(\mathbf{R})\mathbf{\Sigma}_A^{-1}\,
     \!\mathbf{U}_A^\top\!\mathbf{L}_{A_r}^{-1}
@@ -283,7 +283,7 @@ Let $s_{ji}=\sigma_{A,i}\sigma_{B,j}$. Then $s_{ji}^2$ is the forget-to-retain c
 
 
 \paragraph{Recovering prior work.}
-When all four Fisher factors are restricted to be diagonal, the simultaneous basis is coordinate-aligned up to permutations and signs, and Eq.~\ref{eq:kforge_delta} reduces to per-weight Wiener filtering of the singly-whitened weight matrix. The structure becomes close to Selective Synaptic Dampening~\citep{foster24}, but with a Wiener denominator $\sigma_{A,i}^2\sigma_{B,j}^2\!+\!\lambda_{\mathrm{ret}}$ rather than SSD's hard-clipped ratio $\min(\alpha F_f/F_r, 1)$; we use this diagonal limit as a control in Section~\ref{sec:experiments}. Setting $\mathbf{A}_r\!=\!\mathbf{I}$ and $\mathbf{B}_r\!=\!\mathbf{I}$ removes retain awareness entirely and yields our forget-only ablation.
+When all four Fisher factors are restricted to be diagonal, the simultaneous basis is coordinate-aligned up to permutations and signs, and Eq.~\ref{eq:kforge_delta} reduces to per-weight Wiener filtering of the singly-whitened weight matrix. The structure becomes close to Selective Synaptic Dampening~\citep{foster24}, but with a Wiener denominator $\sigma_{A,i}^2\sigma_{B,j}^2\!+\!\lambda_{\mathrm{ret}}$ rather than SSD's hard-clipped ratio $\min(\alpha F_f/F_r, 1)$; we use this diagonal limit as a control in Section~\ref{sec:experiments}. Setting $\mathbf{A}_r\!=\!\mathbf{I}$ and $\mathbf{B}_r\!=\!\mathbf{I}$ removes retain-set curvature awareness and yields our forget-only ablation.
 
 \subsection{The K-FORGE Algorithm}
 \label{sec:kforge_algorithm}
@@ -308,7 +308,7 @@ When all four Fisher factors are restricted to be diagonal, the simultaneous bas
 \end{algorithmic}
 \end{algorithm}
 
-Factor damping and retain penalty play distinct roles. The factor damping $\varepsilon$ only makes the empirical Fisher factors numerically symmetric positive definite~(SPD) before Cholesky factorization; $\lambda_{\mathrm{ret}}$ controls the retain budget in Eq.~\ref{eq:kforge_objective}, entering only through the Wiener gain $\widetilde{\mathbf{G}}$. Before strength scaling, $\mathbf{\Delta}^{(r)}$ is the exact minimizer when $r=\min(m,n)$ or $\lambda_{\mathrm{ret}}=0$, by Theorem~\ref{thm:two_fisher_gsvd} and Proposition~\ref{prop:rankr_lam0}; otherwise it is the separable relaxation. The strength $\alpha$ is an external safety scalar: for $\alpha\ne1$, the returned checkpoint follows the same edit direction but is not claimed to minimize Eq.~\ref{eq:kforge_objective}. The edit is optimization-free: it uses calibration forward/backward passes to estimate Fisher factors but no parameter-update loop.
+Factor damping and retain penalty play distinct roles. The factor damping $\varepsilon$ only makes the empirical Fisher factors numerically symmetric positive definite~(SPD) before Cholesky factorization; $\lambda_{\mathrm{ret}}\geq 0$ controls the retain budget in Eq.~\ref{eq:kforge_objective}, entering only through the Wiener gain $\widetilde{\mathbf{G}}$. Before strength scaling, $\mathbf{\Delta}^{(r)}$ is the unique exact minimizer at full rank and an exact rank-constrained minimizer when $\lambda_{\mathrm{ret}}=0$, by Theorem~\ref{thm:two_fisher_gsvd} and Proposition~\ref{prop:rankr_lam0}; otherwise it is the separable relaxation. The strength $\alpha$ is an external safety scalar: for $\alpha\ne1$, the returned checkpoint follows the same edit direction but is not claimed to minimize Eq.~\ref{eq:kforge_objective}. The edit is optimization-free: it uses calibration forward/backward passes to estimate Fisher factors but no parameter-update loop.
 
 \begin{figure*}
     \centering
@@ -1006,7 +1006,7 @@ whose Eckart--Young (Frobenius) minimizer is $\mathbf{Y}_r = \operatorname{SVD}_
 
 \begin{proposition}
 \label{prop:limit_consistency}
-The relaxed edit $\mathbf{\Delta}^{(r)}$ in Eq.~\ref{eq:kforge_relaxed_delta} coincides with the exact minimizer of Eq.~\ref{eq:kforge_objective} in two limits: (i) at $r=\min(m,n)$ it equals $\mathbf{\Delta}^\star$ from Theorem~\ref{thm:two_fisher_gsvd} for any $\lambda_{\mathrm{ret}}\ge 0$; (ii) at $\lambda_{\mathrm{ret}}=0$ it equals the rank-$r$ minimizer from Proposition~\ref{prop:rankr_lam0} for any $r$.
+The relaxed edit $\mathbf{\Delta}^{(r)}$ in Eq.~\ref{eq:kforge_relaxed_delta} is exact in two limits: (i) at $r=\min(m,n)$ it equals the unique minimizer $\mathbf{\Delta}^\star$ from Theorem~\ref{thm:two_fisher_gsvd} for any $\lambda_{\mathrm{ret}}\ge 0$; (ii) at $\lambda_{\mathrm{ret}}=0$ it equals an exact rank-$r$ minimizer from Proposition~\ref{prop:rankr_lam0} for any $r$.
 \end{proposition}
 
 \begin{proof}

@@ -98,14 +98,23 @@ def add_preference_gradient(ax, xlim, ylim) -> None:
 
 
 def draw_shift_arrow(ax, start, end, rad: float) -> None:
-    # Shrink proportionally so short arrows don't disappear
+    # Shift each arrow below its endpoint pair so it never runs through a marker.
     s_px = np.array(ax.transData.transform(start))
     e_px = np.array(ax.transData.transform(end))
-    length_px = np.linalg.norm(e_px - s_px)
+    delta_px = e_px - s_px
+    length_px = np.linalg.norm(delta_px)
+    if length_px < 1e-6:
+        return
+    normal_px = np.array([-delta_px[1], delta_px[0]]) / length_px
+    if normal_px[1] > 0:
+        normal_px = -normal_px
+    offset_px = normal_px * (7.0 * ax.figure.dpi / 72.0)
+    shifted_start = tuple(ax.transData.inverted().transform(s_px + offset_px))
+    shifted_end = tuple(ax.transData.inverted().transform(e_px + offset_px))
     shrink = min(8.0, length_px * 0.15)   # at most 15 % of arrow from each end
     arrow = FancyArrowPatch(
-        start,
-        end,
+        shifted_start,
+        shifted_end,
         connectionstyle=f"arc3,rad={rad}",
         arrowstyle="-|>",
         mutation_scale=13.5,
@@ -324,13 +333,7 @@ def make_matched_init_arrows() -> None:
         for step in [50, 100, 250]:
             s_row = sub[(sub["steps"].eq(step)) & (sub["init"].eq("scratch"))].iloc[0]
             k_row = sub[(sub["steps"].eq(step)) & (sub["init"].eq("kforge_s045"))].iloc[0]
-            draw_shift_arrow(
-                ax,
-                (s_row["model_utility_mean"], s_row["forget_Q_A_Prob_mean"]),
-                (k_row["model_utility_mean"], k_row["forget_Q_A_Prob_mean"]),
-                arrow_rads[(algo, step)],
-            )
-            # FIX: place step label at the arrow midpoint but offset perpendicular
+            # Place the step label above the shifted arrow.
             s_pt = (s_row["model_utility_mean"], s_row["forget_Q_A_Prob_mean"])
             k_pt = (k_row["model_utility_mean"], k_row["forget_Q_A_Prob_mean"])
             r    = arrow_rads[(algo, step)]

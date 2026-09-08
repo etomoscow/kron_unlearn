@@ -22,9 +22,7 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.figure import Figure
-from matplotlib.lines import Line2D
 from matplotlib.patches import FancyArrowPatch
-from matplotlib.ticker import FormatStrFormatter, MultipleLocator
 import numpy as np
 import pandas as pd
 
@@ -37,6 +35,9 @@ COLORS = {
     "grid": "#D0D0D0",
     "text": "#202020",
 }
+PREFERENCE_CMAP = LinearSegmentedColormap.from_list(
+    "forget_utility_preference", ["#BBD7EC", "#F6EAD2", "#E98632"]
+)
 ALGOS = ("NPO", "SimNPO")
 INITS = ("scratch", "kforge_s045")
 STEPS = (50, 100, 250)
@@ -67,17 +68,15 @@ RC = {
     "font.family": "DejaVu Sans",
     "font.size": 8.0,
     "axes.labelsize": 8.0,
-    "axes.titlesize": 9.0,
+    "axes.titlesize": 8.5,
+    "legend.fontsize": 7.2,
     "xtick.labelsize": 7.2,
     "ytick.labelsize": 7.2,
-    "axes.linewidth": 0.65,
+    "axes.linewidth": 0.8,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
-    "figure.facecolor": "white",
-    "axes.facecolor": "white",
-    "savefig.facecolor": "white",
-    "savefig.transparent": False,
-    "savefig.bbox": None,
+    "savefig.bbox": "tight",
+    "savefig.pad_inches": 0.015,
 }
 
 
@@ -154,41 +153,35 @@ def _include_values(limits, values):
 
 def _style_panel(ax: Axes, gradient: bool) -> None:
     if gradient:
-        # Qualitative direction cue only; this is NOT a measured score.
-        x, y = np.meshgrid(np.linspace(0, 1, 160), np.linspace(0, 1, 160))
-        cmap = LinearSegmentedColormap.from_list(
-            "preference_hint", ["#BBD7EC", "#F6EAD2", "#E98632"]
-        )
+        x, y = np.meshgrid(np.linspace(0, 1, 240), np.linspace(0, 1, 240))
         ax.imshow(
             0.5 * x + 0.5 * (1 - y),
             extent=(*ax.get_xlim(), *ax.get_ylim()),
-            origin="lower",
-            cmap=cmap,
-            vmin=0,
-            vmax=1,
-            alpha=0.16,
-            aspect="auto",
-            interpolation="bilinear",
-            zorder=-10,
+            origin="lower", cmap=PREFERENCE_CMAP, alpha=0.45, aspect="auto",
+            interpolation="bilinear", zorder=-10,
+        )
+        ax.text(
+            0.03, 0.97, "less desired", transform=ax.transAxes,
+            ha="left", va="top", fontsize=6.4, color="#3B6480",
+            alpha=0.85, zorder=-4, style="italic",
+        )
+        ax.text(
+            0.97, 0.03, "more desired", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=6.4, color="#9A4E17",
+            alpha=0.88, zorder=-4, style="italic",
         )
     ax.set_axisbelow(True)
-    ax.grid(True, color=COLORS["grid"], linewidth=0.45, alpha=0.60)
+    ax.grid(True, color=COLORS["grid"], linewidth=0.5, alpha=0.7)
     for spine in ax.spines.values():
-        spine.set_color("#555555")
-        spine.set_linewidth(0.65)
-    ax.tick_params(length=3, width=0.65, pad=3)
-    ax.xaxis.set_major_formatter(FormatStrFormatter("%.2f"))
-    ax.set_xlabel("Model Utility ↑", labelpad=4)
+        spine.set_color("#333333")
+        spine.set_linewidth(0.8)
 
 
 def build_matched_figure(raw: pd.DataFrame, *, gradient: bool = True) -> Figure:
     """Create the two-panel figure without changing any input measurements."""
     df = select_matched_data(raw)
     with plt.rc_context(RC):
-        fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.05))
-        fig.subplots_adjust(
-            left=0.10, right=0.970, bottom=0.29, top=0.91, wspace=0.23
-        )
+        fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.75))
         for ax, algo in zip(axes, ALGOS):
             sub = df.loc[df["algo"].eq(algo)]
             xlim, ylim = PANEL_LIMITS[algo]
@@ -203,18 +196,7 @@ def build_matched_figure(raw: pd.DataFrame, *, gradient: bool = True) -> Figure:
                 )
             )
             _style_panel(ax, gradient)
-            ax.set_title(algo, pad=6, fontweight="semibold")
-            ax.xaxis.set_major_locator(
-                MultipleLocator(0.02 if algo == "NPO" else 0.01)
-            )
-            ax.yaxis.set_major_locator(
-                MultipleLocator(0.02 if algo == "NPO" else 0.1)
-            )
-            ax.yaxis.set_major_formatter(
-                FormatStrFormatter("%.2f" if algo == "NPO" else "%.1f")
-            )
-            if algo == "NPO":
-                ax.set_ylabel("Forget Q/A Probability ↓", labelpad=5)
+            ax.set_title(algo, pad=2, fontweight="semibold")
 
             indexed = sub.set_index(["init", "steps"])
             for step in STEPS:
@@ -235,88 +217,50 @@ def build_matched_figure(raw: pd.DataFrame, *, gradient: bool = True) -> Figure:
                     textcoords="offset points",
                     ha=ha,
                     va=va,
-                    fontsize=7.2,
+                    fontsize=7.0,
                     fontweight="semibold",
-                    color=COLORS["text"],
+                    color="#2A2A2A",
                     zorder=5,
                 )
                 label.set_gid(f"step:{algo}:{step}")
 
-            # Error bars and markers are separate artists. The white scratch
-            # face covers the central bar, instead of making a phi-like glyph.
-            for init, color, face in (
-                ("scratch", COLORS["scratch"], "white"),
-                ("kforge_s045", COLORS["kforge"], COLORS["kforge"]),
+            for init, color, label, face in (
+                ("scratch", COLORS["scratch"], "scratch", "none"),
+                ("kforge_s045", COLORS["kforge"], r"K-FORGE ($\alpha=.45$)", COLORS["kforge"]),
             ):
                 cur = sub.loc[sub["init"].eq(init)].sort_values("steps")
                 ax.errorbar(
                     cur[X],
                     cur[Y],
                     yerr=cur[SD],
-                    fmt="none",
-                    ecolor=color,
-                    elinewidth=0.8,
-                    capsize=2.5,
-                    capthick=0.8,
-                    zorder=3,
-                )
-                (markers,) = ax.plot(
-                    cur[X],
-                    cur[Y],
-                    linestyle="none",
-                    marker="o",
-                    markersize=4.6,
+                    fmt="o",
+                    markersize=5.0,
                     markerfacecolor=face,
                     markeredgecolor=color,
-                    markeredgewidth=1.05,
-                    zorder=4,
+                    markeredgewidth=1.4,
+                    ecolor=color,
+                    elinewidth=0.9,
+                    capsize=2.5,
+                    linestyle="none",
+                    label=label,
+                    zorder=3,
                 )
-                markers.set_gid(f"marker:{algo}:{init}")
+            ax.set_xlabel("Model Utility ↑")
+            if algo == "NPO":
+                ax.set_ylabel("Forget Q/A Probability ↓")
+            ax.text(
+                0.97, 0.97, "step counts: 50, 100, 250",
+                transform=ax.transAxes, ha="right", va="top", fontsize=5.8,
+                color="#444444", style="italic",
+            )
 
-        proxies = [
-            Line2D(
-                [],
-                [],
-                linestyle="none",
-                marker="o",
-                markersize=4.6,
-                markerfacecolor="white",
-                markeredgecolor=COLORS["scratch"],
-                markeredgewidth=1.05,
-                label="Scratch",
-            ),
-            Line2D(
-                [],
-                [],
-                linestyle="none",
-                marker="o",
-                markersize=4.6,
-                markerfacecolor=COLORS["kforge"],
-                markeredgecolor=COLORS["kforge"],
-                markeredgewidth=1.05,
-                label=r"K-FORGE ($\alpha=0.45$)",
-            ),
-        ]
-        fig.legend(
-            handles=proxies,
-            loc="center",
-            bbox_to_anchor=(0.54, 0.10),
-            ncol=2,
-            frameon=False,
-            fontsize=7.4,
-            handlelength=1.1,
-            handletextpad=0.5,
-            columnspacing=2.0,
+        handles, labels = axes[0].get_legend_handles_labels()
+        axes[0].legend(
+            handles, labels, loc="lower left", ncol=1, frameon=True,
+            framealpha=0.82, edgecolor="#cccccc", fontsize=7.2,
+            handlelength=1.4, handletextpad=0.5, borderpad=0.5,
         )
-        fig.text(
-            0.54,
-            0.023,
-            "Numbers: matched steps.  Vertical bars: ±1 SD.  Panel scales differ.",
-            ha="center",
-            va="bottom",
-            fontsize=6.2,
-            color="#555555",
-        )
+        fig.tight_layout(w_pad=2.0)
     return fig
 
 
@@ -337,8 +281,8 @@ def write_matched_figure(
     with plt.rc_context(RC):
         fig = build_matched_figure(selected, gradient=gradient)
         try:
-            fig.savefig(pdf, bbox_inches=None)
-            fig.savefig(png, dpi=300, bbox_inches=None)
+            fig.savefig(pdf)
+            fig.savefig(png, dpi=300)
         finally:
             plt.close(fig)
     selected.to_csv(csv, index=False)

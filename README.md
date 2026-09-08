@@ -263,7 +263,7 @@ Regenerate the current paper figures with:
 ```bash
 cd open-unlearning
 python scripts/kforge_make_corrected_figures.py
-python scripts/make_kforge_paper_figures.py
+python scripts/make_kforge_paper_figures2.py
 ```
 
 Outputs:

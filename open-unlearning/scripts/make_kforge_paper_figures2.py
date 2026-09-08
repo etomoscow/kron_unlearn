@@ -4,11 +4,11 @@
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 
+from kforge_matched_fixed import write_matched_figure
 
 ROOT = Path(__file__).resolve().parents[2]
 IN_DIR = ROOT / "open-unlearning" / "saves" / "figures" / "kforge_corrected"
@@ -95,37 +95,6 @@ def add_preference_gradient(ax, xlim, ylim) -> None:
         zorder=-4,
         style="italic",
     )
-
-
-def draw_shift_arrow(ax, start, end, rad: float) -> None:
-    # Shift each arrow below its endpoint pair so it never runs through a marker.
-    s_px = np.array(ax.transData.transform(start))
-    e_px = np.array(ax.transData.transform(end))
-    delta_px = e_px - s_px
-    length_px = np.linalg.norm(delta_px)
-    if length_px < 1e-6:
-        return
-    normal_px = np.array([-delta_px[1], delta_px[0]]) / length_px
-    if normal_px[1] > 0:
-        normal_px = -normal_px
-    offset_px = normal_px * (7.0 * ax.figure.dpi / 72.0)
-    shifted_start = tuple(ax.transData.inverted().transform(s_px + offset_px))
-    shifted_end = tuple(ax.transData.inverted().transform(e_px + offset_px))
-    shrink = min(8.0, length_px * 0.15)   # at most 15 % of arrow from each end
-    arrow = FancyArrowPatch(
-        shifted_start,
-        shifted_end,
-        connectionstyle=f"arc3,rad={rad}",
-        arrowstyle="-|>",
-        mutation_scale=13.5,
-        linewidth=2.0,
-        color=COLORS["arrow"],
-        alpha=0.86,
-        shrinkA=shrink,
-        shrinkB=shrink,
-        zorder=2,
-    )
-    ax.add_patch(arrow)
 
 
 def save(fig, name: str) -> None:
@@ -254,160 +223,11 @@ def make_one_shot_frontier() -> None:
 
 
 def make_matched_init_arrows() -> None:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    df = pd.read_csv(IN_DIR / "corrected_aggregate_used.csv")
-    df = df[
-        (df["forget"].eq("forget10"))
-        & (df["init"].isin(["scratch", "kforge_s045"]))
-        & (df["algo"].isin(["NPO", "SimNPO"]))
-    ].copy()
-    df.to_csv(OUT_DIR / "fig_matched_init_arrows_data.csv", index=False)
-
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.75))  # FIX: a bit taller
-
-    for ax, algo in zip(axes, ["NPO", "SimNPO"]):
-        sub = df[df["algo"].eq(algo)]
-        if algo == "NPO":
-            # FIX: tighten x-left; the scratch 50-step point is ~0.509
-            ax.set_xlim(0.497, 0.610)
-            ax.set_ylim(0.012, 0.105)
-        else:
-            # FIX: give SimNPO 4× more x-room so points aren't squashed
-            ax.set_xlim(0.550, 0.610)#ax.set_xlim(0.562, 0.602)
-            ax.set_ylim(0.22, 0.71)
-        add_preference_gradient(ax, ax.get_xlim(), ax.get_ylim())
-        style_axes(ax)
-
-        def _arc_mid(start, end, rad):
-            """Visual midpoint of the arc3 curve, in data coords."""
-            s_px = np.array(ax.transData.transform(start))
-            e_px = np.array(ax.transData.transform(end))
-            mid_px = 0.5 * (s_px + e_px)
-            d_px = e_px - s_px
-            n_px = np.linalg.norm(d_px)
-            if n_px < 1e-6:
-                return (0.5*(start[0]+end[0]), 0.5*(start[1]+end[1]))
-            perp_unit = np.array([-d_px[1], d_px[0]]) / n_px   # CCW unit perp
-            bow_px = mid_px + rad * n_px * perp_unit
-            return tuple(ax.transData.inverted().transform(bow_px))
-        
-        def _perp_offset(start, end, dist=14):
-            """
-            Return (dx, dy) in pts perpendicular to the arrow (start→end),
-            always on the visually-upper side so labels never sit below arrows.
-            Works in display-pixel space to respect the true aspect ratio.
-            """
-            s = np.array(ax.transData.transform(start))
-            e = np.array(ax.transData.transform(end))
-            d = e - s
-            n = np.linalg.norm(d)
-            if n < 1e-6:
-                return 0.0, float(dist)
-            u = d / n
-            p = np.array([-u[1], u[0]])   # CCW perpendicular unit vector
-            if p[1] < 0:                  # flip if pointing downward
-                p = -p
-            return float(p[0] * dist), float(p[1] * dist)
-
-
-        # Rad is proportional to horizontal displacement so arcs don't bulge on
-        # nearly-vertical arrows.  SimNPO Δx ≈ 0.001–0.004 so rad → 0.
-        x_range = ax.get_xlim()[1] - ax.get_xlim()[0]
-        def _rad(s_row, k_row, sign=1):
-            dx = abs(k_row["model_utility_mean"] - s_row["model_utility_mean"])
-            return sign * 0.35 * (dx / x_range)   # scale curvature to actual Δx
-
-        rows = {
-            (init, step): sub[(sub["steps"].eq(step)) & (sub["init"].eq(init))].iloc[0]
-            for init in ["scratch", "kforge_s045"] for step in [50, 100, 250]
-        }
-        arrow_rads = {
-            ("NPO",    50): _rad(rows[("scratch",50)],  rows[("kforge_s045",50)],  -1),
-            ("NPO",   100): _rad(rows[("scratch",100)], rows[("kforge_s045",100)],  1),
-            ("NPO",   250): _rad(rows[("scratch",250)], rows[("kforge_s045",250)],  1),
-            ("SimNPO", 50): _rad(rows[("scratch",50)],  rows[("kforge_s045",50)],  -1),
-            ("SimNPO",100): _rad(rows[("scratch",100)], rows[("kforge_s045",100)],  1),
-            ("SimNPO",250): _rad(rows[("scratch",250)], rows[("kforge_s045",250)],  1),
-        }
-
-        for step in [50, 100, 250]:
-            s_row = sub[(sub["steps"].eq(step)) & (sub["init"].eq("scratch"))].iloc[0]
-            k_row = sub[(sub["steps"].eq(step)) & (sub["init"].eq("kforge_s045"))].iloc[0]
-            # Place the step label above the shifted arrow.
-            s_pt = (s_row["model_utility_mean"], s_row["forget_Q_A_Prob_mean"])
-            k_pt = (k_row["model_utility_mean"], k_row["forget_Q_A_Prob_mean"])
-            r    = arrow_rads[(algo, step)]
-            draw_shift_arrow(ax, s_pt, k_pt, r)
-
-            arc_mid = _arc_mid(s_pt, k_pt, r)
-            dx, dy  = _perp_offset(s_pt, k_pt, dist=14)
-            ax.annotate(
-                f"{step}",
-                xy=arc_mid,
-                xytext=(dx, dy),
-                textcoords="offset points",
-                ha="center", va="bottom",
-                fontsize=7.0,
-                fontweight="semibold",
-                color="#2A2A2A",
-                zorder=5,
-            )
-
-        for init, color, marker, label, fill in [
-            ("scratch",     COLORS["scratch"], "o", "scratch",                   "none"),
-            ("kforge_s045", COLORS["kforge"],  "o", r"K-FORGE ($\alpha=.45$)", COLORS["kforge"]),
-        ]:
-            cur = sub[sub["init"].eq(init)].sort_values("steps")
-            ax.errorbar(
-                cur["model_utility_mean"],
-                cur["forget_Q_A_Prob_mean"],
-                yerr=cur["forget_Q_A_Prob_std"],
-                fmt=marker,
-                markersize=5.0,           # FIX: bigger markers
-                markerfacecolor=fill,
-                markeredgecolor=color,
-                markeredgewidth=1.4,
-                ecolor=color,
-                elinewidth=0.9,
-                capsize=2.5,
-                linestyle="none",
-                label=label,
-                zorder=3,
-            )
-
-        ax.set_title(algo, pad=2, fontweight="semibold")
-        ax.set_xlabel("Model Utility ↑")
-        if algo == "NPO":
-            ax.set_ylabel("Forget Q/A Probability ↓")
-        else:
-            ax.set_ylabel("")
-        # FIX: add a compact step-size legend note inside the warm region
-        ax.text(
-            0.97, 0.97,
-            "step counts: 50, 100, 250",
-            transform=ax.transAxes,
-            ha="right", va="top",
-            fontsize=5.8,
-            color="#444444",
-            style="italic",
-        )
-
-    # Place legend inside the NPO panel (upper-left has open space above the frontier)
-    handles, labels = axes[0].get_legend_handles_labels()
-    axes[0].legend(
-        handles, labels,
-        loc="lower left",
-        ncol=1,
-        frameon=True,
-        framealpha=0.82,
-        edgecolor="#cccccc",
-        fontsize=7.2,
-        handlelength=1.4,
-        handletextpad=0.5,
-        borderpad=0.5,
+    write_matched_figure(
+        IN_DIR / "corrected_aggregate_used.csv",
+        OUT_DIR,
+        stem="fig_matched_init_arrows",
     )
-    fig.tight_layout(w_pad=2.0)
-    save(fig, "fig_matched_init_arrows")
 
 
 def main() -> None:

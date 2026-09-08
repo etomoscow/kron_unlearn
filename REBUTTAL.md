@@ -189,19 +189,19 @@ We removed the future-tense language and completed both direct-relearning and qu
 
 This stricter audit changes our interpretation. K-FORGE is **not** more resistant to direct relearning at a matched initial operating point: after one epoch, its Forget Probability recovery is +0.4945 versus +0.3285 for scratch ($p=4.7\times10^{-4}$ for the paired recovery difference), and the gap increases after three epochs. SimNPO gives the same one-epoch boundary; after three epochs both SimNPO arms are almost fully recovered (FP 0.9778/0.9819). Gemma NPO and SimNPO also fail to preserve an advantage after one epoch, with post-attack FP `0.2611/0.2947` and `0.3527/0.3530` (scratch/K-FORGE). We report these negative results and remove the earlier robustness implication.
 
-Quantization is less destructive. For the same matched pair, the within-arm changes are:
+Quantization is less destructive. The post-quantization results for the matched NPO pair are:
 
-| Loading | $\Delta$ FP S / KF | $\Delta$ Extraction S / KF | $\Delta$ ROUGE S / KF | $\Delta$ Utility S / KF |
-|---|---:|---:|---:|---:|
-| 8-bit | +0.00181 / +0.00164 | -0.00041 / -0.00129 | +0.00236 / +0.00230 | -0.00395 / -0.00615 |
-| 4-bit | +0.00843 / +0.01168 | -0.00416 / -0.00757 | -0.00287 / -0.00487 | -0.03774 / -0.04980 |
+| Loading | Scratch FP $\downarrow$ | K-FORGE FP $\downarrow$ | Scratch Utility $\uparrow$ | K-FORGE Utility $\uparrow$ | Scratch Extraction $\downarrow$ | K-FORGE Extraction $\downarrow$ | Scratch ROUGE $\downarrow$ | K-FORGE ROUGE $\downarrow$ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 8-bit | **0.0490** | 0.0536 | 0.5644 | **0.5692** | **0.0661** | 0.0715 | **0.2702** | 0.2747 |
+| 4-bit | **0.0556** | 0.0636 | **0.5306** | 0.5256 | **0.0624** | 0.0652 | **0.2649** | 0.2675 |
 
 At the ordinary matched downstream budget, the initializer advantage also survives quantization for SimNPO:
 
-| SimNPO S50 | FP S / KF $\downarrow$ | Utility S / KF $\uparrow$ | Extraction S / KF $\downarrow$ | ROUGE S / KF $\downarrow$ |
-|---|---:|---:|---:|---:|
-| 8-bit | 0.6936 / **0.5610** | **0.5747** / 0.5727 | 0.2844 / **0.1924** | 0.5475 / **0.4646** |
-| 4-bit | 0.5629 / **0.4725** | **0.5320** / 0.5280 | 0.1777 / **0.1373** | 0.4680 / **0.4271** |
+| Loading | Scratch FP $\downarrow$ | K-FORGE FP $\downarrow$ | Scratch Utility $\uparrow$ | K-FORGE Utility $\uparrow$ | Scratch Extraction $\downarrow$ | K-FORGE Extraction $\downarrow$ | Scratch ROUGE $\downarrow$ | K-FORGE ROUGE $\downarrow$ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 8-bit | 0.6936 | **0.5610** | **0.5747** | 0.5727 | 0.2844 | **0.1924** | 0.5475 | **0.4646** |
+| 4-bit | 0.5629 | **0.4725** | **0.5320** | 0.5280 | 0.1777 | **0.1373** | 0.4680 | **0.4271** |
 
 The paired Forget Probability tests give $p=1.0\times10^{-4}$ (8-bit) and $p=4.5\times10^{-4}$ (4-bit). Thus 4/8-bit loading preserves the matched-budget SimNPO advantage, but the matched-start NPO audit does not establish an intrinsic K-FORGE robustness advantage. The completed audits give a precise boundary: K-FORGE can improve optimization in a way that survives quantization, but it is not a recovery defense.
 

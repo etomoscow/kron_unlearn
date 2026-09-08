@@ -1,5 +1,7 @@
 import csv
 import math
+import subprocess
+import sys
 import unittest
 from types import SimpleNamespace
 
@@ -42,6 +44,29 @@ class RebuttalCompatibilityTest(unittest.TestCase):
         expected = {"forget_Q_A_Prob": 0.25}
 
         self.assertEqual(read(path, snapshot={key: expected}), expected)
+
+    def test_summary_excludes_cross_evaluator_gemma_pairs(self):
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts/summarize_rebuttal_additions.py"),
+                "--check",
+                "--snapshot-in",
+                str(ROOT / "rebuttal_metrics_snapshot.json"),
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+
+        self.assertNotIn(
+            "Gemma NPO S100: random_rank2 vs K-FORGE", result.stdout
+        )
+        self.assertNotIn(
+            "Gemma NPO: compute-matched scratch S103 vs K-FORGE S100",
+            result.stdout,
+        )
 
     def test_muse_eval_paths_encode_domain_and_seed(self):
         paths = muse_eval_paths("Books", "kforge", 50, seeds=range(3))

@@ -239,33 +239,6 @@ def main() -> None:
         expected += len(kforge) + len(scratch)
         paired(f"Gemma {method} S100: scratch vs K-FORGE", scratch, kforge)
 
-        kforge_four = gemma_s100_rows(method, "kforge")
-        for control in ("random_rank2", "weight_svd", "diagonal", "forget_only"):
-            rows = tofu_rows(
-                method,
-                control,
-                100,
-                "rebuttal_gemma3_controls_v2_EVAL_FP32",
-                seeds=range(4),
-            )
-            expected += len(rows)
-            paired(f"Gemma {method} S100: {control} vs K-FORGE", rows, kforge_four)
-
-        compute_steps = 103 if method == "NPO" else 105
-        compute = tofu_rows(
-            method,
-            "scratch",
-            compute_steps,
-            "rebuttal_gemma3_compute_matched_v2_EVAL_FP32",
-            seeds=range(4),
-        )
-        expected += len(compute)
-        paired(
-            f"Gemma {method}: compute-matched scratch S{compute_steps} vs K-FORGE S100",
-            compute,
-            kforge_four,
-        )
-
     for method in ("NPO", "SimNPO"):
         scratch = gemma_s100_rows(method, "scratch")
         kforge = gemma_s100_rows(method, "kforge")

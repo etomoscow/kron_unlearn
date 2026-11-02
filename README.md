@@ -2,6 +2,8 @@
 
 # K-FORGE
 
+<img src="assets/matched_init_arrows.png" width="640" alt="K-FORGE initialization shifts NPO and SimNPO runs toward higher utility and lower forget probability">
+
 ### Kronecker-Fisher One-shot Rank-r Generalized Erasure
 **Fisher-Guided Initialization for Preference-Based LLM Unlearning**
 
@@ -107,7 +109,7 @@ All numbers are taken from the paper. Primary endpoint: **Forget Q/A Probability
 
 ### 1. One-shot strength sweep
 
-Stronger edits monotonically trade utility for forgetting:
+Stronger edits monotonically trade utility for forgetting — raising α from 0.1 to 0.8 drops Forget Q/A Probability from 0.878 to 0.411 while utility falls from 0.599 to 0.513. This trade-off motivates using the edit as an **initializer** rather than the final model:
 
 | Method | Utility ↑ | Forget Pr. ↓ | ROUGE ↓ | Extraction ↓ |
 |---|---|---|---|---|
@@ -118,10 +120,6 @@ Stronger edits monotonically trade utility for forgetting:
 | K-FORGE α = 0.450 | 0.582 | 0.774 | 0.613 | 0.390 |
 | K-FORGE α = 0.600 | 0.556 | 0.657 | 0.539 | 0.262 |
 | K-FORGE α = 0.800 | 0.513 | **0.411** | **0.427** | **0.130** |
-
-<img src="assets/one_shot_strength_sweep.png" width="420" alt="One-shot strength sweep">
-
-*Raising α from 0.1 to 0.8 drops forget probability 0.878 → 0.411 while utility falls 0.599 → 0.513. This trade-off motivates using the edit as an initializer rather than the final model.*
 
 ### 2. K-FORGE vs. scratch initialization (main comparison)
 
@@ -146,13 +144,11 @@ Stronger edits monotonically trade utility for forgetting:
 | | | K-FORGE (0.450) | 0.595 ± 0.001 | 0.276 ± 0.012 | 0.111 ± 0.003 |
 | | | K-FORGE (0.600) | 0.592 ± 0.004 | **0.272 ± 0.008** | **0.110 ± 0.001** |
 
-<img src="assets/matched_budget_dumbbell.png" width="760" alt="Matched budget dumbbell">
-
 *At every matched budget K-FORGE lowers forget probability; the largest NPO gain is early (−49% at 50 steps) and SimNPO gains are steadier (−18…−20%) at essentially unchanged utility.*
 
-<img src="assets/transfer_trajectories.png" width="900" alt="Forget probability trajectories">
+<img src="assets/transfer_trajectories.png" width="700" alt="Forget probability trajectories">
 
-*Trajectories on TOFU `forget10` / `forget05` / `forget01`. Gains are clearest on `forget10`/`forget05`; NPO on `forget01` is near the noise floor.*
+*Trajectories on TOFU `forget10` / `forget05` / `forget01` (Figure 2 in the paper). Gains are clearest on `forget10`/`forget05`; NPO on `forget01` is near the noise floor.*
 
 ### 3. Initializer controls — it's not just "any low-rank edit"
 
@@ -171,13 +167,7 @@ Stronger edits monotonically trade utility for forgetting:
 | | forget-only | 0.572 ± 0.005 | 0.619 ± 0.006 | 0.583 ± 0.001 | 0.491 ± 0.004 |
 | | **K-FORGE** | 0.572 ± 0.007 | **0.542 ± 0.002** | 0.579 ± 0.003 | **0.413 ± 0.008** |
 
-<img src="assets/init_controls_forget10.png" width="900" alt="Initializer controls">
-
 *K-FORGE has the lowest mean Forget Q/A Probability in every optimizer × budget block.*
-
-<img src="assets/pareto_frontier_forget10.png" width="520" alt="Pareto frontier">
-
-*Utility–forget-probability plane on TOFU `forget10`: one-shot points (diamonds), initialized downstream runs (circles), controls.*
 
 ### 4. Compute overhead (charged, not free)
 
@@ -217,7 +207,7 @@ Strict compute-matched comparison (FP32, *n* = 3, evaluation excluded from timin
 
 ```
 kron_unlearn/
-├── assets/                                # figures used in this README
+├── assets/                                # the two paper figures used in this README
 ├── open-unlearning/                       # OpenUnlearning fork with K-FORGE
 │   ├── src/trainer/unlearn/kforge.py      # KFORGE trainer (factors + Wiener edit)
 │   ├── configs/trainer/KFORGE.yaml        # trainer defaults

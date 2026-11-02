@@ -224,11 +224,11 @@ Figure data (per-point CSVs for every plot above) are in `open-unlearning/saves/
 If you use K-FORGE, please cite:
 
 ```bibtex
-@misc{moskovskiy2026kforge,
-  title         = {K-FORGE: Fisher-Guided Initialization for Preference-Based LLM Unlearning},
-  author        = {Moskovskiy, Daniil and Panchenko, Alexander},
-  year          = {2026},
-  howpublished  = {\url{https://github.com/etomoscow/kron_unlearn}}
+@inproceedings{moskovskiy2026kforge,
+  title     = {K-FORGE: Fisher-Guided Initialization for Preference-Based LLM Unlearning},
+  author    = {Moskovskiy, Daniil and Panchenko, Alexander},
+  booktitle = {Findings of the Association for Computational Linguistics: ICJNLP-AACL 2026},
+  year      = {2026}
 }
 ```
 
